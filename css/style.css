@@ -1,0 +1,342 @@
+/* ============================================================
+   BAGARI — studio site
+   Neutral "black label" look, to be re-skinned once the
+   brandbook exists. GE/EN handled via .l spans + html[data-lang].
+   ============================================================ */
+
+:root {
+  --bg: #0b0b0c;
+  --bg-raised: #121214;
+  --ink: #f2efe9;
+  --muted: #98938a;
+  --hairline: rgba(255, 255, 255, 0.09);
+  --blue: #5b83e8;
+  --red: #d94a3d;
+  --gold: #c9a962;
+  --font-en-display: "Fraunces", Georgia, serif;
+  --font-ka-display: "Noto Serif Georgian", Georgia, serif;
+  --font-en-body: "Inter", system-ui, sans-serif;
+  --font-ka-body: "Noto Sans Georgian", system-ui, sans-serif;
+  --pad: clamp(1.25rem, 5vw, 4rem);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-en-body), var(--font-ka-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- language switching ---------- */
+/* Only the active language's spans are shown. */
+html[data-lang="ka"] .l.en { display: none; }
+html[data-lang="en"] .l.ka { display: none; }
+
+.l.ka { font-family: var(--font-ka-body); }
+
+h1 .l.ka, h2 .l.ka, h3 .l.ka { font-family: var(--font-ka-display); }
+h1 .l.en, h2 .l.en, h3 .l.en { font-family: var(--font-en-display); }
+
+/* NOTE: never use text-transform: uppercase on Georgian text —
+   CSS uppercasing maps mkhedruli to mtavruli and has burned us
+   before (see biomi). Uppercase is applied to .en spans only. */
+.eyebrow .l.en,
+.case-tags .l.en,
+.tier-label,
+.tier-flag .l.en,
+.section-head h2 .l.en,
+.site-nav a .l.en {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem var(--pad);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.brand {
+  font-family: var(--font-en-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav { display: flex; gap: clamp(0.9rem, 2.5vw, 2rem); }
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+.site-nav a:hover { color: var(--ink); }
+
+.lang-toggle {
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 2rem;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.lang-toggle:hover { border-color: var(--muted); }
+.lt-sep { margin: 0 0.35rem; opacity: 0.5; }
+html[data-lang="ka"] .lt-opt[data-lang-opt="ka"],
+html[data-lang="en"] .lt-opt[data-lang-opt="en"] { color: var(--ink); }
+
+/* ---------- hero ---------- */
+.hero {
+  min-height: calc(100svh - 62px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4rem, 12vh, 8rem) var(--pad);
+  max-width: 68rem;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 6.5vw, 5rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  max-width: 16em;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  max-width: 38em;
+  margin-top: 1.75rem;
+}
+
+.hero-cta { display: flex; gap: 0.9rem; margin-top: 2.5rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.7rem;
+  border-radius: 2.5rem;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-solid { background: var(--ink); color: var(--bg); }
+.btn-solid:hover { background: #fff; }
+.btn-ghost { border: 1px solid var(--hairline); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--muted); }
+
+/* ---------- sections ---------- */
+.section { padding: clamp(4rem, 10vh, 7rem) var(--pad); border-top: 1px solid var(--hairline); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+
+.section-num {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; }
+
+/* ---------- work ---------- */
+.case {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) 2.2fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(2rem, 5vh, 3rem) 0;
+  border-top: 1px solid var(--hairline);
+}
+.case:first-of-type { border-top: none; padding-top: 0; }
+
+.case-meta h3 {
+  font-family: var(--font-en-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 500;
+}
+
+.case-tags { color: var(--muted); font-size: 0.78rem; margin-top: 0.6rem; letter-spacing: 0.05em; }
+
+.case-body p { max-width: 46em; color: #cfcac2; }
+
+.case-link {
+  display: inline-block;
+  margin-top: 1.4rem;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--muted);
+  padding-bottom: 0.15rem;
+  transition: border-color 0.2s;
+}
+.case-link:hover { border-color: var(--ink); }
+
+/* ---------- services / tiers ---------- */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.2rem;
+}
+
+.tier {
+  position: relative;
+  background: var(--bg-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 0.9rem;
+  padding: 2rem 1.7rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tier-blue { border-top: 3px solid var(--blue); }
+.tier-red { border-top: 3px solid var(--red); }
+.tier-black { border-top: 3px solid var(--gold); }
+
+.tier-flag {
+  position: absolute;
+  top: -0.8rem;
+  right: 1.2rem;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 1rem;
+}
+
+.tier-label { font-size: 0.75rem; letter-spacing: 0.18em; color: var(--muted); }
+.tier-blue .tier-label { color: var(--blue); }
+.tier-red .tier-label { color: var(--red); }
+.tier-black .tier-label { color: var(--gold); }
+
+.tier h3 { font-size: 1.35rem; font-weight: 500; margin: 0.7rem 0 1.2rem; }
+
+.tier ul { list-style: none; flex-grow: 1; }
+
+.tier li {
+  color: #c9c4bc;
+  font-size: 0.9rem;
+  padding: 0.45rem 0 0.45rem 1.3rem;
+  position: relative;
+}
+.tier li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+.tier-terms {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.tier-price { font-family: var(--font-en-display); font-size: 1.15rem; }
+.tier-time { color: var(--muted); font-size: 0.8rem; }
+
+.care {
+  margin-top: 2.5rem;
+  padding: 1.6rem 1.7rem;
+  border: 1px dashed var(--hairline);
+  border-radius: 0.9rem;
+  color: #c9c4bc;
+  max-width: 60rem;
+}
+.care strong { color: var(--ink); }
+.care-note { color: var(--muted); font-size: 0.85rem; margin-top: 0.8rem; }
+
+/* ---------- studio ---------- */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.pillar h3 { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.8rem; }
+.pillar p { color: var(--muted); font-size: 0.95rem; max-width: 30em; }
+
+.studio-about {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  padding-top: 2rem;
+  border-top: 1px solid var(--hairline);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- contact ---------- */
+.section-contact { padding-bottom: clamp(5rem, 12vh, 8rem); }
+
+.contact-lead {
+  font-family: var(--font-en-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+  line-height: 1.25;
+  max-width: 22em;
+}
+.contact-lead .l.ka { font-family: var(--font-ka-display); }
+
+.contact-actions { display: flex; gap: 0.9rem; margin-top: 2.2rem; flex-wrap: wrap; }
+
+/* ---------- footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--hairline);
+  padding: 1.5rem var(--pad);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 720px) {
+  .site-header { flex-wrap: wrap; row-gap: 0.2rem; }
+  .site-nav { order: 3; width: 100%; gap: 1.1rem; padding-top: 0.35rem; }
+  .site-nav a { font-size: 0.72rem; }
+  .case { grid-template-columns: 1fr; gap: 1rem; }
+}

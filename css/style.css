@@ -366,7 +366,7 @@ html[data-lang="ka"] p { max-width: 36em; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;                /* both switches: two equal cells, same box */
+  width: 3.5rem;              /* both switches: two equal cells, same box */
   padding: 0;
   transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
 }

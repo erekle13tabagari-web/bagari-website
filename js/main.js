@@ -34,6 +34,40 @@
     setLang(current === "ka" ? "en" : "ka");
   });
 
+  // ----- surface: Stone or Ink. System preference by default, the switch overrides. -----
+  var THEME_KEY = "bagari-theme";
+  var themeToggle = document.getElementById("themeToggle");
+  var themeMeta = document.getElementById("themeColor");
+  var systemDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+
+  function effectiveTheme() {
+    var set = document.documentElement.getAttribute("data-theme");
+    if (set === "dark" || set === "light") return set;
+    return systemDark && systemDark.matches ? "dark" : "light";
+  }
+
+  function paintTheme() {
+    var theme = effectiveTheme();
+    Array.prototype.forEach.call(themeToggle.querySelectorAll(".lt-opt"), function (opt) {
+      if (opt.getAttribute("data-theme-opt") === theme) opt.setAttribute("aria-current", "true");
+      else opt.removeAttribute("aria-current");
+    });
+    var lang = document.documentElement.getAttribute("data-lang");
+    themeToggle.setAttribute("aria-label", theme === "dark"
+      ? (lang === "ka" ? "ქვის ფონზე გადართვა" : "Switch to stone")
+      : (lang === "ka" ? "მელნის ფონზე გადართვა" : "Switch to ink"));
+    if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#131512" : "#EDEBE4");
+  }
+
+  themeToggle.addEventListener("click", function () {
+    var next = effectiveTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    paintTheme();
+  });
+  if (systemDark && systemDark.addEventListener) systemDark.addEventListener("change", paintTheme);
+  paintTheme();
+
   // ----- signature moment: the hero drawing wipes on, once per session -----
   var SIG_KEY = "bagari-sig";
   var played = false;

@@ -1,60 +1,209 @@
 /* ============================================================
    BAGARI — studio site
-   Neutral "black label" look, to be re-skinned once the
-   brandbook exists. GE/EN handled via .l spans + html[data-lang].
+   Skinned to Brandbook 03.0 ("Loud"). Five colours, no sixth;
+   Georgian first, Archivo matched to it; 8-pt spacing; radius 0;
+   no shadows. GE/EN handled via .l spans + html[data-lang].
    ============================================================ */
 
+/* ---------- type: self-hosted, OFL (see /brand/type/licence.txt) ----------
+   Noto Sans Georgian carries only the Georgian range on purpose: a Latin
+   proper noun inside a Georgian line falls through to Archivo (book p10). */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("../brand/type/archivo-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("../brand/type/archivo-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Noto Sans Georgian";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("../brand/type/noto-sans-georgian-georgian.woff2") format("woff2");
+  unicode-range: U+0589, U+10A0-10FF, U+1C90-1CBA, U+1CBD-1CBF, U+205A, U+2D00-2D2F, U+2E31;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../brand/type/ibm-plex-mono-400-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../brand/type/ibm-plex-mono-400-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../brand/type/ibm-plex-mono-500-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../brand/type/ibm-plex-mono-500-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- tokens (book p05, p11) ---------- */
 :root {
-  --bg: #0b0b0c;
-  --bg-raised: #121214;
-  --ink: #f2efe9;
-  --muted: #98938a;
-  --hairline: rgba(255, 255, 255, 0.09);
-  --blue: #5b83e8;
-  --red: #d94a3d;
-  --gold: #c9a962;
-  --font-en-display: "Fraunces", Georgia, serif;
-  --font-ka-display: "Noto Serif Georgian", Georgia, serif;
-  --font-en-body: "Inter", system-ui, sans-serif;
-  --font-ka-body: "Noto Sans Georgian", system-ui, sans-serif;
-  --pad: clamp(1.25rem, 5vw, 4rem);
+  /* the five */
+  --ink: #131512;
+  --stone: #EDEBE4;
+  --verdigris: #3E8C79;   /* display only — rules, kickers, focus, marks on dark. Never small text on stone. */
+  --deep: #2A6153;        /* the same signal where it must carry small text on stone */
+  --wine: #7A2438;        /* links, emphasis, one primary action per view */
+
+  /* states, defined once */
+  --wine-hover: #5C1A2A;
+  --disabled-bg: #C9C5B9;
+  --disabled-ink: #7C786D;
+  --success: #1B6B4F;
+  --warning: #8A6A1F;
+  --error: #A8231A;
+
+  /* neutral steps — tints of ink and stone, not a sixth hue */
+  --line: #D6D2C6;            /* 1 px border on stone */
+  --line-strong: #C9C5B9;     /* cell dividers on stone */
+  --muted: #6A6A62;           /* secondary text on stone */
+  --ink-on-verdigris: #08201B;
+  --stone-on-ink: #C9C7BE;    /* body text on ink */
+  --muted-on-ink: #8C8B82;    /* secondary text on ink */
+  --line-on-ink: #38392F;
+  --line-on-ink-soft: #26271F;
+
+  /* type */
+  --font-ka: "Noto Sans Georgian", "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-en: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* 8-pt base: 4 · 8 · 16 · 24 · 40 · 64 · 96 */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 1rem;
+  --s-4: 1.5rem;
+  --s-5: 2.5rem;
+  --s-6: 4rem;
+  --s-7: 6rem;
+
+  /* grid: 1440 max · 72 / 40 / 20 margins. Backgrounds run full-bleed;
+     content stops at --max and the gutter grows beyond it. */
+  --max: 90rem;
+  --margin: clamp(1.25rem, 5vw, 4.5rem);
+  --gutter: max(var(--margin), calc((100% - var(--max)) / 2));
+
+  /* motion (book p12) */
+  --fast: 180ms;
+  --medium: 560ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; color-scheme: light; }
 
 body {
-  background: var(--bg);
+  background: var(--stone);
   color: var(--ink);
-  font-family: var(--font-en-body), var(--font-ka-body);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-family: var(--font-en);
+  font-size: 1.0625rem;          /* 17 px — the web floor */
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
 }
+html[data-lang="ka"] body { font-family: var(--font-ka); }
 
 /* ---------- language switching ---------- */
 /* Only the active language's spans are shown. */
 html[data-lang="ka"] .l.en { display: none; }
 html[data-lang="en"] .l.ka { display: none; }
 
-.l.ka { font-family: var(--font-ka-body); }
+.l.en { font-family: var(--font-en); }
+.l.ka {
+  font-family: var(--font-ka);
+  hyphens: none;                 /* Georgian doesn't take it; browsers guess badly */
+  overflow-wrap: break-word;
+}
 
-h1 .l.ka, h2 .l.ka, h3 .l.ka { font-family: var(--font-ka-display); }
-h1 .l.en, h2 .l.en, h3 .l.en { font-family: var(--font-en-display); }
+/* Negative tracking is Latin-display only. Georgian is never tracked tighter
+   than −1% and never letterspaced positively. Uppercasing is applied to .en
+   spans only — CSS uppercase maps mkhedruli to mtavruli, and mtavruli is a
+   deliberate emphasis tool, not a side effect. */
+h1, h2, h3 { font-weight: 600; line-height: 1.1; text-wrap: balance; }
+h1 .l.en, h2 .l.en, h3 .l.en { letter-spacing: -0.025em; }
+h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 1.15; }
 
-/* NOTE: never use text-transform: uppercase on Georgian text —
-   CSS uppercasing maps mkhedruli to mtavruli and has burned us
-   before (see biomi). Uppercase is applied to .en spans only. */
+/* measure: 72 characters Latin, 60 Georgian */
+p { max-width: 40em; }
+html[data-lang="ka"] p { max-width: 36em; }
+
+/* ---------- labels: kickers, eyebrows, UI (mono, 12 px floor) ---------- */
+.label,
 .eyebrow .l.en,
+.section-num,
 .case-tags .l.en,
 .tier-label,
 .tier-flag .l.en,
-.section-head h2 .l.en,
-.site-nav a .l.en {
-  text-transform: uppercase;
+.tier-time .l.en,
+.site-nav a .l.en,
+.lang-toggle,
+.btn,
+.btn .l.en,
+.case-link .l.en,
+.site-footer .l.en,
+.site-footer p {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.5;
 }
+/* the Georgian counterpart of a label: Noto Sans Georgian, 14 px, no tracking, no case change */
+.eyebrow .l.ka,
+.case-tags .l.ka,
+.tier-flag .l.ka,
+.tier-time .l.ka,
+.site-nav a .l.ka,
+.btn .l.ka,
+.case-link .l.ka,
+.site-footer .l.ka {
+  font-family: var(--font-ka);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+/* ---------- focus: visible everywhere, never removed ---------- */
+:focus-visible {
+  outline: 2px solid var(--verdigris);
+  outline-offset: 2px;
+}
+
+::selection { background: var(--verdigris); color: var(--ink-on-verdigris); }
 
 /* ---------- header ---------- */
 .site-header {
@@ -64,279 +213,449 @@ h1 .l.en, h2 .l.en, h3 .l.en { font-family: var(--font-en-display); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem var(--pad);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--hairline);
+  gap: var(--s-4);
+  padding: var(--s-3) var(--gutter);
+  background: var(--stone);
+  border-bottom: 1px solid var(--line-strong);
 }
 
+/* the wordmark: Archivo 700, wdth 112, −6.5% — the same setting as /brand/logo/ */
 .brand {
-  font-family: var(--font-en-display);
-  font-weight: 600;
-  font-size: 1.3rem;
-  letter-spacing: 0.22em;
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-stretch: 112%;
+  font-size: 1.375rem;
+  letter-spacing: -0.065em;
+  line-height: 1;
   color: var(--ink);
   text-decoration: none;
 }
 
-.site-nav { display: flex; gap: clamp(0.9rem, 2.5vw, 2rem); }
+.site-nav { display: flex; gap: clamp(1rem, 2.5vw, 1.5rem); }
 
 .site-nav a {
-  color: var(--muted);
+  color: var(--ink);
   text-decoration: none;
-  font-size: 0.8rem;
-  transition: color 0.2s;
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--fast) var(--ease);
 }
-.site-nav a:hover { color: var(--ink); }
+.site-nav a:hover { border-bottom-color: var(--ink); }
 
+/* switcher names the language in its own script — never a flag */
 .lang-toggle {
+  display: inline-flex;
+  align-items: stretch;
   background: none;
-  border: 1px solid var(--hairline);
-  border-radius: 2rem;
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 0.78rem;
-  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--ink);
+  padding: 0;
   cursor: pointer;
-  transition: border-color 0.2s;
+  min-height: 2.25rem;
 }
-.lang-toggle:hover { border-color: var(--muted); }
-.lt-sep { margin: 0 0.35rem; opacity: 0.5; }
+.lt-opt {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.lt-opt[data-lang-opt="ka"] {
+  font-family: var(--font-ka);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.lt-sep { display: none; }
 html[data-lang="ka"] .lt-opt[data-lang-opt="ka"],
-html[data-lang="en"] .lt-opt[data-lang-opt="en"] { color: var(--ink); }
+html[data-lang="en"] .lt-opt[data-lang-opt="en"] { background: var(--ink); color: var(--stone); }
+.lang-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* ---------- hero ---------- */
 .hero {
-  min-height: calc(100svh - 62px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(4rem, 12vh, 8rem) var(--pad);
-  max-width: 68rem;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--s-5);
+  align-items: end;
+  padding: clamp(var(--s-6), 10vh, 8rem) var(--gutter) 0;
+  overflow: hidden;
 }
+.hero-copy { padding-bottom: var(--s-7); }
 
-.eyebrow {
+/* ---------- the drawings ----------
+   Erekle's ink drawings are the hand-made counterweight to the geometric
+   type. They are shown as work — captioned, credited — never as texture.
+   One drawing per section at most; the hero's is the page's one signature
+   moment (book p12). */
+figure { margin: 0; }
+figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
   color: var(--muted);
-  font-size: 0.8rem;
-  margin-bottom: 1.5rem;
+  margin-top: var(--s-2);
+}
+figcaption .l.ka { font-family: var(--font-ka); font-size: 0.8125rem; letter-spacing: 0; }
+
+.hero-art {
+  position: relative;
+  align-self: end;
+  justify-self: end;
+  width: 100%;
+  max-width: 34rem;
+  margin-right: calc(-0.5 * var(--gutter));
+}
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  object-fit: contain;
+  object-position: right bottom;
+}
+.hero-art figcaption {
+  position: absolute;
+  left: 0;
+  bottom: var(--s-3);
+  max-width: 14em;
 }
 
-.hero h1 {
-  font-size: clamp(2.4rem, 6.5vw, 5rem);
-  font-weight: 500;
-  line-height: 1.08;
+/* the wipe: 900 ms ease-out, once per session, never blocking content.
+   Without JS the class never lands and the drawing is simply there. */
+@keyframes draw-on {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+html.sig-play .hero-art img { animation: draw-on 900ms var(--ease) 200ms both; }
+@media (prefers-reduced-motion: reduce) {
+  @keyframes draw-on { from { opacity: 0; } to { opacity: 1; } }
+  html.sig-play .hero-art img { animation-duration: 200ms; animation-delay: 0ms; }
+}
+
+.ink-mask {
+  background: var(--verdigris);
+  -webkit-mask: var(--art) center / contain no-repeat;
+  mask: var(--art) center / contain no-repeat;
+}
+
+.eyebrow { color: var(--wine); margin-bottom: var(--s-4); }
+
+.hero h1 { font-size: clamp(2.75rem, 7vw, 6rem); max-width: 11em; }
+.hero h1 .l.en {
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+.hero h1 .l.ka {
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.05;
   letter-spacing: -0.01em;
-  max-width: 16em;
 }
-
 .hero-sub {
-  color: var(--muted);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  max-width: 38em;
-  margin-top: 1.75rem;
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.45;
+  font-weight: 500;
+  max-width: 34em;
+  margin-top: var(--s-4);
 }
+html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
 
-.hero-cta { display: flex; gap: 0.9rem; margin-top: 2.5rem; flex-wrap: wrap; }
+.hero-cta { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
 
+/* ---------- buttons: one primary per view, 44 × 180 minimum, radius 0 ---------- */
 .btn {
-  display: inline-block;
-  padding: 0.8rem 1.7rem;
-  border-radius: 2.5rem;
-  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 11.25rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 0;
   text-decoration: none;
-  transition: transform 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+  text-align: center;
+  color: var(--ink);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
-.btn:hover { transform: translateY(-2px); }
-.btn-solid { background: var(--ink); color: var(--bg); }
-.btn-solid:hover { background: #fff; }
-.btn-ghost { border: 1px solid var(--hairline); color: var(--ink); }
-.btn-ghost:hover { border-color: var(--muted); }
+.btn-solid { background: var(--wine); border-color: var(--wine); color: var(--stone); }
+.btn-solid:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
+.btn-ghost { border-color: var(--ink); color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--stone); }
+.btn[aria-disabled="true"] { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); pointer-events: none; }
 
-/* ---------- sections ---------- */
-.section { padding: clamp(4rem, 10vh, 7rem) var(--pad); border-top: 1px solid var(--hairline); }
+/* ---------- sections: rhythm 96 / 64 ---------- */
+.section {
+  border-top: 2px solid var(--ink);
+  padding: clamp(var(--s-6), 8vw, var(--s-7)) var(--gutter);
+}
 
 .section-head {
   display: flex;
-  align-items: baseline;
-  gap: 1.2rem;
-  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+  flex-direction: column;
+  gap: var(--s-3);
+  margin-bottom: clamp(var(--s-5), 6vw, var(--s-6));
 }
 
-.section-num {
-  color: var(--muted);
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-}
+.section-num { color: var(--wine); }
+.section-num::after { content: " /"; }
 
-.section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; }
+.section-head h2 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 0.95; }
+.section-head h2 .l.en { font-weight: 700; letter-spacing: -0.04em; font-stretch: 108%; }
+.section-head h2 .l.ka { font-weight: 700; line-height: 1.1; }
 
 /* ---------- work ---------- */
 .case {
   display: grid;
-  grid-template-columns: minmax(10rem, 1fr) 2.2fr;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  padding: clamp(2rem, 5vh, 3rem) 0;
-  border-top: 1px solid var(--hairline);
+  grid-template-columns: minmax(12rem, 1fr) 2fr;
+  gap: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
+  padding: var(--s-5) 0;
+  border-top: 1px solid var(--line-strong);
 }
 .case:first-of-type { border-top: none; padding-top: 0; }
+.case:last-of-type { padding-bottom: 0; }
 
 .case-meta h3 {
-  font-family: var(--font-en-display);
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 500;
+  font-family: var(--font-en);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
 }
 
-.case-tags { color: var(--muted); font-size: 0.78rem; margin-top: 0.6rem; letter-spacing: 0.05em; }
+.case-tags { color: var(--muted); margin-top: var(--s-2); }
 
-.case-body p { max-width: 46em; color: #cfcac2; }
+.case-body p { max-width: 40em; }
+html[data-lang="ka"] .case-body p { max-width: 36em; }
 
+/* tertiary / link */
 .case-link {
   display: inline-block;
-  margin-top: 1.4rem;
-  color: var(--ink);
+  margin-top: var(--s-4);
+  color: var(--wine);
   text-decoration: none;
-  font-size: 0.9rem;
-  border-bottom: 1px solid var(--muted);
-  padding-bottom: 0.15rem;
-  transition: border-color 0.2s;
+  border-bottom: 1px solid var(--wine);
+  padding-bottom: 0.1rem;
+  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
-.case-link:hover { border-color: var(--ink); }
+.case-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
 
-/* ---------- services / tiers ---------- */
+/* ---------- services / tiers: cells on a rule, no cards ---------- */
 .tiers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid var(--ink);
 }
 
 .tier {
   position: relative;
-  background: var(--bg-raised);
-  border: 1px solid var(--hairline);
-  border-radius: 0.9rem;
-  padding: 2rem 1.7rem;
+  padding: var(--s-4) var(--s-4) var(--s-4) 0;
+  margin-right: var(--s-4);
+  border-right: 1px solid var(--line-strong);
   display: flex;
   flex-direction: column;
 }
-
-.tier-blue { border-top: 3px solid var(--blue); }
-.tier-red { border-top: 3px solid var(--red); }
-.tier-black { border-top: 3px solid var(--gold); }
+.tier:last-child { border-right: none; margin-right: 0; padding-right: 0; }
 
 .tier-flag {
   position: absolute;
-  top: -0.8rem;
-  right: 1.2rem;
-  background: var(--red);
-  color: #fff;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  padding: 0.25rem 0.7rem;
-  border-radius: 1rem;
+  top: 0;
+  right: var(--s-4);
+  background: var(--wine);
+  color: var(--stone);
+  padding: 0.375rem 0.625rem;
 }
+.tier:last-child .tier-flag { right: 0; }
 
-.tier-label { font-size: 0.75rem; letter-spacing: 0.18em; color: var(--muted); }
-.tier-blue .tier-label { color: var(--blue); }
-.tier-red .tier-label { color: var(--red); }
-.tier-black .tier-label { color: var(--gold); }
+.tier-label { color: var(--muted); }
 
-.tier h3 { font-size: 1.35rem; font-weight: 500; margin: 0.7rem 0 1.2rem; }
+.tier h3 { font-size: 1.5rem; margin: var(--s-3) 0 var(--s-4); max-width: 12em; }
 
 .tier ul { list-style: none; flex-grow: 1; }
 
 .tier li {
-  color: #c9c4bc;
-  font-size: 0.9rem;
-  padding: 0.45rem 0 0.45rem 1.3rem;
+  padding: var(--s-2) 0 var(--s-2) var(--s-4);
   position: relative;
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
 .tier li::before {
-  content: "—";
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--muted);
+  top: 1.05em;
+  width: 0.875rem;
+  height: 2px;
+  background: var(--verdigris);   /* a mark, not text */
 }
 
 .tier-terms {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-top: 1.5rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--hairline);
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line-strong);
 }
 
-.tier-price { font-family: var(--font-en-display); font-size: 1.15rem; }
-.tier-time { color: var(--muted); font-size: 0.8rem; }
+.tier-price { font-family: var(--font-en); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; }
+.tier-time { color: var(--muted); }
 
 .care {
-  margin-top: 2.5rem;
-  padding: 1.6rem 1.7rem;
-  border: 1px dashed var(--hairline);
-  border-radius: 0.9rem;
-  color: #c9c4bc;
+  margin-top: var(--s-5);
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--line);
   max-width: 60rem;
 }
-.care strong { color: var(--ink); }
-.care-note { color: var(--muted); font-size: 0.85rem; margin-top: 0.8rem; }
+.care strong { font-weight: 600; }
+.care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
 
-/* ---------- studio ---------- */
+/* ---------- studio: numbered pillars (book p02) ---------- */
 .pillars {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid var(--ink);
+  counter-reset: pillar;
 }
 
-.pillar h3 { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.8rem; }
-.pillar p { color: var(--muted); font-size: 0.95rem; max-width: 30em; }
+.pillar {
+  counter-increment: pillar;
+  padding: var(--s-4) var(--s-4) 0 0;
+  margin-right: var(--s-4);
+  border-right: 1px solid var(--line-strong);
+}
+.pillar:last-child { border-right: none; margin-right: 0; padding-right: 0; }
 
-.studio-about {
-  margin-top: clamp(2.5rem, 6vh, 4rem);
-  padding-top: 2rem;
-  border-top: 1px solid var(--hairline);
-  color: var(--muted);
-  font-size: 0.95rem;
+.pillar::before {
+  content: counter(pillar, decimal-leading-zero);
+  display: block;
+  font-family: var(--font-en);
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--verdigris);
+  margin-bottom: var(--s-3);
 }
 
-/* ---------- contact ---------- */
-.section-contact { padding-bottom: clamp(5rem, 12vh, 8rem); }
+.pillar h3 { font-size: 1.5rem; margin-bottom: var(--s-2); max-width: 12em; }
+.pillar p { font-size: 0.9375rem; max-width: 26em; }
+
+.studio-maker {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  gap: var(--s-5);
+  align-items: end;
+  margin-top: clamp(var(--s-5), 6vw, var(--s-6));
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-strong);
+}
+.studio-art img { display: block; width: 100%; height: auto; max-width: 16rem; }
+.studio-about p { font-size: 0.9375rem; max-width: 34em; }
+.studio-about p + p { margin-top: var(--s-3); color: var(--muted); }
+
+/* ---------- contact: the ink band ---------- */
+.section-contact {
+  position: relative;
+  background: var(--ink);
+  color: var(--stone);
+  border-top: none;
+  padding-bottom: clamp(var(--s-6), 10vw, 8rem);
+  overflow: hidden;
+}
+.section-contact > :not(.contact-art) { position: relative; z-index: 1; }
+
+/* verdigris on ink — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
+.contact-art {
+  position: absolute;
+  right: calc(-0.15 * var(--gutter));
+  bottom: -6%;
+  width: min(44%, 36rem);
+  aspect-ratio: 888 / 878;
+  pointer-events: none;
+}
+.contact-art .ink-mask {
+  width: 100%;
+  height: 100%;
+  --art: url("../brand/art/bagari-art-trying-to-sleep.svg");  /* stylesheet-relative: Chrome resolves url() in a custom property where it is substituted */
+}
+.section-contact .section-num { color: var(--verdigris); }
 
 .contact-lead {
-  font-family: var(--font-en-display);
-  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
-  line-height: 1.25;
-  max-width: 22em;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  max-width: 18em;
 }
-.contact-lead .l.ka { font-family: var(--font-ka-display); }
+.contact-lead .l.en { letter-spacing: -0.035em; }
+.contact-lead .l.ka { font-weight: 700; line-height: 1.15; }
 
-.contact-actions { display: flex; gap: 0.9rem; margin-top: 2.2rem; flex-wrap: wrap; }
+.contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
+
+/* on ink, the primary is verdigris (book p09) and the secondary is a stone rule */
+.section-contact .btn-solid { background: var(--verdigris); border-color: var(--verdigris); color: var(--ink-on-verdigris); }
+.section-contact .btn-solid:hover { background: var(--stone); border-color: var(--stone); color: var(--ink); }
+.section-contact .btn-ghost { border-color: var(--stone); color: var(--stone); }
+.section-contact .btn-ghost:hover { background: var(--stone); color: var(--ink); }
 
 /* ---------- footer ---------- */
 .site-footer {
-  border-top: 1px solid var(--hairline);
-  padding: 1.5rem var(--pad);
-  color: var(--muted);
-  font-size: 0.8rem;
+  background: var(--ink);
+  color: var(--muted-on-ink);
+  border-top: 1px solid var(--line-on-ink);
+  padding: var(--s-4) var(--gutter);
+}
+.site-footer p,
+html[data-lang="ka"] .site-footer p {
+  max-width: none;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-3);
+  flex-wrap: wrap;
 }
 
-/* ---------- reveal on scroll ---------- */
-.reveal {
+/* ---------- reveal on scroll: 480–700 ms, 12–24 px, never JS-dependent ----------
+   Without JS the class never applies and everything is simply visible. */
+.js .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(16px);
+  transition: opacity var(--medium) var(--ease), transform var(--medium) var(--ease);
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .js .reveal { transform: none; transition: opacity 200ms ease-out; }
+  .btn, .site-nav a, .case-link, .lt-opt { transition: none; }
 }
 
 /* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; gap: var(--s-4); }
+  .hero-copy { padding-bottom: 0; }
+  .hero-art { max-width: 22rem; margin-right: calc(-1 * var(--gutter)); }
+  .hero-art img { max-height: 60vh; }
+  .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
+  .studio-art img { max-width: 11rem; }
+  .contact-art { width: 60%; right: -18%; bottom: -10%; opacity: 0.55; }
+  .tiers, .pillars { grid-template-columns: 1fr; }
+  .tier, .pillar {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: var(--s-4);
+  }
+  .tier:last-child, .pillar:last-child { border-bottom: none; padding-bottom: 0; }
+  .tier-flag, .tier:last-child .tier-flag { right: 0; }
+}
+
 @media (max-width: 720px) {
-  .site-header { flex-wrap: wrap; row-gap: 0.2rem; }
-  .site-nav { order: 3; width: 100%; gap: 1.1rem; padding-top: 0.35rem; }
-  .site-nav a { font-size: 0.72rem; }
-  .case { grid-template-columns: 1fr; gap: 1rem; }
+  .site-header { flex-wrap: wrap; row-gap: var(--s-2); }
+  .site-nav { order: 3; width: 100%; gap: var(--s-3); flex-wrap: wrap; }
+  .case { grid-template-columns: 1fr; gap: var(--s-3); }
+  .btn { width: 100%; }
 }

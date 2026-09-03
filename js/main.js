@@ -4,9 +4,17 @@
   var STORAGE_KEY = "bagari-lang";
 
   // ----- language -----
+  var toggle = document.getElementById("langToggle");
+
   function setLang(lang) {
     document.documentElement.setAttribute("data-lang", lang);
     document.documentElement.setAttribute("lang", lang === "ka" ? "ka" : "en");
+    // the switcher names the language you'd switch to, in its own script
+    toggle.setAttribute("aria-label", lang === "ka" ? "Switch to English" : "ქართულზე გადართვა");
+    Array.prototype.forEach.call(toggle.querySelectorAll(".lt-opt"), function (opt) {
+      if (opt.getAttribute("data-lang-opt") === lang) opt.setAttribute("aria-current", "true");
+      else opt.removeAttribute("aria-current");
+    });
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
 
@@ -21,10 +29,19 @@
 
   setLang(initialLang());
 
-  document.getElementById("langToggle").addEventListener("click", function () {
+  toggle.addEventListener("click", function () {
     var current = document.documentElement.getAttribute("data-lang");
     setLang(current === "ka" ? "en" : "ka");
   });
+
+  // ----- signature moment: the hero drawing wipes on, once per session -----
+  var SIG_KEY = "bagari-sig";
+  var played = false;
+  try { played = sessionStorage.getItem(SIG_KEY) === "1"; } catch (e) {}
+  if (!played) {
+    document.documentElement.classList.add("sig-play");
+    try { sessionStorage.setItem(SIG_KEY, "1"); } catch (e) {}
+  }
 
   // ----- reveal on scroll -----
   var reveals = document.querySelectorAll(".reveal");

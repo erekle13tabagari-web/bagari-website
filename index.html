@@ -5,23 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BAGARI — დიზაინისა და დეველოპმენტის სტუდია, თბილისი</title>
   <meta name="description" content="BAGARI — დიზაინისა და ვებ-დეველოპმენტის სტუდია თბილისში. ორენოვანი საიტები ბიზნესებისთვის, რომლებსაც შაბლონი აღარ ჰყოფნით. / A design & development studio in Tbilisi building bilingual websites for businesses that have outgrown their template.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;500;600;700&family=Noto+Serif+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#EDEBE4">
+  <link rel="icon" type="image/svg+xml" href="brand/logo/bagari-monogram-verdigris.svg">
+  <link rel="apple-touch-icon" href="brand/logo/bagari-monogram-verdigris-180.png">
+  <link rel="preload" href="brand/type/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="brand/type/noto-sans-georgian-georgian.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v=202608041715">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
 
   <header class="site-header">
     <a class="brand" href="#top">BAGARI</a>
     <nav class="site-nav">
-      <a href="#work"><span class="l en">Work</span><span class="l ka">ნამუშევრები</span></a>
+      <a href="#work"><span class="l en">Work</span><span class="l ka">პროექტები</span></a>
       <a href="#services"><span class="l en">Services</span><span class="l ka">სერვისები</span></a>
       <a href="#studio"><span class="l en">Studio</span><span class="l ka">სტუდია</span></a>
       <a href="#contact"><span class="l en">Contact</span><span class="l ka">კონტაქტი</span></a>
     </nav>
     <button class="lang-toggle" id="langToggle" aria-label="Switch language">
-      <span class="lt-opt" data-lang-opt="ka">ქარ</span><span class="lt-sep">/</span><span class="lt-opt" data-lang-opt="en">EN</span>
+      <span class="lt-opt" data-lang-opt="ka">ქარ</span><span class="lt-sep">/</span><span class="lt-opt" data-lang-opt="en">ENG</span>
     </button>
   </header>
 
@@ -29,37 +32,47 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero">
+      <div class="hero-copy">
       <p class="eyebrow reveal">
         <span class="l en">Design &amp; development studio — Tbilisi</span>
         <span class="l ka">დიზაინისა და დეველოპმენტის სტუდია — თბილისი</span>
       </p>
       <h1 class="reveal">
-        <span class="l en">For businesses that have outgrown their template.</span>
-        <span class="l ka">ბიზნესებისთვის, რომლებსაც შაბლონი აღარ ჰყოფნით.</span>
+        <span class="l en">Built for the business you became.</span>
+        <span class="l ka">როცა ძველი საიტი უკვე პატარაა.</span>
       </h1>
       <p class="hero-sub reveal">
-        <span class="l en">BAGARI designs and builds bilingual websites that do a job — book the table, win the tender, sell the room. Designed, written and built as one system.</span>
-        <span class="l ka">BAGARI ქმნის ორენოვან საიტებს, რომლებიც საქმეს აკეთებენ — ჯავშნიან მაგიდას, იგებენ ტენდერს, ყიდიან ოთახს. დიზაინი, ტექსტი და კოდი — ერთი სისტემა.</span>
+        <span class="l en">Bilingual websites that turn attention into direct bookings — the table, the tender, the room. Designed, written and built as one system.</span>
+        <span class="l ka">ორენოვანი საიტები, რომლებიც ყურადღებას პირდაპირ ჯავშნებად აქცევს — მაგიდა, ტენდერი, ოთახი. დიზაინი, ტექსტი და კოდი — ერთი სისტემა.</span>
       </p>
       <div class="hero-cta reveal">
-        <a class="btn btn-solid" href="#work"><span class="l en">See the work</span><span class="l ka">ნახეთ ნამუშევრები</span></a>
-        <a class="btn btn-ghost" href="#contact"><span class="l en">Start a project</span><span class="l ka">დაიწყეთ პროექტი</span></a>
+        <a class="btn btn-solid" href="#contact"><span class="l en">Start a project</span><span class="l ka">პროექტის დაწყება</span></a>
+        <a class="btn btn-ghost" href="#work"><span class="l en">See the work</span><span class="l ka">პროექტების ნახვა</span></a>
       </div>
+      </div>
+      <!-- the signature moment: the drawing wipes on once per session (book p12) -->
+      <figure class="hero-art">
+        <img src="brand/art/bagari-art-the-look.svg" alt="" width="746" height="960" fetchpriority="high">
+        <figcaption>
+          <span class="l en">Ink on paper — “The look”. Erekle Tabagari</span>
+          <span class="l ka">ტუში ქაღალდზე — „მზერა“. ერეკლე ტაბაგარი</span>
+        </figcaption>
+      </figure>
     </section>
 
     <!-- ============ WORK ============ -->
     <section class="section" id="work">
       <div class="section-head reveal">
         <span class="section-num">01</span>
-        <h2><span class="l en">Work</span><span class="l ka">ნამუშევრები</span></h2>
+        <h2><span class="l en">Work</span><span class="l ka">პროექტები</span></h2>
       </div>
 
       <article class="case reveal">
         <div class="case-meta">
           <h3>Varazi</h3>
           <p class="case-tags">
-            <span class="l en">Restaurant · Hospitality · GE / EN</span>
-            <span class="l ka">რესტორანი · სტუმართმოყვარეობა · GE / EN</span>
+            <span class="l en">Restaurant · Hospitality · KA / EN</span>
+            <span class="l ka">რესტორანი · სტუმართმოყვარეობა · KA / EN</span>
           </p>
         </div>
         <div class="case-body">
@@ -77,8 +90,8 @@
         <div class="case-meta">
           <h3>Biomi Holding</h3>
           <p class="case-tags">
-            <span class="l en">Engineering · B2B · GE / EN</span>
-            <span class="l ka">ინჟინერია · B2B · GE / EN</span>
+            <span class="l en">Engineering · B2B · KA / EN</span>
+            <span class="l ka">ინჟინერია · B2B · KA / EN</span>
           </p>
         </div>
         <div class="case-body">
@@ -150,7 +163,7 @@
             <li><span class="l en">Visual identity — logo, palette, type, brandbook</span><span class="l ka">ვიზუალური იდენტობა — ლოგო, პალიტრა, შრიფტი, ბრენდბუქი</span></li>
             <li><span class="l en">Art direction for photography</span><span class="l ka">ფოტოგრაფიის არტ-დირექცია</span></li>
             <li><span class="l en">Full narrative &amp; copy in both languages</span><span class="l ka">სრული ნარატივი და ტექსტი ორივე ენაზე</span></li>
-            <li><span class="l en">Bespoke interactions and motion</span><span class="l ka">ინდივიდუალური ინტერაქციები და ანიმაცია</span></li>
+            <li><span class="l en">Interactions and motion drawn for the project</span><span class="l ka">ინტერაქციები და ანიმაცია, პროექტისთვის შექმნილი</span></li>
             <li><span class="l en">Sold with a care plan by default</span><span class="l ka">ნაგულისხმევად მოვლის გეგმით</span></li>
           </ul>
           <p class="tier-terms">
@@ -203,10 +216,25 @@
         </div>
       </div>
 
-      <p class="studio-about reveal">
-        <span class="l en">BAGARI is the studio of Erekle Tabagari — designer and developer, Tbilisi.</span>
-        <span class="l ka">BAGARI — ერეკლე ტაბაგარის სტუდია. დიზაინერი და დეველოპერი, თბილისი.</span>
-      </p>
+      <div class="studio-maker reveal">
+        <figure class="studio-art">
+          <img src="brand/art/bagari-art-a-heart-in-my-hand.svg" alt="" width="507" height="1171" loading="lazy">
+          <figcaption>
+            <span class="l en">Ink on paper — “A heart in my hand”</span>
+            <span class="l ka">ტუში ქაღალდზე — „გული ხელში“</span>
+          </figcaption>
+        </figure>
+        <div class="studio-about">
+          <p>
+            <span class="l en">BAGARI is the studio of Erekle Tabagari — designer, developer and illustrator, Tbilisi.</span>
+            <span class="l ka">BAGARI — ერეკლე ტაბაგარის სტუდია. დიზაინერი, დეველოპერი და ილუსტრატორი, თბილისი.</span>
+          </p>
+          <p>
+            <span class="l en">The drawings on this page are his. The same hand that draws in ink designs and writes the sites — which is why the detail survives the handoff that usually breaks it.</span>
+            <span class="l ka">ამ გვერდის ნახატები მისია. ის ხელი, რომელიც ტუშით ხატავს, საიტებსაც აწყობს და წერს — ამიტომაც დეტალი იმ გადაცემას უძლებს, რომელიც ჩვეულებრივ ყველაფერს აფუჭებს.</span>
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- ============ CONTACT ============ -->
@@ -216,8 +244,8 @@
         <h2><span class="l en">Contact</span><span class="l ka">კონტაქტი</span></h2>
       </div>
       <p class="contact-lead reveal">
-        <span class="l en">Tell us what your website should be doing — and isn’t.</span>
-        <span class="l ka">გვითხარით, რას უნდა აკეთებდეს თქვენი საიტი — და არ აკეთებს.</span>
+        <span class="l en">Have a site that’s holding the business back? Let’s look at it.</span>
+        <span class="l ka">თუ თქვენი საიტი ბიზნესს უკვე ვეღარ მიჰყვება, ვნახოთ რატომ.</span>
       </p>
       <div class="contact-actions reveal">
         <a class="btn btn-solid" href="mailto:erekle13tabagari@gmail.com?subject=Project%20enquiry%20—%20BAGARI">
@@ -226,12 +254,15 @@
         <!-- TODO: replace with real studio email / WhatsApp / Instagram once set up -->
         <a class="btn btn-ghost" href="#" data-placeholder="instagram">Instagram</a>
       </div>
+      <figure class="contact-art" aria-hidden="true">
+        <div class="ink-mask"></div>
+      </figure>
     </section>
 
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 BAGARI · <span class="l en">Tbilisi, Georgia</span><span class="l ka">თბილისი, საქართველო</span></p>
+    <p><span>© 2026 BAGARI</span><span><span class="l en">Tbilisi · KA / EN</span><span class="l ka">თბილისი · KA / EN</span></span></p>
   </footer>
 
   <script src="js/main.js?v=202608041715"></script>

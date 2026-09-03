@@ -360,7 +360,6 @@ html[data-lang="ka"] p { max-width: 36em; }
   padding: 0;
   cursor: pointer;
   min-height: 2.25rem;
-  font: inherit;
 }
 .lt-opt {
   display: inline-flex;
@@ -370,10 +369,12 @@ html[data-lang="ka"] p { max-width: 36em; }
   padding: 0;
   transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
 }
+/* the two cells share one tracking (the book's own nav mock uses .04em on Georgian) */
+.lang-toggle .lt-opt { letter-spacing: 0.04em; }
 .lt-opt[data-lang-opt="ka"] {
   font-family: var(--font-ka);
-  font-size: 0.875rem;
-  letter-spacing: 0;
+  font-size: 0.75rem;         /* Mtavruli cap height ≈ Plex Mono cap height at the same size */
+  font-weight: 500;
   text-transform: none;
 }
 .lt-sep { display: none; }

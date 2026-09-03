@@ -148,9 +148,12 @@ html[data-lang="en"] .l.ka { display: none; }
 }
 
 /* Negative tracking is Latin-display only. Georgian is never tracked tighter
-   than −1% and never letterspaced positively. Uppercasing is applied to .en
-   spans only — CSS uppercase maps mkhedruli to mtavruli, and mtavruli is a
-   deliberate emphasis tool, not a side effect. */
+   than −1% and never letterspaced positively.
+   Mtavruli (book p09): titles, subtitles and kickers — yes; paragraphs,
+   descriptions and helper text — never. Browsers deliberately exclude
+   Georgian from text-transform: uppercase, so Mtavruli is written into the
+   markup itself (U+1C90–1CBF) on the .ka spans of h1/h2/h3, .eyebrow and
+   .contact-lead. Uppercasing via CSS stays Latin-only. */
 h1, h2, h3 { font-weight: 600; line-height: 1.1; text-wrap: balance; }
 h1 .l.en, h2 .l.en, h3 .l.en { letter-spacing: -0.025em; }
 h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 1.15; }

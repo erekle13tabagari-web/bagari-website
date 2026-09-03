@@ -253,9 +253,10 @@ html[data-lang="en"] .l.ka { display: none; }
    descriptions and helper text — never. Browsers deliberately exclude
    Georgian from text-transform: uppercase, so Mtavruli is written into the
    markup itself (U+1C90–1CBF) on the .ka spans of h1/h2/h3, .eyebrow and
-   .contact-lead. Uppercasing via CSS stays Latin-only. */
+   .contact-lead. Latin titles are capped the same way via CSS, matching the
+   book's own display setting. */
 h1, h2, h3 { font-weight: 600; line-height: 1.1; text-wrap: balance; }
-h1 .l.en, h2 .l.en, h3 .l.en { letter-spacing: -0.025em; }
+h1 .l.en, h2 .l.en, h3 .l.en, .contact-lead .l.en { letter-spacing: -0.025em; text-transform: uppercase; }
 h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 1.15; }
 
 /* measure: 72 characters Latin, 60 Georgian */
@@ -347,7 +348,7 @@ html[data-lang="ka"] p { max-width: 36em; }
 .site-nav a:hover { border-bottom-color: var(--text); }
 
 /* switchers: the language one names the language in its own script — never a
-   flag; the theme one names the surface you'd switch to — Stone or Ink. */
+   flag; the theme one is a sun / moon pair, the lit one being the current surface. */
 .lang-toggle,
 .theme-toggle {
   display: inline-flex;
@@ -379,14 +380,8 @@ html[data-lang="en"] .lt-opt[data-lang-opt="en"],
 .lt-opt[aria-current] { background: var(--text); color: var(--surface); }
 .lang-toggle:hover .lt-opt:not([aria-current]),
 .theme-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
-.theme-toggle .lt-opt {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.theme-toggle .lt-opt .l.ka { font-family: var(--font-ka); font-size: 0.875rem; letter-spacing: 0; text-transform: none; }
+.theme-toggle .lt-opt { padding: 0 0.625rem; }
+.theme-toggle svg { display: block; }
 
 /* ---------- hero ---------- */
 .hero {

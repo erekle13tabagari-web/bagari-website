@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BAGARI — დიზაინისა და დეველოპმენტის სტუდია, თბილისი</title>
   <meta name="description" content="BAGARI — დიზაინისა და ვებ-დეველოპმენტის სტუდია თბილისში. ორენოვანი საიტები ბიზნესებისთვის, რომლებსაც შაბლონი აღარ ჰყოფნით. / A design & development studio in Tbilisi building bilingual websites for businesses that have outgrown their template.">
-  <meta name="theme-color" content="#EDEBE4">
+  <meta name="theme-color" content="#EDEBE4" id="themeColor">
   <link rel="icon" type="image/svg+xml" href="brand/logo/bagari-monogram-verdigris.svg">
   <link rel="apple-touch-icon" href="brand/logo/bagari-monogram-verdigris-180.png">
   <link rel="preload" href="brand/type/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="brand/type/noto-sans-georgian-georgian.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v=202608041715">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    document.documentElement.classList.add("js");
+    try { var t = localStorage.getItem("bagari-theme"); if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
 </head>
 <body>
 
@@ -23,9 +26,14 @@
       <a href="#studio"><span class="l en">Studio</span><span class="l ka">სტუდია</span></a>
       <a href="#contact"><span class="l en">Contact</span><span class="l ka">კონტაქტი</span></a>
     </nav>
-    <button class="lang-toggle" id="langToggle" aria-label="Switch language">
-      <span class="lt-opt" data-lang-opt="ka">ქარ</span><span class="lt-sep">/</span><span class="lt-opt" data-lang-opt="en">ENG</span>
-    </button>
+    <div class="header-tools">
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch surface">
+        <span class="lt-opt" data-theme-opt="light"><span class="l en">Stone</span><span class="l ka">ქვა</span></span><span class="lt-opt" data-theme-opt="dark"><span class="l en">Ink</span><span class="l ka">მელანი</span></span>
+      </button>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+        <span class="lt-opt" data-lang-opt="ka">ქარ</span><span class="lt-sep">/</span><span class="lt-opt" data-lang-opt="en">ENG</span>
+      </button>
+    </div>
   </header>
 
   <main id="top">
@@ -52,7 +60,7 @@
       </div>
       <!-- the signature moment: the drawing wipes on once per session (book p12) -->
       <figure class="hero-art">
-        <img src="brand/art/bagari-art-the-look.svg" alt="" width="746" height="960" fetchpriority="high">
+        <div class="ink-mask" aria-hidden="true"></div>
         <figcaption>
           <span class="l en">Ink on paper — “The look”. Erekle Tabagari</span>
           <span class="l ka">ტუში ქაღალდზე — „მზერა“. ერეკლე ტაბაგარი</span>
@@ -218,7 +226,7 @@
 
       <div class="studio-maker reveal">
         <figure class="studio-art">
-          <img src="brand/art/bagari-art-a-heart-in-my-hand.svg" alt="" width="507" height="1171" loading="lazy">
+          <div class="ink-mask" aria-hidden="true"></div>
           <figcaption>
             <span class="l en">Ink on paper — “A heart in my hand”</span>
             <span class="l ka">ტუში ქაღალდზე — „გული ხელში“</span>

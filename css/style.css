@@ -85,14 +85,45 @@
   --error: #A8231A;
 
   /* neutral steps — tints of ink and stone, not a sixth hue */
-  --line: #D6D2C6;            /* 1 px border on stone */
-  --line-strong: #C9C5B9;     /* cell dividers on stone */
-  --muted: #6A6A62;           /* secondary text on stone */
   --ink-on-verdigris: #08201B;
-  --stone-on-ink: #C9C7BE;    /* body text on ink */
-  --muted-on-ink: #8C8B82;    /* secondary text on ink */
-  --line-on-ink: #38392F;
-  --line-on-ink-soft: #26271F;
+  --line-on-stone: #D6D2C6;
+  --line-strong-on-stone: #C9C5B9;
+  --muted-on-stone: #6A6A62;
+  --line-on-ink: #26271F;
+  --line-strong-on-ink: #38392F;
+  --muted-on-ink: #8C8B82;
+
+  /* ---- surface roles. Stone edition (the default). Components use only these. ---- */
+  color-scheme: light;
+  --surface: var(--stone);
+  --text: var(--ink);
+  --muted: var(--muted-on-stone);
+  --line: var(--line-on-stone);
+  --line-strong: var(--line-strong-on-stone);
+  --rule: var(--ink);                 /* the 2 px section rules */
+  --kicker: var(--wine);
+  --mark: var(--verdigris);           /* dashes, numerals, drawings */
+  --link: var(--wine);
+  --link-hover: var(--ink);
+  --primary-bg: var(--wine);
+  --primary-fg: var(--stone);
+  --primary-hover-bg: var(--wine-hover);
+  --primary-hover-fg: var(--stone);
+  --secondary: var(--ink);
+  --flag-bg: var(--wine);
+  --flag-fg: var(--stone);
+  /* the band: the one section set on the opposite ground */
+  --band-bg: var(--ink);
+  --band-fg: var(--stone);
+  --band-muted: var(--muted-on-ink);
+  --band-line: var(--line-strong-on-ink);
+  --band-kicker: var(--verdigris);
+  --band-primary-bg: var(--verdigris);
+  --band-primary-fg: var(--ink-on-verdigris);
+  --band-primary-hover-bg: var(--stone);
+  --band-primary-hover-fg: var(--ink);
+  --band-secondary: var(--stone);
+  --band-mark: var(--verdigris);
 
   /* type */
   --font-ka: "Noto Sans Georgian", "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -120,13 +151,82 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* ---- Ink edition. Same five colours on the opposite ground (book p04–p06, p12).
+   Wine lees fails on ink, so verdigris carries links and the primary action;
+   the band flips to stone so the page keeps its alternation. ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: var(--ink);
+    --text: var(--stone);
+    --muted: var(--muted-on-ink);
+    --line: var(--line-on-ink);
+    --line-strong: var(--line-strong-on-ink);
+    --rule: var(--stone);
+    --kicker: var(--verdigris);
+    --mark: var(--verdigris);
+    --link: var(--verdigris);
+    --link-hover: var(--stone);
+    --primary-bg: var(--verdigris);
+    --primary-fg: var(--ink-on-verdigris);
+    --primary-hover-bg: var(--stone);
+    --primary-hover-fg: var(--ink);
+    --secondary: var(--stone);
+    --flag-bg: var(--verdigris);
+    --flag-fg: var(--ink-on-verdigris);
+    --band-bg: var(--stone);
+    --band-fg: var(--ink);
+    --band-muted: var(--muted-on-stone);
+    --band-line: var(--line-strong-on-stone);
+    --band-kicker: var(--wine);
+    --band-primary-bg: var(--wine);
+    --band-primary-fg: var(--stone);
+    --band-primary-hover-bg: var(--wine-hover);
+    --band-primary-hover-fg: var(--stone);
+    --band-secondary: var(--ink);
+    --band-mark: var(--deep);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: var(--ink);
+  --text: var(--stone);
+  --muted: var(--muted-on-ink);
+  --line: var(--line-on-ink);
+  --line-strong: var(--line-strong-on-ink);
+  --rule: var(--stone);
+  --kicker: var(--verdigris);
+  --mark: var(--verdigris);
+  --link: var(--verdigris);
+  --link-hover: var(--stone);
+  --primary-bg: var(--verdigris);
+  --primary-fg: var(--ink-on-verdigris);
+  --primary-hover-bg: var(--stone);
+  --primary-hover-fg: var(--ink);
+  --secondary: var(--stone);
+  --flag-bg: var(--verdigris);
+  --flag-fg: var(--ink-on-verdigris);
+  --band-bg: var(--stone);
+  --band-fg: var(--ink);
+  --band-muted: var(--muted-on-stone);
+  --band-line: var(--line-strong-on-stone);
+  --band-kicker: var(--wine);
+  --band-primary-bg: var(--wine);
+  --band-primary-fg: var(--stone);
+  --band-primary-hover-bg: var(--wine-hover);
+  --band-primary-hover-fg: var(--stone);
+  --band-secondary: var(--ink);
+  --band-mark: var(--deep);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; color-scheme: light; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--stone);
-  color: var(--ink);
+  background: var(--surface);
+  color: var(--text);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
   font-family: var(--font-en);
   font-size: 1.0625rem;          /* 17 px — the web floor */
   line-height: 1.6;
@@ -218,9 +318,10 @@ html[data-lang="ka"] p { max-width: 36em; }
   justify-content: space-between;
   gap: var(--s-4);
   padding: var(--s-3) var(--gutter);
-  background: var(--stone);
+  background: var(--surface);
   border-bottom: 1px solid var(--line-strong);
 }
+.header-tools { display: flex; align-items: center; gap: var(--s-2); }
 
 /* the wordmark: Archivo 700, wdth 112, −6.5% — the same setting as /brand/logo/ */
 .brand {
@@ -230,32 +331,35 @@ html[data-lang="ka"] p { max-width: 36em; }
   font-size: 1.375rem;
   letter-spacing: -0.065em;
   line-height: 1;
-  color: var(--ink);
+  color: var(--text);
   text-decoration: none;
 }
 
 .site-nav { display: flex; gap: clamp(1rem, 2.5vw, 1.5rem); }
 
 .site-nav a {
-  color: var(--ink);
+  color: var(--text);
   text-decoration: none;
   padding: var(--s-2) 0;
   border-bottom: 1px solid transparent;
   transition: border-color var(--fast) var(--ease);
 }
-.site-nav a:hover { border-bottom-color: var(--ink); }
+.site-nav a:hover { border-bottom-color: var(--text); }
 
-/* switcher names the language in its own script — never a flag */
-.lang-toggle {
+/* switchers: the language one names the language in its own script — never a
+   flag; the theme one names the surface you'd switch to — Stone or Ink. */
+.lang-toggle,
+.theme-toggle {
   display: inline-flex;
   align-items: stretch;
   background: none;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--text);
   border-radius: 0;
-  color: var(--ink);
+  color: var(--text);
   padding: 0;
   cursor: pointer;
   min-height: 2.25rem;
+  font: inherit;
 }
 .lt-opt {
   display: inline-flex;
@@ -271,8 +375,18 @@ html[data-lang="ka"] p { max-width: 36em; }
 }
 .lt-sep { display: none; }
 html[data-lang="ka"] .lt-opt[data-lang-opt="ka"],
-html[data-lang="en"] .lt-opt[data-lang-opt="en"] { background: var(--ink); color: var(--stone); }
-.lang-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
+html[data-lang="en"] .lt-opt[data-lang-opt="en"],
+.lt-opt[aria-current] { background: var(--text); color: var(--surface); }
+.lang-toggle:hover .lt-opt:not([aria-current]),
+.theme-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
+.theme-toggle .lt-opt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.theme-toggle .lt-opt .l.ka { font-family: var(--font-ka); font-size: 0.875rem; letter-spacing: 0; text-transform: none; }
 
 /* ---------- hero ---------- */
 .hero {
@@ -309,13 +423,13 @@ figcaption .l.ka { font-family: var(--font-ka); font-size: 0.8125rem; letter-spa
   max-width: 34rem;
   margin-right: calc(-0.5 * var(--gutter));
 }
-.hero-art img {
-  display: block;
+.hero-art .ink-mask {
   width: 100%;
-  height: auto;
+  aspect-ratio: 746.4 / 960.5;
   max-height: 78vh;
-  object-fit: contain;
-  object-position: right bottom;
+  --art: url("../brand/art/bagari-art-the-look.svg");
+  mask-position: right bottom;
+  -webkit-mask-position: right bottom;
 }
 .hero-art figcaption {
   position: absolute;
@@ -330,19 +444,21 @@ figcaption .l.ka { font-family: var(--font-ka); font-size: 0.8125rem; letter-spa
   from { clip-path: inset(0 100% 0 0); }
   to   { clip-path: inset(0 0 0 0); }
 }
-html.sig-play .hero-art img { animation: draw-on 900ms var(--ease) 200ms both; }
+html.sig-play .hero-art .ink-mask { animation: draw-on 900ms var(--ease) 200ms both; }
 @media (prefers-reduced-motion: reduce) {
   @keyframes draw-on { from { opacity: 0; } to { opacity: 1; } }
-  html.sig-play .hero-art img { animation-duration: 200ms; animation-delay: 0ms; }
+  html.sig-play .hero-art .ink-mask { animation-duration: 200ms; animation-delay: 0ms; }
 }
 
+/* a drawing is a single-fill mask, so it takes its ink from the theme */
 .ink-mask {
-  background: var(--verdigris);
+  display: block;
+  background: var(--text);
   -webkit-mask: var(--art) center / contain no-repeat;
   mask: var(--art) center / contain no-repeat;
 }
 
-.eyebrow { color: var(--wine); margin-bottom: var(--s-4); }
+.eyebrow { color: var(--kicker); margin-bottom: var(--s-4); }
 
 .hero h1 { font-size: clamp(2.75rem, 7vw, 6rem); max-width: 11em; }
 .hero h1 .l.en {
@@ -380,18 +496,18 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
   border-radius: 0;
   text-decoration: none;
   text-align: center;
-  color: var(--ink);
+  color: var(--text);
   transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
-.btn-solid { background: var(--wine); border-color: var(--wine); color: var(--stone); }
-.btn-solid:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
-.btn-ghost { border-color: var(--ink); color: var(--ink); }
-.btn-ghost:hover { background: var(--ink); color: var(--stone); }
+.btn-solid { background: var(--primary-bg); border-color: var(--primary-bg); color: var(--primary-fg); }
+.btn-solid:hover { background: var(--primary-hover-bg); border-color: var(--primary-hover-bg); color: var(--primary-hover-fg); }
+.btn-ghost { border-color: var(--secondary); color: var(--secondary); }
+.btn-ghost:hover { background: var(--secondary); color: var(--surface); }
 .btn[aria-disabled="true"] { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); pointer-events: none; }
 
 /* ---------- sections: rhythm 96 / 64 ---------- */
 .section {
-  border-top: 2px solid var(--ink);
+  border-top: 2px solid var(--rule);
   padding: clamp(var(--s-6), 8vw, var(--s-7)) var(--gutter);
 }
 
@@ -402,7 +518,7 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
   margin-bottom: clamp(var(--s-5), 6vw, var(--s-6));
 }
 
-.section-num { color: var(--wine); }
+.section-num { color: var(--kicker); }
 .section-num::after { content: " /"; }
 
 .section-head h2 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 0.95; }
@@ -437,19 +553,19 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .case-link {
   display: inline-block;
   margin-top: var(--s-4);
-  color: var(--wine);
+  color: var(--link);
   text-decoration: none;
-  border-bottom: 1px solid var(--wine);
+  border-bottom: 1px solid var(--link);
   padding-bottom: 0.1rem;
   transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
-.case-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.case-link:hover { color: var(--link-hover); border-bottom-color: var(--link-hover); }
 
 /* ---------- services / tiers: cells on a rule, no cards ---------- */
 .tiers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 2px solid var(--ink);
+  border-top: 2px solid var(--rule);
 }
 
 .tier {
@@ -466,8 +582,8 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   position: absolute;
   top: 0;
   right: var(--s-4);
-  background: var(--wine);
-  color: var(--stone);
+  background: var(--flag-bg);
+  color: var(--flag-fg);
   padding: 0.375rem 0.625rem;
 }
 .tier:last-child .tier-flag { right: 0; }
@@ -491,7 +607,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   top: 1.05em;
   width: 0.875rem;
   height: 2px;
-  background: var(--verdigris);   /* a mark, not text */
+  background: var(--mark);   /* a mark, not text */
 }
 
 .tier-terms {
@@ -520,7 +636,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .pillars {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 2px solid var(--ink);
+  border-top: 2px solid var(--rule);
   counter-reset: pillar;
 }
 
@@ -540,7 +656,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.05em;
-  color: var(--verdigris);
+  color: var(--mark);
   margin-bottom: var(--s-3);
 }
 
@@ -556,15 +672,15 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   padding-top: var(--s-4);
   border-top: 1px solid var(--line-strong);
 }
-.studio-art img { display: block; width: 100%; height: auto; max-width: 16rem; }
+.studio-art .ink-mask { width: 100%; max-width: 16rem; aspect-ratio: 507.1 / 1170.8; --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg"); }
 .studio-about p { font-size: 0.9375rem; max-width: 34em; }
 .studio-about p + p { margin-top: var(--s-3); color: var(--muted); }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
   position: relative;
-  background: var(--ink);
-  color: var(--stone);
+  background: var(--band-bg);
+  color: var(--band-fg);
   border-top: none;
   padding-bottom: clamp(var(--s-6), 10vw, 8rem);
   overflow: hidden;
@@ -583,9 +699,10 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .contact-art .ink-mask {
   width: 100%;
   height: 100%;
+  background: var(--band-mark);
   --art: url("../brand/art/bagari-art-trying-to-sleep.svg");  /* stylesheet-relative: Chrome resolves url() in a custom property where it is substituted */
 }
-.section-contact .section-num { color: var(--verdigris); }
+.section-contact .section-num { color: var(--band-kicker); }
 
 .contact-lead {
   font-size: clamp(1.75rem, 4vw, 3.25rem);
@@ -599,16 +716,16 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
 
 /* on ink, the primary is verdigris (book p09) and the secondary is a stone rule */
-.section-contact .btn-solid { background: var(--verdigris); border-color: var(--verdigris); color: var(--ink-on-verdigris); }
-.section-contact .btn-solid:hover { background: var(--stone); border-color: var(--stone); color: var(--ink); }
-.section-contact .btn-ghost { border-color: var(--stone); color: var(--stone); }
-.section-contact .btn-ghost:hover { background: var(--stone); color: var(--ink); }
+.section-contact .btn-solid { background: var(--band-primary-bg); border-color: var(--band-primary-bg); color: var(--band-primary-fg); }
+.section-contact .btn-solid:hover { background: var(--band-primary-hover-bg); border-color: var(--band-primary-hover-bg); color: var(--band-primary-hover-fg); }
+.section-contact .btn-ghost { border-color: var(--band-secondary); color: var(--band-secondary); }
+.section-contact .btn-ghost:hover { background: var(--band-secondary); color: var(--band-bg); }
 
 /* ---------- footer ---------- */
 .site-footer {
-  background: var(--ink);
-  color: var(--muted-on-ink);
-  border-top: 1px solid var(--line-on-ink);
+  background: var(--band-bg);
+  color: var(--band-muted);
+  border-top: 1px solid var(--band-line);
   padding: var(--s-4) var(--gutter);
 }
 .site-footer p,
@@ -632,7 +749,7 @@ html[data-lang="ka"] .site-footer p {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .js .reveal { transform: none; transition: opacity 200ms ease-out; }
-  .btn, .site-nav a, .case-link, .lt-opt { transition: none; }
+  body, .btn, .site-nav a, .case-link, .lt-opt { transition: none; }
 }
 
 /* ---------- responsive ---------- */
@@ -640,7 +757,7 @@ html[data-lang="ka"] .site-footer p {
   .hero { grid-template-columns: 1fr; gap: var(--s-4); }
   .hero-copy { padding-bottom: 0; }
   .hero-art { max-width: 22rem; margin-right: calc(-1 * var(--gutter)); }
-  .hero-art img { max-height: 60vh; }
+  .hero-art .ink-mask { max-height: 60vh; }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
   .contact-art { width: 60%; right: -18%; bottom: -10%; opacity: 0.55; }

@@ -34,6 +34,15 @@
     setLang(current === "ka" ? "en" : "ka");
   });
 
+  // ----- signature moment: the hero drawing wipes on, once per session -----
+  var SIG_KEY = "bagari-sig";
+  var played = false;
+  try { played = sessionStorage.getItem(SIG_KEY) === "1"; } catch (e) {}
+  if (!played) {
+    document.documentElement.classList.add("sig-play");
+    try { sessionStorage.setItem(SIG_KEY, "1"); } catch (e) {}
+  }
+
   // ----- reveal on scroll -----
   var reveals = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {

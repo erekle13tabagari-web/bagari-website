@@ -696,9 +696,9 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 /* fills the band's full height on the right at every size; the drawing is cropped, never squeezed */
 .contact-art {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  top: -3%;                   /* overshoot so the drawing's own margins never show */
+  bottom: -3%;
+  right: -1%;
   width: min(42%, 40rem);
   pointer-events: none;
 }

@@ -220,7 +220,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 
 body {
   background: var(--surface);
@@ -348,7 +348,16 @@ html[data-lang="ka"] p { max-width: 36em; }
   text-decoration: none;
 }
 
-.site-nav { display: flex; gap: clamp(1rem, 2.5vw, 1.5rem); }
+.site-nav {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav a { white-space: nowrap; }
 
 .site-nav a {
   color: inherit;
@@ -374,6 +383,7 @@ html[data-lang="ka"] p { max-width: 36em; }
   padding: 0;
   cursor: pointer;
   min-height: 2.25rem;
+  flex: none;
 }
 .lt-opt {
   display: inline-flex;
@@ -855,12 +865,25 @@ html[data-lang="ka"] .site-footer p {
   .hero-art figcaption { position: static; margin-top: var(--s-2); }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
-  .contact-art { width: 60%; opacity: 0.55; }
+  /* the drawing sits behind the copy here, so it drops back far enough
+     to keep the headline readable */
+  .contact-art { width: 72%; opacity: 0.3; }
 }
 
 @media (max-width: 720px) {
-  .site-header { flex-wrap: wrap; row-gap: var(--s-2); }
-  .site-nav { order: 3; width: 100%; gap: var(--s-3); flex-wrap: wrap; }
+  /* the sticky bar is two compact rows: brand and switches, then the nav on
+     a single scrolling line. Wrapping it cost a fifth of the screen. */
+  html { scroll-padding-top: 7rem; }
+  .site-header { flex-wrap: wrap; row-gap: var(--s-2); padding-block: var(--s-2); }
+  /* the four Georgian labels need 389px of 350, so they space out
+     across the bar instead of clipping mid-word */
+  .site-nav { order: 3; width: 100%; gap: var(--s-2); justify-content: space-between; }
+  .site-nav a { padding-block: var(--s-2); }
+  .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  .lang-toggle, .theme-toggle { min-height: 2.75rem; }
+  .hero { padding-top: var(--s-5); }
+  .hero-art { max-width: 17rem; }
   .case { grid-template-columns: 1fr; gap: var(--s-3); }
+  .case-link { padding-block: var(--s-2); }
   .btn { width: 100%; }
 }

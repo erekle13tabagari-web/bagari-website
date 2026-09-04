@@ -15,7 +15,9 @@
       if (opt.getAttribute("data-lang-opt") === lang) opt.setAttribute("aria-current", "true");
       else opt.removeAttribute("aria-current");
     });
-    if (toTop) paintToTop();   /* skipped on the first call: toTop is assigned later */
+    /* both are declared below, so the first call — before they exist — skips them */
+    if (toTop) paintToTop();
+    if (menuToggle) paintMenuLabel();
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
 
@@ -39,10 +41,22 @@
   var menuToggle = document.getElementById("menuToggle");
   var menuPanel = document.getElementById("menuPanel");
 
+  // the button carries no text, so its name is the aria-label — and it says
+  // what the button does now, which flips with the panel
+  function paintMenuLabel() {
+    var ka = document.documentElement.getAttribute("data-lang") === "ka";
+    var open = menuToggle.getAttribute("aria-expanded") === "true";
+    menuToggle.setAttribute("aria-label",
+      ka ? (open ? "მენიუს დახურვა" : "მენიუ") : (open ? "Close menu" : "Menu"));
+  }
+
   function setMenu(open) {
     document.documentElement.classList.toggle("menu-open", open);
     menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    paintMenuLabel();
   }
+
+  paintMenuLabel();
 
   menuToggle.addEventListener("click", function () {
     setMenu(menuToggle.getAttribute("aria-expanded") !== "true");

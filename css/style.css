@@ -909,18 +909,20 @@ html[data-lang="ka"] .site-footer p {
   .site-header { padding-block: var(--s-2); }
 
   /* wordmark left, menu right */
+  /* icon only: a square the size of a thumb, named for screen readers by
+     the aria-label the language switch keeps in step */
   .menu-toggle {
     order: 2;
     display: inline-flex;
     align-items: center;
-    gap: var(--s-2);
-    min-height: 2.75rem;
-    padding: 0 0.75rem;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
     background: none;
     border: 1px solid currentColor;
     border-radius: 0;
     color: inherit;
-    font: inherit;
     cursor: pointer;
   }
   .menu-open-icon { display: block; }
@@ -969,8 +971,32 @@ html[data-lang="ka"] .site-footer p {
   .tier,
   .tier:first-child,
   .tier:last-child { padding-block: var(--s-4); }
-  .hero { padding-top: var(--s-4); padding-bottom: var(--s-4); }
-  .hero-art { max-width: 15rem; }
+  /* the drawing comes back up beside the copy and keeps running off the
+     right edge, as it does on the wide layout — only narrower */
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 38%;
+    gap: var(--s-3);
+    padding-top: var(--s-4);
+    padding-bottom: var(--s-4);
+    padding-right: 0;
+  }
+  .hero-art {
+    max-width: none;
+    margin-left: 0;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-art .ink-mask {
+    -webkit-mask-position: top right;
+    mask-position: top right;
+  }
+  /* the credit drops to the foot of the column, so the drawing and the
+     caption bracket the copy instead of leaving a hole under the paper */
+  .hero-art figcaption {
+    margin-top: auto;
+    padding: var(--s-3) var(--margin) 0 0;
+  }
   .case { grid-template-columns: 1fr; gap: var(--s-3); }
   .case-link { padding-block: var(--s-2); }
   .btn { width: 100%; }

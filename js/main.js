@@ -15,6 +15,7 @@
       if (opt.getAttribute("data-lang-opt") === lang) opt.setAttribute("aria-current", "true");
       else opt.removeAttribute("aria-current");
     });
+    if (toTop) paintToTop();   /* skipped on the first call: toTop is assigned later */
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
 
@@ -100,6 +101,20 @@
     document.documentElement.classList.add("sig-play");
     try { sessionStorage.setItem(SIG_KEY, "1"); } catch (e) {}
   }
+
+  // ----- back to top: appears once a screenful has gone by -----
+  var toTop = document.getElementById("toTop");
+
+  function paintToTop() {
+    var lang = document.documentElement.getAttribute("data-lang");
+    toTop.setAttribute("aria-label", lang === "ka" ? "დასაწყისში დაბრუნება" : "Back to top");
+  }
+  function onScroll() {
+    document.documentElement.classList.toggle("show-top", window.scrollY > window.innerHeight);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  paintToTop();
 
   // ----- reveal on scroll -----
   var reveals = document.querySelectorAll(".reveal");

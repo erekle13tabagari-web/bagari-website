@@ -570,8 +570,13 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 /* the services section gives up its side padding so the tier blocks reach
    both screen edges; its other children carry the gutter themselves */
 #services { padding-left: 0; padding-right: 0; }
-#services > .section-head,
-#services > .care { margin-left: var(--gutter); margin-right: var(--gutter); }
+#services > .section-head { margin-left: var(--gutter); margin-right: var(--gutter); }
+/* the care note is centred on the section, never pinned to the gutter */
+#services > .care {
+  margin-left: auto;
+  margin-right: auto;
+  width: min(48rem, calc(100% - 2 * var(--margin)));
+}
 
 .tiers {
   display: grid;
@@ -649,59 +654,93 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .tier-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; white-space: nowrap; }
 .tier-time { color: var(--tier-soft); white-space: nowrap; }
 
+/* the care note closes the section, centred under the three blocks */
 .care {
-  margin-top: var(--s-5);
-  padding: var(--s-4) var(--s-5);
+  margin: var(--s-6) auto 0;
+  padding: var(--s-5);
   border: 1px solid var(--line);
-  max-width: 60rem;
+  max-width: 48rem;
+  text-align: center;
 }
+.care p { max-width: 40em; margin-inline: auto; text-wrap: pretty; }
+html[data-lang="ka"] .care p { max-width: 34em; }
 .care strong { font-weight: 600; }
 .care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
 
 /* ---------- studio: numbered pillars (book p02) ---------- */
-.pillars {
+/* the drawing sits to the left of the pillars and scales to their height,
+   so the section reads as one block rather than a row and an afterthought. */
+.studio-body {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  gap: var(--s-5);
+  align-items: stretch;
+}
+.studio-art { position: relative; min-height: 20rem; }
+.studio-art .ink-mask {
+  position: absolute;
+  inset: 0 0 var(--s-5) 0;
+  --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg");
+  mask-position: top left;
+  -webkit-mask-position: top left;
+}
+.studio-art figcaption { position: absolute; left: 0; bottom: 0; }
+
+/* three stacked rows: the numeral holds a fixed left column and the text
+   runs beside it, so the headings stop breaking mid-phrase and the copy
+   gets a proper measure. */
+.pillars {
   border-top: 2px solid var(--rule);
   counter-reset: pillar;
 }
 
 .pillar {
   counter-increment: pillar;
-  padding: var(--s-4) var(--s-4) 0 0;
-  margin-right: var(--s-4);
-  border-right: 1px solid var(--line-strong);
+  display: grid;
+  grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  gap: 0 var(--s-5);
+  align-items: start;
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--line-strong);
 }
-.pillar:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.pillar:last-child { border-bottom: none; }
 
 .pillar::before {
   content: counter(pillar, decimal-leading-zero);
-  display: block;
-  font-family: var(--font-en);
-  font-size: 4rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  grid-row: 1 / span 2;
   font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
   color: var(--mark);
-  margin-bottom: var(--s-3);
 }
 
-.pillar h3 { font-size: 1.5rem; margin-bottom: var(--s-2); max-width: 12em; }
-.pillar p { font-size: 0.9375rem; max-width: 26em; }
+.pillar h3 { font-size: 1.75rem; margin-bottom: var(--s-2); max-width: 18em; }
+.pillar p { font-size: 1rem; max-width: 42em; }
+html[data-lang="ka"] .pillar p { max-width: 36em; }
 
-.studio-maker {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-  gap: var(--s-5);
-  align-items: start;
+@media (max-width: 720px) {
+  .pillar { grid-template-columns: 1fr; gap: var(--s-2); padding: var(--s-4) 0; }
+  .pillar::before { grid-row: auto; font-size: 2.75rem; }
+  .pillar h3 { font-size: 1.375rem; }
+}
+
+/* the maker note closes the section, centred under the whole block */
+.studio-about {
   margin-top: clamp(var(--s-5), 6vw, var(--s-6));
-  padding-top: var(--s-4);
+  padding-top: var(--s-5);
   border-top: 1px solid var(--line-strong);
+  text-align: center;
 }
-.studio-art .ink-mask { width: 100%; max-width: 16rem; aspect-ratio: 507.1 / 1170.8; --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg"); }
-.studio-about p { font-size: 0.9375rem; max-width: 34em; }
-.studio-about p + p { margin-top: var(--s-3); color: var(--muted); }
+.studio-about > p {
+  font-size: 0.9375rem;
+  max-width: 34em;
+  margin-inline: auto;
+  text-wrap: pretty;
+}
+.studio-about > p + p { margin-top: var(--s-3); color: var(--muted); }
+html[data-lang="ka"] .studio-about > p { max-width: 30em; }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
@@ -794,6 +833,16 @@ html[data-lang="ka"] .site-footer p {
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  /* stacked: the drawing goes back into the flow above the pillars */
+  .studio-body { grid-template-columns: 1fr; }
+  .studio-art { min-height: 0; }
+  .studio-art .ink-mask {
+    position: static;
+    width: 100%;
+    max-width: 11rem;
+    aspect-ratio: 507.1 / 1170.8;
+  }
+  .studio-art figcaption { position: static; margin-top: var(--s-2); }
   .tiers { grid-template-columns: 1fr; }
   .tier,
   .tier:first-child,
@@ -807,15 +856,6 @@ html[data-lang="ka"] .site-footer p {
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
   .contact-art { width: 60%; opacity: 0.55; }
-  .pillars { grid-template-columns: 1fr; }
-  .pillar {
-    border-right: none;
-    margin-right: 0;
-    padding-right: 0;
-    border-bottom: 1px solid var(--line-strong);
-    padding-bottom: var(--s-4);
-  }
-  .pillar:last-child { border-bottom: none; padding-bottom: 0; }
 }
 
 @media (max-width: 720px) {

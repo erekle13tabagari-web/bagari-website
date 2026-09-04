@@ -72,20 +72,19 @@
   /* the five */
   --ink: #131512;
   --stone: #EDEBE4;
-  --verdigris: #3E8C79;   /* display only — rules, kickers, focus, marks on dark. Never small text on stone. */
-  --deep: #2A6153;        /* the same signal where it must carry small text on stone */
-  --wine: #7A2438;        /* links, emphasis, one primary action per view */
+  --wine: #CB3534;        /* links, emphasis, one primary action per view — Redprint red */
+  --blue: #1F4E79;        /* marks, and the action on the band — Blueprint blue, for use on stone */
+  --blue-lift: #5497D3;   /* the same signal lifted to carry small text on ink (5.9:1) */
 
   /* states, defined once */
-  --wine-hover: #5C1A2A;
+  --wine-hover: #A32120;
   --disabled-bg: #C9C5B9;
   --disabled-ink: #7C786D;
   --success: #1B6B4F;
   --warning: #8A6A1F;
   --error: #A8231A;
 
-  /* neutral steps — tints of ink and stone, not a sixth hue */
-  --ink-on-verdigris: #08201B;
+  /* neutral steps — tints of ink and stone, not a further hue */
   --line-on-stone: #D6D2C6;
   --line-strong-on-stone: #C9C5B9;
   --muted-on-stone: #6A6A62;
@@ -102,7 +101,8 @@
   --line-strong: var(--line-strong-on-stone);
   --rule: var(--ink);                 /* the 2 px section rules */
   --kicker: var(--wine);
-  --mark: var(--verdigris);           /* dashes, numerals, drawings */
+  --mark: var(--blue);                /* numerals, drawings */
+  --focus: var(--blue);
   --link: var(--wine);
   --link-hover: var(--ink);
   --primary-bg: var(--wine);
@@ -117,13 +117,14 @@
   --band-fg: var(--stone);
   --band-muted: var(--muted-on-ink);
   --band-line: var(--line-strong-on-ink);
-  --band-kicker: var(--verdigris);
-  --band-primary-bg: var(--verdigris);
-  --band-primary-fg: var(--ink-on-verdigris);
+  --band-kicker: var(--blue-lift);
+  --band-primary-bg: var(--blue);
+  --band-primary-fg: var(--stone);
   --band-primary-hover-bg: var(--stone);
   --band-primary-hover-fg: var(--ink);
   --band-secondary: var(--stone);
-  --band-mark: var(--verdigris);
+  --band-mark: var(--blue-lift);
+  --band-focus: var(--blue-lift);
 
   /* type */
   --font-ka: "Noto Sans Georgian", "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -145,14 +146,19 @@
   --margin: clamp(1.25rem, 5vw, 4.5rem);
   --gutter: max(var(--margin), calc((100% - var(--max)) / 2));
 
+  /* the header is always ink, whichever edition the page is in */
+  --header-bg: var(--ink);
+  --header-fg: var(--stone);
+  --header-line: var(--line-strong-on-ink);
+
   /* motion (book p12) */
   --fast: 180ms;
   --medium: 560ms;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* ---- Ink edition. Same five colours on the opposite ground (book p04–p06, p12).
-   Wine lees fails on ink, so verdigris carries links and the primary action;
+/* ---- Ink edition. The same colours on the opposite ground: red stays the
+   primary action, blue lifts to carry kickers, links and marks on ink, and
    the band flips to stone so the page keeps its alternation. ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -163,28 +169,30 @@
     --line: var(--line-on-ink);
     --line-strong: var(--line-strong-on-ink);
     --rule: var(--stone);
-    --kicker: var(--verdigris);
-    --mark: var(--verdigris);
-    --link: var(--verdigris);
+    --kicker: var(--blue-lift);
+    --mark: var(--blue-lift);
+    --focus: var(--blue-lift);
+    --link: var(--blue-lift);
     --link-hover: var(--stone);
-    --primary-bg: var(--verdigris);
-    --primary-fg: var(--ink-on-verdigris);
+    --primary-bg: var(--wine);
+    --primary-fg: var(--stone);
     --primary-hover-bg: var(--stone);
     --primary-hover-fg: var(--ink);
     --secondary: var(--stone);
-    --flag-bg: var(--verdigris);
-    --flag-fg: var(--ink-on-verdigris);
+    --flag-bg: var(--wine);
+    --flag-fg: var(--stone);
     --band-bg: var(--stone);
     --band-fg: var(--ink);
     --band-muted: var(--muted-on-stone);
     --band-line: var(--line-strong-on-stone);
     --band-kicker: var(--wine);
-    --band-primary-bg: var(--wine);
+    --band-primary-bg: var(--blue);
     --band-primary-fg: var(--stone);
-    --band-primary-hover-bg: var(--wine-hover);
+    --band-primary-hover-bg: var(--ink);
     --band-primary-hover-fg: var(--stone);
     --band-secondary: var(--ink);
-    --band-mark: var(--deep);
+    --band-mark: var(--blue);
+    --band-focus: var(--blue);
   }
 }
 :root[data-theme="dark"] {
@@ -195,28 +203,30 @@
   --line: var(--line-on-ink);
   --line-strong: var(--line-strong-on-ink);
   --rule: var(--stone);
-  --kicker: var(--verdigris);
-  --mark: var(--verdigris);
-  --link: var(--verdigris);
+  --kicker: var(--blue-lift);
+  --mark: var(--blue-lift);
+  --focus: var(--blue-lift);
+  --link: var(--blue-lift);
   --link-hover: var(--stone);
-  --primary-bg: var(--verdigris);
-  --primary-fg: var(--ink-on-verdigris);
+  --primary-bg: var(--wine);
+  --primary-fg: var(--stone);
   --primary-hover-bg: var(--stone);
   --primary-hover-fg: var(--ink);
   --secondary: var(--stone);
-  --flag-bg: var(--verdigris);
-  --flag-fg: var(--ink-on-verdigris);
+  --flag-bg: var(--wine);
+  --flag-fg: var(--stone);
   --band-bg: var(--stone);
   --band-fg: var(--ink);
   --band-muted: var(--muted-on-stone);
   --band-line: var(--line-strong-on-stone);
   --band-kicker: var(--wine);
-  --band-primary-bg: var(--wine);
+  --band-primary-bg: var(--blue);
   --band-primary-fg: var(--stone);
-  --band-primary-hover-bg: var(--wine-hover);
+  --band-primary-hover-bg: var(--ink);
   --band-primary-hover-fg: var(--stone);
   --band-secondary: var(--ink);
-  --band-mark: var(--deep);
+  --band-mark: var(--blue);
+  --band-focus: var(--blue);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -285,7 +295,7 @@ html[data-lang="ka"] p { max-width: 36em; }
   text-transform: uppercase;
   line-height: 1.5;
 }
-/* the Georgian counterpart of a label: Noto Sans Georgian, 14 px, no tracking, no case change */
+/* the Georgian counterpart of a label: Noto Sans Georgian, 12 px, Mtavruli written in the markup */
 .eyebrow .l.ka,
 .case-tags .l.ka,
 .tier-flag .l.ka,
@@ -295,19 +305,19 @@ html[data-lang="ka"] p { max-width: 36em; }
 .case-link .l.ka,
 .site-footer .l.ka {
   font-family: var(--font-ka);
-  font-size: 0.875rem;
+  font-size: 0.75rem;         /* Mtavruli in the markup; same size as the Latin label */
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   line-height: 1.5;
 }
 
 /* ---------- focus: visible everywhere, never removed ---------- */
 :focus-visible {
-  outline: 2px solid var(--verdigris);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
-::selection { background: var(--verdigris); color: var(--ink-on-verdigris); }
+::selection { background: var(--blue); color: var(--stone); }
 
 /* ---------- header ---------- */
 .site-header {
@@ -319,8 +329,9 @@ html[data-lang="ka"] p { max-width: 36em; }
   justify-content: space-between;
   gap: var(--s-4);
   padding: var(--s-3) var(--gutter);
-  background: var(--surface);
-  border-bottom: 1px solid var(--line-strong);
+  background: var(--header-bg);
+  color: var(--header-fg);
+  border-bottom: 1px solid var(--header-line);
 }
 .header-tools { display: flex; align-items: center; gap: var(--s-2); }
 
@@ -332,20 +343,22 @@ html[data-lang="ka"] p { max-width: 36em; }
   font-size: 1.375rem;
   letter-spacing: -0.065em;
   line-height: 1;
-  color: var(--text);
+  color: inherit;
   text-decoration: none;
 }
 
 .site-nav { display: flex; gap: clamp(1rem, 2.5vw, 1.5rem); }
 
 .site-nav a {
-  color: var(--text);
+  color: inherit;
   text-decoration: none;
   padding: var(--s-2) 0;
   border-bottom: 1px solid transparent;
   transition: border-color var(--fast) var(--ease);
 }
-.site-nav a:hover { border-bottom-color: var(--text); }
+.site-nav a:hover { border-bottom-color: currentColor; }
+/* nav labels: same size and tracking in both scripts; Georgian in Mtavruli (markup) */
+.site-nav a .l.ka { font-size: 0.75rem; letter-spacing: 0.04em; }
 
 /* switchers: the language one names the language in its own script — never a
    flag; the theme one is a sun / moon pair, the lit one being the current surface. */
@@ -354,33 +367,35 @@ html[data-lang="ka"] p { max-width: 36em; }
   display: inline-flex;
   align-items: stretch;
   background: none;
-  border: 1px solid var(--text);
+  border: 1px solid currentColor;
   border-radius: 0;
-  color: var(--text);
+  color: inherit;
   padding: 0;
   cursor: pointer;
   min-height: 2.25rem;
-  font: inherit;
 }
 .lt-opt {
   display: inline-flex;
   align-items: center;
-  padding: 0 0.75rem;
+  justify-content: center;
+  width: 3.5rem;              /* both switches: two equal cells, same box */
+  padding: 0;
   transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
 }
+/* the two cells share one tracking (the book's own nav mock uses .04em on Georgian) */
+.lang-toggle .lt-opt { letter-spacing: 0.04em; }
 .lt-opt[data-lang-opt="ka"] {
   font-family: var(--font-ka);
-  font-size: 0.875rem;
-  letter-spacing: 0;
+  font-size: 0.75rem;         /* Mtavruli cap height ≈ Plex Mono cap height at the same size */
+  font-weight: 500;
   text-transform: none;
 }
 .lt-sep { display: none; }
 html[data-lang="ka"] .lt-opt[data-lang-opt="ka"],
 html[data-lang="en"] .lt-opt[data-lang-opt="en"],
-.lt-opt[aria-current] { background: var(--text); color: var(--surface); }
+.lt-opt[aria-current] { background: var(--header-fg); color: var(--header-bg); }
 .lang-toggle:hover .lt-opt:not([aria-current]),
 .theme-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
-.theme-toggle .lt-opt { padding: 0 0.625rem; }
 .theme-toggle svg { display: block; }
 
 /* ---------- hero ---------- */
@@ -388,8 +403,9 @@ html[data-lang="en"] .lt-opt[data-lang-opt="en"],
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: var(--s-5);
-  align-items: end;
-  padding: clamp(var(--s-6), 10vh, 8rem) var(--gutter) 0;
+  align-items: start;
+  /* no right padding: the drawing runs off the right edge of the screen */
+  padding: clamp(var(--s-6), 10vh, 8rem) 0 0 var(--gutter);
   overflow: hidden;
 }
 .hero-copy { padding-bottom: var(--s-7); }
@@ -410,21 +426,20 @@ figcaption {
 }
 figcaption .l.ka { font-family: var(--font-ka); font-size: 0.8125rem; letter-spacing: 0; }
 
+/* the drawing fills its column and sits flush into the hero's bottom-right
+   corner; the caption floats over the blank lower-left of the paper */
 .hero-art {
   position: relative;
-  align-self: end;
-  justify-self: end;
+  align-self: stretch;
   width: 100%;
-  max-width: 34rem;
-  margin-right: calc(-0.5 * var(--gutter));
+  min-height: 26rem;
 }
 .hero-art .ink-mask {
-  width: 100%;
-  aspect-ratio: 746.4 / 960.5;
-  max-height: 78vh;
+  position: absolute;
+  inset: 0;
   --art: url("../brand/art/bagari-art-the-look.svg");
-  mask-position: right bottom;
-  -webkit-mask-position: right bottom;
+  mask-position: bottom right;
+  -webkit-mask-position: bottom right;
 }
 .hero-art figcaption {
   position: absolute;
@@ -557,52 +572,73 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .case-link:hover { color: var(--link-hover); border-bottom-color: var(--link-hover); }
 
 /* ---------- services / tiers: cells on a rule, no cards ---------- */
+/* the services section gives up its side padding so the tier blocks reach
+   both screen edges; its other children carry the gutter themselves */
+#services { padding-left: 0; padding-right: 0; }
+#services > .section-head,
+#services > .care { margin-left: var(--gutter); margin-right: var(--gutter); }
+
 .tiers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 2px solid var(--rule);
+  align-items: stretch;
 }
+
+/* tier colours (Erekle, 2026-09-04): outside the book's five, by decision.
+   Each tier is a solid block of its colour with stone text. */
+.tier-blue  { --tier: var(--blue); }
+.tier-red   { --tier: var(--wine); }
+.tier-black { --tier: #171717; }
 
 .tier {
   position: relative;
-  padding: var(--s-4) var(--s-4) var(--s-4) 0;
-  margin-right: var(--s-4);
-  border-right: 1px solid var(--line-strong);
+  background: var(--tier);
+  color: var(--stone);
+  padding: var(--s-5);
   display: flex;
   flex-direction: column;
+  --tier-soft: rgba(237, 235, 228, 0.7);    /* stone at 70% for secondary text on the block */
+  --tier-line: rgba(237, 235, 228, 0.3);
 }
-.tier:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+/* on ink, the black block needs an edge to read as a block */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tier-black { box-shadow: inset 0 0 0 1px var(--line-strong-on-ink); }
+}
+:root[data-theme="dark"] .tier-black { box-shadow: inset 0 0 0 1px var(--line-strong-on-ink); }
+
+.tier:first-child { padding-left: max(var(--margin), calc((100vw - var(--max)) / 2)); }
+.tier:last-child  { padding-right: max(var(--margin), calc((100vw - var(--max)) / 2)); }
 
 .tier-flag {
   position: absolute;
   top: 0;
-  right: var(--s-4);
-  background: var(--flag-bg);
-  color: var(--flag-fg);
+  right: 0;
+  background: var(--stone);
+  color: var(--tier);
   padding: 0.375rem 0.625rem;
 }
-.tier:last-child .tier-flag { right: 0; }
 
-.tier-label { color: var(--muted); }
+.tier-label { color: var(--tier-soft); }
 
-.tier h3 { font-size: 1.5rem; margin: var(--s-3) 0 var(--s-4); max-width: 12em; }
+.tier h3 { font-size: 1.5rem; margin: var(--s-3) 0 var(--s-5); max-width: 12em; }
 
-.tier ul { list-style: none; flex-grow: 1; }
+.tier ul { list-style: none; margin-bottom: var(--s-5); }
 
 .tier li {
-  padding: var(--s-2) 0 var(--s-2) var(--s-4);
+  padding: 0 0 0 var(--s-4);
   position: relative;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.65;
 }
+.tier li + li { margin-top: var(--s-3); }
 .tier li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 1.05em;
+  top: 0.8em;
   width: 0.875rem;
   height: 2px;
-  background: var(--mark);   /* a mark, not text */
+  background: var(--stone);   /* a mark, not text */
 }
 
 .tier-terms {
@@ -610,13 +646,13 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   justify-content: space-between;
   align-items: baseline;
   gap: var(--s-3);
-  margin-top: var(--s-4);
-  padding-top: var(--s-3);
-  border-top: 1px solid var(--line-strong);
+  margin-top: auto;           /* every rule lands on the same line */
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--tier-line);
 }
 
-.tier-price { font-family: var(--font-en); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; }
-.tier-time { color: var(--muted); }
+.tier-price { font-family: var(--font-en); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; white-space: nowrap; }
+.tier-time { color: var(--tier-soft); white-space: nowrap; }
 
 .care {
   margin-top: var(--s-5);
@@ -662,7 +698,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
   gap: var(--s-5);
-  align-items: end;
+  align-items: start;
   margin-top: clamp(var(--s-5), 6vw, var(--s-6));
   padding-top: var(--s-4);
   border-top: 1px solid var(--line-strong);
@@ -673,6 +709,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
+  --focus: var(--band-focus);   /* the band is the opposite ground, so its focus ring flips too */
   position: relative;
   background: var(--band-bg);
   color: var(--band-fg);
@@ -682,19 +719,30 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 }
 .section-contact > :not(.contact-art) { position: relative; z-index: 1; }
 
-/* verdigris on ink — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
+/* the band's own signal blue — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
+/* fills the band's full height on the right at every size; the drawing is cropped, never squeezed */
 .contact-art {
   position: absolute;
-  right: calc(-0.15 * var(--gutter));
-  bottom: -6%;
-  width: min(44%, 36rem);
-  aspect-ratio: 888 / 878;
+  top: -3%;                   /* overshoot so the drawing's own margins never show */
+  bottom: -3%;
+  right: -1%;
+  width: min(42%, 40rem);
   pointer-events: none;
+}
+/* keep the copy clear of the drawing where they share the band */
+@media (min-width: 961px) {
+  .section-contact .section-head,
+  .section-contact .contact-lead,
+  .section-contact .contact-actions { max-width: 54%; }
 }
 .contact-art .ink-mask {
   width: 100%;
   height: 100%;
   background: var(--band-mark);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center;
+  mask-position: center;
   --art: url("../brand/art/bagari-art-trying-to-sleep.svg");  /* stylesheet-relative: Chrome resolves url() in a custom property where it is substituted */
 }
 .section-contact .section-num { color: var(--band-kicker); }
@@ -710,7 +758,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 .contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
 
-/* on ink, the primary is verdigris (book p09) and the secondary is a stone rule */
+/* the band inverts: its action is blue, its secondary a rule in the band's own ink */
 .section-contact .btn-solid { background: var(--band-primary-bg); border-color: var(--band-primary-bg); color: var(--band-primary-fg); }
 .section-contact .btn-solid:hover { background: var(--band-primary-hover-bg); border-color: var(--band-primary-hover-bg); color: var(--band-primary-hover-fg); }
 .section-contact .btn-ghost { border-color: var(--band-secondary); color: var(--band-secondary); }
@@ -749,23 +797,28 @@ html[data-lang="ka"] .site-footer p {
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  .tiers { grid-template-columns: 1fr; }
+  .tier,
+  .tier:first-child,
+  .tier:last-child { padding: var(--s-5) var(--margin); }
   .hero { grid-template-columns: 1fr; gap: var(--s-4); }
   .hero-copy { padding-bottom: 0; }
-  .hero-art { max-width: 22rem; margin-right: calc(-1 * var(--gutter)); }
-  .hero-art .ink-mask { max-height: 60vh; }
+  /* stacked: the drawing goes back into the flow at its own proportions */
+  .hero-art { max-width: 22rem; margin-left: auto; min-height: 0; }
+  .hero-art .ink-mask { position: static; aspect-ratio: 738.4 / 952.5; }
+  .hero-art figcaption { position: static; margin-top: var(--s-2); }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
-  .contact-art { width: 60%; right: -18%; bottom: -10%; opacity: 0.55; }
-  .tiers, .pillars { grid-template-columns: 1fr; }
-  .tier, .pillar {
+  .contact-art { width: 60%; opacity: 0.55; }
+  .pillars { grid-template-columns: 1fr; }
+  .pillar {
     border-right: none;
     margin-right: 0;
     padding-right: 0;
     border-bottom: 1px solid var(--line-strong);
     padding-bottom: var(--s-4);
   }
-  .tier:last-child, .pillar:last-child { border-bottom: none; padding-bottom: 0; }
-  .tier-flag, .tier:last-child .tier-flag { right: 0; }
+  .pillar:last-child { border-bottom: none; padding-bottom: 0; }
 }
 
 @media (max-width: 720px) {

@@ -1,0 +1,5 @@
+
+# Licensed font sources — never in the deployed tree.
+# The site ships only the subsetted woff2 in brand/type/.
+Futura 100 Georgian/
+*.otf

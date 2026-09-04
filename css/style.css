@@ -1,14 +1,19 @@
 /* ============================================================
-   BAGARI — studio site
-   Skinned to Brandbook 03.0 ("Loud"). Five colours, no sixth;
-   Georgian first, Archivo matched to it; 8-pt spacing; radius 0;
-   no shadows. GE/EN handled via .l spans + html[data-lang].
+   BAGARI — studio site, v2
+   Work-led, motion-driven. Ink is the default ground; Stone is the
+   alternate. Brandbook 03.0 colours and Futura 100 GEO carried over
+   from v1; the price list, the tier bands and the decorative use of
+   the drawings are not.
+
+   Motion here is scroll-DRIVEN, never scroll-HIJACKED: native scrolling
+   is left alone, so the trackpad, the keyboard, the scrollbar and the
+   screen reader all behave. Everything below --p is progress 0→1 that
+   JS writes onto an element; CSS decides what it means.
    ============================================================ */
 
 /* ---------- type: Futura 100 GEO, self-hosted (see /brand/type/licence.txt) ----------
-   One family covers Latin, Mkhedruli and Mtavruli, so the two scripts finally
-   share a face instead of being paired across two. Text cut for body and UI,
-   display cut for the large headings. */
+   One family covers Latin, Mkhedruli and Mtavruli. Text cut for body and
+   UI, display cut for the large headings. */
 @font-face {
   font-family: "Futura 100 GEO Text";
   font-style: normal;
@@ -52,24 +57,17 @@
   src: url("../brand/type/futura-display-700.woff2") format("woff2");
 }
 
-/* ---------- tokens (book p05, p11) ---------- */
+/* ---------- tokens ---------- */
 :root {
   /* the five */
   --ink: #131512;
   --stone: #EDEBE4;
-  --wine: #CB3534;        /* links, emphasis, one primary action per view — Redprint red */
-  --blue: #1F4E79;        /* marks, and the action on the band — Blueprint blue, for use on stone */
-  --blue-lift: #5497D3;   /* the same signal lifted to carry small text on ink (5.9:1) */
-
-  /* states, defined once */
+  --wine: #CB3534;        /* Redprint */
+  --blue: #1F4E79;        /* Blueprint, for use on stone */
+  --blue-lift: #5497D3;   /* the same signal lifted to carry text on ink */
   --wine-hover: #A32120;
-  --disabled-bg: #C9C5B9;
-  --disabled-ink: #7C786D;
-  --success: #1B6B4F;
-  --warning: #8A6A1F;
-  --error: #A8231A;
 
-  /* neutral steps — tints of ink and stone, not a further hue */
+  /* neutral steps — tints of the two grounds, not a further hue */
   --line-on-stone: #D6D2C6;
   --line-strong-on-stone: #C9C5B9;
   --muted-on-stone: #6A6A62;
@@ -77,49 +75,39 @@
   --line-strong-on-ink: #38392F;
   --muted-on-ink: #8C8B82;
 
-  /* ---- surface roles. Stone edition (the default). Components use only these. ---- */
-  color-scheme: light;
-  --surface: var(--stone);
-  --text: var(--ink);
-  --muted: var(--muted-on-stone);
-  --line: var(--line-on-stone);
-  --line-strong: var(--line-strong-on-stone);
-  --rule: var(--ink);                 /* the 2 px section rules */
-  --kicker: var(--wine);
-  --mark: var(--wine);                /* numerals — red on stone, blue on ink */
-  --focus: var(--blue);
-  --link: var(--wine);
-  --link-hover: var(--ink);
+  /* ---- surface roles. INK is the default edition in v2. ---- */
+  color-scheme: dark;
+  --surface: var(--ink);
+  --text: var(--stone);
+  --muted: var(--muted-on-ink);
+  --line: var(--line-on-ink);
+  --line-strong: var(--line-strong-on-ink);
+  --kicker: var(--blue-lift);
+  --mark: var(--blue-lift);
+  --focus: var(--blue-lift);
+  --link: var(--blue-lift);
   --primary-bg: var(--wine);
   --primary-fg: var(--stone);
-  --primary-hover-bg: var(--wine-hover);
-  --primary-hover-fg: var(--stone);
-  --secondary: var(--ink);
-  --flag-bg: var(--wine);
-  --flag-fg: var(--stone);
-  /* the band: the one section set on the opposite ground */
-  --band-bg: var(--ink);
-  --band-fg: var(--stone);
-  --band-muted: var(--muted-on-ink);
-  --band-line: var(--line-strong-on-ink);
-  --band-kicker: var(--blue-lift);
-  --band-primary-bg: var(--blue);
-  --band-primary-fg: var(--stone);
-  --band-primary-hover-bg: var(--stone);
-  --band-primary-hover-fg: var(--ink);
-  --band-secondary: var(--stone);
-  --band-mark: var(--blue-lift);
-  --band-focus: var(--blue-lift);
+  --primary-hover-bg: var(--stone);
+  --primary-hover-fg: var(--ink);
+  --secondary: var(--stone);
+  /* the inverted section — one per page, and it flips to stone */
+  --band-bg: var(--stone);
+  --band-fg: var(--ink);
+  --band-muted: var(--muted-on-stone);
+  --band-line: var(--line-strong-on-stone);
+  --band-kicker: var(--wine);
+
+  /* the three levels keep their identity from the brandbook */
+  --blueprint: #1F4E79;
+  --redprint: #CB3534;
+  --blackprint: #171717;
 
   /* type */
   --font: "Futura 100 GEO Text", "Futura 100 GEO", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: "Futura 100 GEO", "Futura 100 GEO Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /* both scripts and the labels now share one family */
-  --font-en: var(--font);
-  --font-ka: var(--font);
-  --font-label: var(--font);
 
-  /* 8-pt base: 4 · 8 · 16 · 24 · 40 · 64 · 96 */
+  /* 8-pt base: 4 · 8 · 16 · 24 · 40 · 64 · 96 · 160 */
   --s-1: 0.25rem;
   --s-2: 0.5rem;
   --s-3: 1rem;
@@ -127,223 +115,598 @@
   --s-5: 2.5rem;
   --s-6: 4rem;
   --s-7: 6rem;
+  --s-8: 10rem;
 
-  /* grid: 1440 max · 72 / 40 / 20 margins. Backgrounds run full-bleed;
-     content stops at --max and the gutter grows beyond it. */
-  --max: 90rem;
-  --margin: clamp(1.25rem, 5vw, 4.5rem);
+  --max: 100rem;
+  --margin: clamp(1.25rem, 4vw, 4rem);
   --gutter: max(var(--margin), calc((100% - var(--max)) / 2));
 
-  /* the header is always ink, whichever edition the page is in */
-  --header-bg: var(--ink);
-  --header-fg: var(--stone);
-  --header-line: var(--line-strong-on-ink);
-
-  /* motion (book p12) */
+  /* motion */
   --fast: 180ms;
   --medium: 560ms;
+  --slow: 900ms;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* written by JS: scroll velocity, normalised and clamped */
+  --vel: 0;
 }
 
-/* ---- Ink edition. The same colours on the opposite ground: red stays the
-   primary action, blue lifts to carry kickers, links and marks on ink, and
-   the band flips to stone — where red carries its mark and action, so the
-   accent alternates with the ground the same way everything else does. ---- */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --surface: var(--ink);
-    --text: var(--stone);
-    --muted: var(--muted-on-ink);
-    --line: var(--line-on-ink);
-    --line-strong: var(--line-strong-on-ink);
-    --rule: var(--stone);
-    --kicker: var(--blue-lift);
-    --mark: var(--blue-lift);
-    --focus: var(--blue-lift);
-    --link: var(--blue-lift);
-    --link-hover: var(--stone);
+/* ---- Stone edition ---- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --surface: var(--stone);
+    --text: var(--ink);
+    --muted: var(--muted-on-stone);
+    --line: var(--line-on-stone);
+    --line-strong: var(--line-strong-on-stone);
+    --kicker: var(--wine);
+    --mark: var(--wine);
+    --focus: var(--blue);
+    --link: var(--wine);
     --primary-bg: var(--wine);
     --primary-fg: var(--stone);
-    --primary-hover-bg: var(--stone);
-    --primary-hover-fg: var(--ink);
-    --secondary: var(--stone);
-    --flag-bg: var(--wine);
-    --flag-fg: var(--stone);
-    --band-bg: var(--stone);
-    --band-fg: var(--ink);
-    --band-muted: var(--muted-on-stone);
-    --band-line: var(--line-strong-on-stone);
-    --band-kicker: var(--wine);
-    --band-primary-bg: var(--wine);
-    --band-primary-fg: var(--stone);
-    --band-primary-hover-bg: var(--wine-hover);
-    --band-primary-hover-fg: var(--stone);
-    --band-secondary: var(--ink);
-    --band-mark: var(--wine);
-    --band-focus: var(--blue);
+    --primary-hover-bg: var(--ink);
+    --primary-hover-fg: var(--stone);
+    --secondary: var(--ink);
+    --band-bg: var(--ink);
+    --band-fg: var(--stone);
+    --band-muted: var(--muted-on-ink);
+    --band-line: var(--line-strong-on-ink);
+    --band-kicker: var(--blue-lift);
   }
 }
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --surface: var(--ink);
-  --text: var(--stone);
-  --muted: var(--muted-on-ink);
-  --line: var(--line-on-ink);
-  --line-strong: var(--line-strong-on-ink);
-  --rule: var(--stone);
-  --kicker: var(--blue-lift);
-  --mark: var(--blue-lift);
-  --focus: var(--blue-lift);
-  --link: var(--blue-lift);
-  --link-hover: var(--stone);
+:root[data-theme="light"] {
+  color-scheme: light;
+  --surface: var(--stone);
+  --text: var(--ink);
+  --muted: var(--muted-on-stone);
+  --line: var(--line-on-stone);
+  --line-strong: var(--line-strong-on-stone);
+  --kicker: var(--wine);
+  --mark: var(--wine);
+  --focus: var(--blue);
+  --link: var(--wine);
   --primary-bg: var(--wine);
   --primary-fg: var(--stone);
-  --primary-hover-bg: var(--stone);
-  --primary-hover-fg: var(--ink);
-  --secondary: var(--stone);
-  --flag-bg: var(--wine);
-  --flag-fg: var(--stone);
-  --band-bg: var(--stone);
-  --band-fg: var(--ink);
-  --band-muted: var(--muted-on-stone);
-  --band-line: var(--line-strong-on-stone);
-  --band-kicker: var(--wine);
-  --band-primary-bg: var(--wine);
-  --band-primary-fg: var(--stone);
-  --band-primary-hover-bg: var(--wine-hover);
-  --band-primary-hover-fg: var(--stone);
-  --band-secondary: var(--ink);
-  --band-mark: var(--wine);
-  --band-focus: var(--blue);
+  --primary-hover-bg: var(--ink);
+  --primary-hover-fg: var(--stone);
+  --secondary: var(--ink);
+  --band-bg: var(--ink);
+  --band-fg: var(--stone);
+  --band-muted: var(--muted-on-ink);
+  --band-line: var(--line-strong-on-ink);
+  --band-kicker: var(--blue-lift);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
 body {
+  margin: 0;
   background: var(--surface);
   color: var(--text);
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
-  font-family: var(--font-en);
-  font-size: 1.0625rem;          /* 17 px — the web floor */
-  line-height: 1.6;
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.1875rem);
+  line-height: 1.55;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
-  text-wrap: pretty;
+  text-rendering: optimizeLegibility;
 }
-html[data-lang="ka"] body { font-family: var(--font-ka); }
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2, h3, h4, p, figure, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* ---------- language switching ---------- */
-/* Only the active language's spans are shown. */
-html[data-lang="ka"] .l.en { display: none; }
-html[data-lang="en"] .l.ka { display: none; }
-
-.l.ka {
-  hyphens: none;                 /* Georgian doesn't take it; browsers guess badly */
-  overflow-wrap: break-word;
-}
-
-/* Negative tracking is Latin-display only. Georgian is never tracked tighter
-   than −1% and never letterspaced positively.
-   Mtavruli (book p09): titles, subtitles and kickers — yes; paragraphs,
-   descriptions and helper text — never. Mtavruli is written into the markup
-   itself (U+1C90–1CBF) and Georgian is exempted from text-transform below:
-   Chrome resolves uppercase on Mtavruli by mapping it back down to
-   Mkhedruli, silently undoing the capitals. Latin is capped via CSS,
-   matching the book's own display setting. */
-/* Futura caps sit at 754/1000 and Mtavruli has no descenders, so headings
-   are set tight; body copy gets more leading for the small x-height. */
-h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 0.95; text-wrap: balance; }
-h1 .l.en, h2 .l.en, h3 .l.en, .contact-lead .l.en { letter-spacing: -0.025em; text-transform: uppercase; }
-h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 0.98; }
-
-/* measure: 72 characters Latin, 60 Georgian */
-p { max-width: 40em; }
-html[data-lang="ka"] p { max-width: 36em; }
-
-/* ---------- labels: kickers, eyebrows, UI (mono, 12 px floor) ---------- */
-.label,
-.eyebrow .l.en,
-.section-num,
-.case-tags .l.en,
-.tier-label,
-.tier-flag .l.en,
-.tier-time .l.en,
-.site-nav a .l.en,
-.lang-toggle,
-.btn,
-.btn .l.en,
-.case-link .l.en,
-.site-footer .l.en,
-.site-footer p {
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  line-height: 1.5;
-}
-/* Georgian labels: same face and size as their Latin counterparts, with
-   Mtavruli already in the markup — so text-transform must be switched off,
-   or Chrome maps the capitals back down to Mkhedruli. */
-.eyebrow .l.ka,
-.case-tags .l.ka,
-.tier-flag .l.ka,
-.tier-time .l.ka,
-.site-nav a .l.ka,
-.btn .l.ka,
-.case-link .l.ka,
-.site-footer .l.ka {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-}
+/* Georgian is capitalised in the markup, as Mtavruli code points. Chrome
+   resolves text-transform: uppercase on Mtavruli by mapping it BACK DOWN to
+   Mkhedruli, so every box that uppercases its whole self must exempt it. */
+.l { display: none; }
+html[data-lang="en"] .l.en,
+html[data-lang="ka"] .l.ka { display: inline; }
 .l.ka,
 .lt-opt[data-lang-opt="ka"] { text-transform: none; }
 
-/* Futura carries no heart, so the sign-off draws its own: sized to the
-   face's cap height (754/1000) and filled from the text colour, it matches
-   the letters beside it instead of falling back to a system glyph. */
-.heart {
-  height: 0.754em;
-  width: auto;
-  fill: currentColor;
-  vertical-align: baseline;
+/* ---------- shared type ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.85;
+  text-wrap: balance;
+}
+.display .l.en { text-transform: uppercase; letter-spacing: -0.04em; }
+.display .l.ka { letter-spacing: -0.005em; line-height: 0.92; }
+
+.label {
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+}
+.label .l.en { text-transform: uppercase; }
+
+.lede {
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.875rem);
+  line-height: 1.35;
+  font-weight: 400;
+  text-wrap: pretty;
 }
 
-/* ---------- focus: visible everywhere, never removed ---------- */
-:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
+.muted { color: var(--muted); }
+
+/* ---------- motion primitives ----------
+   .rv          an element that reveals when it enters
+   [data-scrub] an element JS gives --p (0→1) while it is in view
+   Both are inert until JS adds .js, so the page is complete without it. */
+.js .rv {
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0);
+  transition:
+    opacity var(--slow) var(--ease-out),
+    transform var(--slow) var(--ease-out);
+  transition-delay: var(--rv-delay, 0ms);
+}
+.js .rv.is-in {
+  opacity: 1;
+  transform: none;
 }
 
-::selection { background: var(--blue); color: var(--stone); }
+/* type that wipes up from behind a mask — the one reveal used on headlines */
+.wipe { display: block; overflow: hidden; }
+.wipe > span {
+  display: block;
+  transform: translate3d(0, 100%, 0);
+  transition: transform var(--slow) var(--ease-out);
+  transition-delay: var(--rv-delay, 0ms);
+}
+.js .wipe.is-in > span,
+html:not(.js) .wipe > span { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .rv,
+  .js .rv.is-in { opacity: 1; transform: none; transition: none; }
+  .wipe > span { transform: none !important; transition: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- the drawings ----------
+   Erekle's ink drawings are the studio's one uncopyable asset, so in v2 they
+   are the visual system rather than a garnish: full-bleed, huge, and drawn on
+   by the scroll itself. A single-fill mask takes its ink from the theme. */
+.ink {
+  display: block;
+  background: var(--ink-colour, var(--text));
+  -webkit-mask: var(--art) center / contain no-repeat;
+  mask: var(--art) center / contain no-repeat;
+}
+/* scrubbed: the wipe follows the scroll instead of a clock */
+.js .ink[data-scrub] { clip-path: inset(0 calc(100% - (var(--p, 0) * 100%)) 0 0); }
+html:not(.js) .ink[data-scrub] { clip-path: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .ink[data-scrub] { clip-path: none; }
+}
 
 /* ---------- header ---------- */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 80;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-4);
-  padding: var(--s-3) var(--gutter);
-  background: var(--header-bg);
-  color: var(--header-fg);
-  border-bottom: 1px solid var(--header-line);
+  padding: var(--s-4) var(--gutter);
+  mix-blend-mode: difference;   /* the wordmark stays legible over any panel */
+  color: #fff;
+  pointer-events: none;
 }
-.header-tools { display: flex; align-items: center; gap: var(--s-2); }
+.site-header > * { pointer-events: auto; }
 
-/* On desktop the panel is not a box at all — its children lay out in the
-   header exactly as before. It only becomes a dropdown on phones. */
-.header-panel { display: contents; }
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  text-decoration: none;
+}
 
-/* back to top: a link, so it still works without JS; JS only decides when
-   it shows. Surface-on-surface with a rule, so it reads on either ground
-   and over the band that inverts. */
+.site-nav { display: flex; align-items: center; gap: var(--s-5); }
+.site-nav a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+}
+.site-nav a .l.en { text-transform: uppercase; }
+.site-nav a { position: relative; }
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--fast) var(--ease);
+}
+.site-nav a:hover::after { transform: scaleX(1); }
+
+.tools { display: flex; align-items: center; gap: var(--s-3); }
+.tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 var(--s-2);
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+}
+.tool .l.en { text-transform: uppercase; }
+.tool svg { display: block; }
+
+/* ---------- sections ---------- */
+.section { padding: clamp(var(--s-6), 10vh, var(--s-8)) var(--gutter); }
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+  margin-bottom: clamp(var(--s-5), 6vh, var(--s-7));
+  border-bottom: 1px solid var(--line-strong);
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: 0.9;
+}
+.section-head h2 .l.en { text-transform: uppercase; letter-spacing: -0.03em; }
+.section-num { color: var(--kicker); }
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 var(--gutter) var(--s-5);
+  overflow: clip;
+}
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 22vh;
+  padding-bottom: clamp(var(--s-5), 6vh, var(--s-7));
+}
+.hero-eyebrow {
+  color: var(--kicker);
+  margin-bottom: clamp(var(--s-4), 4vh, var(--s-6));
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 10.5vw, 11rem);
+  line-height: 0.82;
+  max-width: 14ch;
+}
+.hero h1 .l.en { text-transform: uppercase; letter-spacing: -0.05em; }
+.hero h1 .l.ka { letter-spacing: -0.02em; line-height: 0.9; font-size: 0.86em; }
+
+/* the signature: the drawing occupies the right of the hero and is drawn on
+   by the scroll. It sits behind the type and bleeds off the top and right. */
+.hero-art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(46%, 42rem);
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-art .ink {
+  width: 100%;
+  height: 100%;
+  --art: url("../brand/art/bagari-art-the-look.svg");
+  -webkit-mask-position: top right;
+  mask-position: top right;
+  opacity: 0.9;
+}
+
+.hero-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-strong);
+  color: var(--muted);
+}
+.hero-foot .label { color: var(--muted); }
+
+.scroll-cue { display: inline-flex; align-items: center; gap: var(--s-2); }
+.scroll-cue svg { animation: cue 2.4s var(--ease) infinite; }
+@keyframes cue {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(0.3rem); opacity: 0.4; }
+}
+
+/* ---------- the marquee ----------
+   A single strip of the studio's claims that leans with the scroll. The lean
+   is the whole trick: it is the page acknowledging the reader's input. */
+.marquee {
+  overflow: clip;
+  border-block: 1px solid var(--line-strong);
+  padding-block: var(--s-4);
+  transform: skewY(calc(var(--vel) * -0.6deg));
+  transition: transform 240ms var(--ease-out);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: var(--s-5);
+  animation: slide 42s linear infinite;
+  will-change: transform;
+}
+.marquee-item {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.5vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+.marquee-item .l.en { text-transform: uppercase; }
+.marquee-item::after {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--kicker);
+  border-radius: 50%;
+  flex: none;
+}
+@keyframes slide { to { transform: translate3d(-50%, 0, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { transform: none; }
+  .marquee-track { animation: none; }
+}
+
+/* ---------- statement ---------- */
+.statement { max-width: 46ch; }
+.statement p + p { margin-top: var(--s-4); }
+.statement .display {
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  line-height: 1.02;
+  margin-bottom: var(--s-5);
+}
+
+/* ---------- work ---------- */
+.work-list { display: grid; gap: clamp(var(--s-5), 6vh, var(--s-7)); }
+
+.work-item { position: relative; text-decoration: none; display: block; }
+.work-figure {
+  position: relative;
+  overflow: clip;
+  background: var(--line);
+  aspect-ratio: 16 / 9;
+}
+.work-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06) translate3d(0, calc(var(--p, 0.5) * -3%), 0);
+  transition: transform var(--medium) var(--ease-out);
+}
+.work-item:hover .work-figure img { transform: scale(1.02); }
+
+/* the slot that stands in for a photograph until the art direction lands */
+.slot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 12px,
+      color-mix(in srgb, var(--text) 6%, transparent) 12px 13px
+    );
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  text-align: center;
+  padding: var(--s-4);
+}
+
+.work-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-top: var(--s-3);
+  flex-wrap: wrap;
+}
+.work-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 5vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.work-title .l.en { text-transform: uppercase; }
+.work-tags { color: var(--muted); }
+
+/* the number is the point of the card: one measured result per project */
+.work-result {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.work-result b {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--mark);
+}
+.work-result span { color: var(--muted); max-width: 34ch; }
+
+/* ---------- capabilities: the three levels, no prices ---------- */
+.levels { display: grid; gap: 1px; background: var(--line-strong); }
+.level {
+  background: var(--surface);
+  padding: clamp(var(--s-5), 5vh, var(--s-6)) clamp(var(--s-4), 4vw, var(--s-6));
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+}
+.level-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.level-name .l.en { text-transform: uppercase; }
+.level[data-level="blueprint"] .level-name { color: var(--blue-lift); }
+.level[data-level="redprint"] .level-name { color: var(--wine); }
+.level[data-level="blackprint"] .level-name { color: var(--text); }
+:root[data-theme="light"] .level[data-level="blueprint"] .level-name { color: var(--blue); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .level[data-level="blueprint"] .level-name { color: var(--blue); }
+}
+.level-for { color: var(--muted); }
+.level ul { display: grid; gap: var(--s-2); }
+.level li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--s-2); }
+.level li::before { content: "—"; color: var(--muted); }
+
+/* ---------- studio ---------- */
+.studio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(var(--s-5), 5vw, var(--s-7));
+  align-items: start;
+}
+.studio-art { position: relative; }
+.studio-art .ink {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg");
+}
+.studio-body p + p { margin-top: var(--s-4); }
+.studio-body .display {
+  font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+  line-height: 1.05;
+  margin-bottom: var(--s-4);
+}
+figcaption { color: var(--muted); margin-top: var(--s-3); }
+
+/* ---------- contact ---------- */
+.contact {
+  background: var(--band-bg);
+  color: var(--band-fg);
+  position: relative;
+  overflow: clip;
+}
+.contact .section-head { border-color: var(--band-line); }
+.contact .section-num { color: var(--band-kicker); }
+.contact-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(50%, 40rem);
+  pointer-events: none;
+  opacity: 0.16;
+}
+.contact-art .ink {
+  width: 100%;
+  height: 100%;
+  --art: url("../brand/art/bagari-art-trying-to-sleep.svg");
+  --ink-colour: var(--band-fg);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+.contact > :not(.contact-art) { position: relative; z-index: 1; }
+.contact h2.display {
+  font-size: clamp(2.25rem, 7vw, 6rem);
+  max-width: 16ch;
+  margin-bottom: var(--s-5);
+}
+.contact-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 3.25rem;
+  padding: 0 var(--s-5);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  border: 1px solid transparent;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+.btn .l.en { text-transform: uppercase; }
+.btn-solid { background: var(--wine); border-color: var(--wine); color: var(--stone); }
+.btn-solid:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
+.btn-ghost { border-color: currentColor; }
+.btn-ghost:hover { background: var(--band-fg); color: var(--band-bg); }
+
+/* ---------- footer ---------- */
+.site-footer {
+  padding: var(--s-5) var(--gutter);
+  border-top: 1px solid var(--line-strong);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  justify-content: space-between;
+  color: var(--muted);
+}
+.site-footer .heart {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.12em;
+  fill: var(--wine);
+}
+
+/* ---------- back to top ---------- */
 .to-top {
   position: fixed;
   right: var(--margin);
@@ -362,555 +725,18 @@ html[data-lang="ka"] p { max-width: 36em; }
 html.show-top .to-top { display: inline-flex; }
 .to-top:hover { background: var(--text); color: var(--surface); }
 .to-top svg { display: block; }
+
+/* ---------- phone ---------- */
 .menu-toggle { display: none; }
 .menu-close-icon { display: none; }
 
-/* the wordmark: Archivo 700, wdth 112, −6.5% — the same setting as /brand/logo/ */
-.brand {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.375rem;
-  letter-spacing: -0.065em;
-  line-height: 1;
-  color: inherit;
-  text-decoration: none;
-}
-
-.site-nav {
-  display: flex;
-  gap: clamp(1rem, 2.5vw, 1.5rem);
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.site-nav::-webkit-scrollbar { display: none; }
-.site-nav a { white-space: nowrap; }
-
-.site-nav a {
-  color: inherit;
-  text-decoration: none;
-  padding: var(--s-2) 0;
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--fast) var(--ease);
-}
-.site-nav a:hover { border-bottom-color: currentColor; }
-/* nav labels: same size and tracking in both scripts; Georgian in Mtavruli (markup) */
-
-
-/* switchers: the language one names the language in its own script — never a
-   flag; the theme one is a sun / moon pair, the lit one being the current surface. */
-.lang-toggle,
-.theme-toggle {
-  display: inline-flex;
-  align-items: stretch;
-  background: none;
-  border: 1px solid currentColor;
-  border-radius: 0;
-  color: inherit;
-  padding: 0;
-  cursor: pointer;
-  min-height: 2.25rem;
-  flex: none;
-}
-.lt-opt {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.5rem;              /* both switches: two equal cells, same box */
-  padding: 0;
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
-}
-/* the two cells share one tracking (the book's own nav mock uses .04em on Georgian) */
-
-
-.lt-sep { display: none; }
-html[data-lang="ka"] .lt-opt[data-lang-opt="ka"],
-html[data-lang="en"] .lt-opt[data-lang-opt="en"],
-.lt-opt[aria-current] { background: var(--header-fg); color: var(--header-bg); }
-.lang-toggle:hover .lt-opt:not([aria-current]),
-.theme-toggle:hover .lt-opt:not([aria-current]) { text-decoration: underline; text-underline-offset: 0.2em; }
-.theme-toggle svg { display: block; }
-
-/* ---------- hero ---------- */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: var(--s-5);
-  align-items: start;
-  /* no right padding: the drawing runs off the right edge of the screen */
-  padding: clamp(var(--s-5), 7vh, var(--s-7)) 0 0 var(--gutter);
-  overflow: hidden;
-}
-.hero-copy { padding-bottom: var(--s-7); }
-
-/* ---------- the drawings ----------
-   Erekle's ink drawings are the hand-made counterweight to the geometric
-   type. They are shown as work — captioned, credited — never as texture.
-   One drawing per section at most; the hero's is the page's one signature
-   moment (book p12). */
-figure { margin: 0; }
-figcaption {
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  line-height: 1.6;
-  color: var(--muted);
-  margin-top: var(--s-2);
-}
-
-
-/* the drawing fills its column and sits flush into the hero's bottom-right
-   corner; the caption floats over the blank lower-left of the paper */
-.hero-art {
-  position: relative;
-  align-self: stretch;
-  width: 100%;
-  min-height: 26rem;
-}
-.hero-art .ink-mask {
-  position: absolute;
-  inset: 0;
-  --art: url("../brand/art/bagari-art-the-look.svg");
-  mask-position: bottom right;
-  -webkit-mask-position: bottom right;
-}
-.hero-art figcaption {
-  position: absolute;
-  left: 0;
-  bottom: var(--s-3);
-  max-width: 14em;
-}
-
-/* the wipe: 900 ms ease-out, once per session, never blocking content.
-   Without JS the class never lands and the drawing is simply there. */
-@keyframes draw-on {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0 0 0); }
-}
-html.sig-play .hero-art .ink-mask { animation: draw-on 900ms var(--ease) 200ms both; }
-@media (prefers-reduced-motion: reduce) {
-  @keyframes draw-on { from { opacity: 0; } to { opacity: 1; } }
-  html.sig-play .hero-art .ink-mask { animation-duration: 200ms; animation-delay: 0ms; }
-}
-
-/* a drawing is a single-fill mask, so it takes its ink from the theme */
-.ink-mask {
-  display: block;
-  background: var(--text);
-  -webkit-mask: var(--art) center / contain no-repeat;
-  mask: var(--art) center / contain no-repeat;
-}
-
-.eyebrow { color: var(--kicker); margin-bottom: var(--s-4); }
-
-.hero h1 { font-size: clamp(2.75rem, 7vw, 6rem); max-width: 11em; }
-.hero h1 .l.en {
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
-}
-.hero h1 .l.ka {
-  font-size: 0.8em;
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.01em;
-}
-.hero-sub {
-  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
-  line-height: 1.45;
-  font-weight: 500;
-  max-width: 34em;
-  margin-top: var(--s-4);
-}
-html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
-
-.hero-cta { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
-
-/* ---------- buttons: one primary per view, 44 × 180 minimum, radius 0 ---------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  min-width: 11.25rem;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid transparent;
-  border-radius: 0;
-  text-decoration: none;
-  text-align: center;
-  color: var(--text);
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
-}
-.btn-solid { background: var(--primary-bg); border-color: var(--primary-bg); color: var(--primary-fg); }
-.btn-solid:hover { background: var(--primary-hover-bg); border-color: var(--primary-hover-bg); color: var(--primary-hover-fg); }
-.btn-ghost { border-color: var(--secondary); color: var(--secondary); }
-.btn-ghost:hover { background: var(--secondary); color: var(--surface); }
-.btn[aria-disabled="true"] { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); pointer-events: none; }
-
-/* ---------- sections: rhythm 96 / 64 ---------- */
-.section {
-  border-top: 2px solid var(--rule);
-  padding: clamp(var(--s-5), 5vw, var(--s-6)) var(--gutter);
-}
-
-.section-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3);
-  margin-bottom: clamp(var(--s-4), 3vw, var(--s-5));
-}
-
-.section-num { color: var(--kicker); }
-.section-num::after { content: " /"; }
-
-.section-head h2 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 0.95; }
-.section-head h2 .l.en { font-weight: 700; letter-spacing: -0.04em; }
-.section-head h2 .l.ka { font-weight: 700; line-height: 0.98; }
-
-/* ---------- work ---------- */
-.case {
-  display: grid;
-  grid-template-columns: minmax(12rem, 1fr) 2fr;
-  gap: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
-  padding: var(--s-4) 0;
-  border-top: 1px solid var(--line-strong);
-}
-.case:first-of-type { border-top: none; padding-top: 0; }
-.case:last-of-type { padding-bottom: 0; }
-
-.case-meta h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1;
-}
-
-.case-tags { color: var(--muted); margin-top: var(--s-2); }
-
-.case-body p { max-width: 40em; }
-html[data-lang="ka"] .case-body p { max-width: 36em; }
-
-/* tertiary / link */
-.case-link {
-  display: inline-block;
-  margin-top: var(--s-4);
-  color: var(--link);
-  text-decoration: none;
-  border-bottom: 1px solid var(--link);
-  padding-bottom: 0.1rem;
-  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
-}
-.case-link:hover { color: var(--link-hover); border-bottom-color: var(--link-hover); }
-
-/* ---------- services / tiers: cells on a rule, no cards ---------- */
-/* the services section gives up its side padding so the tier blocks reach
-   both screen edges; its other children carry the gutter themselves */
-#services { padding-left: 0; padding-right: 0; }
-#services > .section-head { margin-left: var(--gutter); margin-right: var(--gutter); }
-/* the care note is centred on the section, never pinned to the gutter */
-#services > .care {
-  margin-left: auto;
-  margin-right: auto;
-  width: min(48rem, calc(100% - 2 * var(--margin)));
-}
-
-.tiers {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: stretch;
-}
-
-/* tier colours (Erekle, 2026-09-04): outside the book's five, by decision.
-   Each tier is a solid block of its colour with stone text. */
-.tier-blue  { --tier: var(--blue); }
-.tier-red   { --tier: var(--wine); }
-.tier-black { --tier: #171717; }
-
-.tier {
-  position: relative;
-  background: var(--tier);
-  color: var(--stone);
-  padding: var(--s-5);
-  display: flex;
-  flex-direction: column;
-  --tier-soft: rgba(237, 235, 228, 0.7);    /* stone at 70% for secondary text on the block */
-  --tier-line: rgba(237, 235, 228, 0.3);
-}
-/* on ink, the black block needs an edge to read as a block */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tier-black { box-shadow: inset 0 0 0 1px var(--line-strong-on-ink); }
-}
-:root[data-theme="dark"] .tier-black { box-shadow: inset 0 0 0 1px var(--line-strong-on-ink); }
-
-.tier:first-child { padding-left: max(var(--margin), calc((100vw - var(--max)) / 2)); }
-.tier:last-child  { padding-right: max(var(--margin), calc((100vw - var(--max)) / 2)); }
-
-.tier-flag {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: var(--stone);
-  color: var(--tier);
-  padding: 0.375rem 0.625rem;
-}
-
-.tier-label { color: var(--tier-soft); }
-
-.tier h3 { font-size: 1.5rem; margin: var(--s-3) 0 var(--s-5); max-width: 12em; }
-
-.tier ul { list-style: none; margin-bottom: var(--s-5); }
-
-.tier li {
-  padding: 0 0 0 var(--s-4);
-  position: relative;
-  font-size: 0.9375rem;
-  line-height: 1.65;
-}
-.tier li + li { margin-top: var(--s-3); }
-.tier li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.8em;
-  width: 0.875rem;
-  height: 2px;
-  background: var(--stone);   /* a mark, not text */
-}
-
-.tier-terms {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--s-3);
-  margin-top: auto;           /* every rule lands on the same line */
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--tier-line);
-}
-
-.tier-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; white-space: nowrap; }
-.tier-time { color: var(--tier-soft); white-space: nowrap; }
-
-/* the care note closes the section, centred under the three blocks */
-.care {
-  margin: var(--s-5) auto 0;
-  padding: var(--s-5);
-  border: 1px solid var(--line);
-  max-width: 48rem;
-  text-align: center;
-}
-.care p { max-width: 40em; margin-inline: auto; text-wrap: pretty; }
-html[data-lang="ka"] .care p { max-width: 34em; }
-.care strong { font-weight: 600; }
-.care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
-
-/* ---------- studio: numbered pillars (book p02) ---------- */
-/* the drawing sits to the left of the pillars and scales to their height,
-   so the section reads as one block rather than a row and an afterthought. */
-.studio-body {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-  gap: var(--s-5);
-  align-items: stretch;
-}
-.studio-art { position: relative; min-height: 20rem; }
-.studio-art .ink-mask {
-  position: absolute;
-  inset: 0 0 var(--s-5) 0;
-  --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg");
-  mask-position: top left;
-  -webkit-mask-position: top left;
-}
-.studio-art figcaption { position: absolute; left: 0; bottom: 0; }
-
-/* three stacked rows: the numeral holds a fixed left column and the text
-   runs beside it, so the headings stop breaking mid-phrase and the copy
-   gets a proper measure. */
-.pillars {
-  border-top: 2px solid var(--rule);
-  counter-reset: pillar;
-}
-
-.pillar {
-  counter-increment: pillar;
-  display: grid;
-  grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
-  gap: 0 var(--s-5);
-  align-items: start;
-  padding: var(--s-4) 0;
-  border-bottom: 1px solid var(--line-strong);
-}
-.pillar:last-child { border-bottom: none; }
-
-.pillar::before {
-  content: counter(pillar, decimal-leading-zero);
-  grid-row: 1 / span 2;
-  font-family: var(--font-display);
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 0.8;
-  letter-spacing: -0.05em;
-  color: var(--mark);
-}
-
-.pillar h3 { font-size: 1.75rem; margin-bottom: var(--s-2); max-width: 18em; }
-.pillar p { font-size: 1rem; max-width: 42em; }
-html[data-lang="ka"] .pillar p { max-width: 36em; }
-
-@media (max-width: 720px) {
-  .pillar { grid-template-columns: 1fr; gap: var(--s-2); padding: var(--s-4) 0; }
-  .pillar::before { grid-row: auto; font-size: 2.75rem; }
-  .pillar h3 { font-size: 1.375rem; }
-}
-
-/* the maker note closes the section, centred under the whole block */
-.studio-about {
-  margin-top: clamp(var(--s-4), 3vw, var(--s-5));
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--line-strong);
-  text-align: center;
-}
-.studio-about > p {
-  font-size: 0.9375rem;
-  max-width: 34em;
-  margin-inline: auto;
-  text-wrap: pretty;
-}
-.studio-about > p + p { margin-top: var(--s-3); color: var(--muted); }
-html[data-lang="ka"] .studio-about > p { max-width: 30em; }
-
-/* ---------- contact: the ink band ---------- */
-.section-contact {
-  --focus: var(--band-focus);   /* the band is the opposite ground, so its focus ring flips too */
-  position: relative;
-  background: var(--band-bg);
-  color: var(--band-fg);
-  border-top: none;
-  padding-bottom: clamp(var(--s-5), 5vw, var(--s-6));
-  overflow: hidden;
-}
-.section-contact > :not(.contact-art) { position: relative; z-index: 1; }
-
-/* the band's own signal blue — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
-/* fills the band's full height on the right at every size; the drawing is cropped, never squeezed */
-.contact-art {
-  position: absolute;
-  top: -3%;                   /* overshoot so the drawing's own margins never show */
-  bottom: -3%;
-  right: -1%;
-  width: min(42%, 40rem);
-  pointer-events: none;
-}
-/* keep the copy clear of the drawing where they share the band */
-@media (min-width: 961px) {
-  .section-contact .section-head,
-  .section-contact .contact-lead,
-  .section-contact .contact-actions { max-width: 54%; }
-}
-.contact-art .ink-mask {
-  width: 100%;
-  height: 100%;
-  background: var(--band-mark);
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  -webkit-mask-position: center;
-  mask-position: center;
-  --art: url("../brand/art/bagari-art-trying-to-sleep.svg");  /* stylesheet-relative: Chrome resolves url() in a custom property where it is substituted */
-}
-.section-contact .section-num { color: var(--band-kicker); }
-
-.contact-lead {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw, 3.25rem);
-  font-weight: 600;
-  line-height: 0.95;
-  max-width: 18em;
-}
-.contact-lead .l.en { letter-spacing: -0.035em; }
-.contact-lead .l.ka { font-weight: 700; line-height: 1.0; }
-
-.contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
-
-/* the band inverts: its action is blue, its secondary a rule in the band's own ink */
-.section-contact .btn-solid { background: var(--band-primary-bg); border-color: var(--band-primary-bg); color: var(--band-primary-fg); }
-.section-contact .btn-solid:hover { background: var(--band-primary-hover-bg); border-color: var(--band-primary-hover-bg); color: var(--band-primary-hover-fg); }
-.section-contact .btn-ghost { border-color: var(--band-secondary); color: var(--band-secondary); }
-.section-contact .btn-ghost:hover { background: var(--band-secondary); color: var(--band-bg); }
-
-/* ---------- footer ---------- */
-.site-footer {
-  background: var(--band-bg);
-  color: var(--band-muted);
-  border-top: 1px solid var(--band-line);
-  padding: var(--s-4) var(--gutter);
-}
-.site-footer p,
-html[data-lang="ka"] .site-footer p {
-  max-width: none;
-  display: flex;
-  justify-content: space-between;
-  gap: var(--s-3);
-  flex-wrap: wrap;
-}
-
-/* ---------- reveal on scroll: 480–700 ms, 12–24 px, never JS-dependent ----------
-   Without JS the class never applies and everything is simply visible. */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--medium) var(--ease), transform var(--medium) var(--ease);
-}
-.js .reveal.is-visible { opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .js .reveal { transform: none; transition: opacity 200ms ease-out; }
-  body, .btn, .site-nav a, .case-link, .lt-opt { transition: none; }
-}
-
-/* ---------- responsive ---------- */
-@media (max-width: 960px) {
-  /* stacked: the drawing goes back into the flow above the pillars */
-  .studio-body { grid-template-columns: 1fr; }
-  .studio-art { min-height: 0; }
-  .studio-art .ink-mask {
-    position: static;
-    width: 100%;
-    max-width: 11rem;
-    aspect-ratio: 507.1 / 1170.8;
-  }
-  .studio-art figcaption { position: static; margin-top: var(--s-2); }
-  .tiers { grid-template-columns: 1fr; }
-  .tier,
-  .tier:first-child,
-  .tier:last-child { padding: var(--s-5) var(--margin); }
-  /* stacked, so the drawing no longer bleeds off the right edge — the
-     copy and the buttons get their gutter back */
-  .hero { grid-template-columns: 1fr; gap: var(--s-4); padding-right: var(--gutter); }
-  .hero-copy { padding-bottom: 0; }
-  /* stacked: the drawing goes back into the flow at its own proportions */
-  .hero-art { max-width: 22rem; margin-left: auto; min-height: 0; }
-  .hero-art .ink-mask { position: static; aspect-ratio: 738.4 / 952.5; }
-  .hero-art figcaption { position: static; margin-top: var(--s-2); }
-  .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
-  .studio-art img { max-width: 11rem; }
-  /* the drawing sits behind the copy here, so it drops back far enough
-     to keep the headline readable */
-  .contact-art { width: 72%; opacity: 0.3; }
+@media (max-width: 900px) {
+  .studio-grid { grid-template-columns: 1fr; }
+  .hero-art { width: 52%; opacity: 0.75; }
 }
 
 @media (max-width: 720px) {
-  /* one bar: the menu on the left, the wordmark on the right. Everything
-     else — nav, theme, language — lives in the dropdown, so the header
-     stops eating a fifth of the screen. */
-  html { scroll-padding-top: 4.5rem; }
-  /* the header stays sticky; sticky already anchors the absolute panel */
-  .site-header { padding-block: var(--s-2); }
-
-  /* wordmark left, menu right */
-  /* icon only: a square the size of a thumb, named for screen readers by
-     the aria-label the language switch keeps in step */
+  .site-header { padding: var(--s-3) var(--margin); }
   .menu-toggle {
     order: 2;
     display: inline-flex;
@@ -922,82 +748,39 @@ html[data-lang="ka"] .site-footer p {
     background: none;
     border: 1px solid currentColor;
     border-radius: 0;
-    color: inherit;
     cursor: pointer;
   }
   .menu-open-icon { display: block; }
-  .menu-close-icon { display: none; }
   html.menu-open .menu-open-icon { display: none; }
   html.menu-open .menu-close-icon { display: block; }
-  html.menu-open .menu-toggle { background: var(--header-fg); color: var(--header-bg); }
 
   .header-panel {
+    position: fixed;
+    inset: 0;
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--header-bg);
-    color: var(--header-fg);
-    /* the panel's own foreground, so the edge still reads on the ink page,
-       where the header and the page share a ground */
-    border-bottom: 2px solid var(--header-fg);
-    padding: var(--s-2) var(--margin) var(--s-4);
-  }
-  html.menu-open .header-panel { display: block; }
-
-  .site-nav { flex-direction: column; gap: 0; overflow: visible; }
-  .site-nav a {
-    display: block;
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--header-line);
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-  }
-  .site-nav a:last-child { border-bottom: none; }
-  .site-nav a .l.ka { font-size: 1rem; letter-spacing: 0.04em; }
-  .site-nav a:hover { border-bottom-color: var(--header-line); }
-
-  .header-tools { gap: var(--s-3); margin-top: var(--s-3); }
-  .header-tools > * { flex: 1; }
-  .lang-toggle, .theme-toggle { min-height: 2.75rem; }
-  .lt-opt { flex: 1; }
-
-  .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
-
-  /* on a phone the 2px rule already separates the sections, so the band of
-     air around it comes down a step */
-  .section { padding-block: var(--s-4); }
-  .tier,
-  .tier:first-child,
-  .tier:last-child { padding-block: var(--s-4); }
-  /* the drawing comes back up beside the copy and keeps running off the
-     right edge, as it does on the wide layout — only narrower */
-  .hero {
-    grid-template-columns: minmax(0, 1fr) 38%;
-    gap: var(--s-3);
-    padding-top: var(--s-4);
-    padding-bottom: var(--s-4);
-    padding-right: 0;
-  }
-  .hero-art {
-    max-width: none;
-    margin-left: 0;
-    align-self: stretch;
-    display: flex;
     flex-direction: column;
+    justify-content: center;
+    gap: var(--s-5);
+    padding: var(--s-8) var(--margin) var(--s-6);
+    background: var(--surface);
+    color: var(--text);
+    mix-blend-mode: normal;
   }
-  .hero-art .ink-mask {
-    -webkit-mask-position: top right;
-    mask-position: top right;
+  html.menu-open .header-panel { display: flex; }
+  .site-nav { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .site-nav a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 11vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
   }
-  /* the credit drops to the foot of the column, so the drawing and the
-     caption bracket the copy instead of leaving a hole under the paper */
-  .hero-art figcaption {
-    margin-top: auto;
-    padding: var(--s-3) var(--margin) 0 0;
-  }
-  .case { grid-template-columns: 1fr; gap: var(--s-3); }
-  .case-link { padding-block: var(--s-2); }
+  .site-nav a::after { display: none; }
+  .tools { gap: var(--s-3); margin-top: var(--s-4); }
+
+  .hero-inner { padding-top: 26vh; }
+  .hero-art { width: 62%; opacity: 0.6; }
+  .hero-foot { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
+  .section-head { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
   .btn { width: 100%; }
 }

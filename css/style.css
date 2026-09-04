@@ -251,9 +251,11 @@ html[data-lang="en"] .l.ka { display: none; }
    markup itself (U+1C90–1CBF) on the .ka spans of h1/h2/h3, .eyebrow and
    .contact-lead. Latin titles are capped the same way via CSS, matching the
    book's own display setting. */
-h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.1; text-wrap: balance; }
+/* Futura caps sit at 754/1000 and Mtavruli has no descenders, so headings
+   are set tight; body copy gets more leading for the small x-height. */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 0.95; text-wrap: balance; }
 h1 .l.en, h2 .l.en, h3 .l.en, .contact-lead .l.en { letter-spacing: -0.025em; text-transform: uppercase; }
-h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 1.15; }
+h1 .l.ka, h2 .l.ka, h3 .l.ka { font-weight: 700; letter-spacing: 0; line-height: 0.98; }
 
 /* measure: 72 characters Latin, 60 Georgian */
 p { max-width: 40em; }
@@ -453,13 +455,13 @@ html.sig-play .hero-art .ink-mask { animation: draw-on 900ms var(--ease) 200ms b
 .hero h1 { font-size: clamp(2.75rem, 7vw, 6rem); max-width: 11em; }
 .hero h1 .l.en {
   font-weight: 700;
-  line-height: 0.92;
+  line-height: 0.88;
   letter-spacing: -0.045em;
 }
 .hero h1 .l.ka {
   font-size: 0.8em;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 0.9;
   letter-spacing: -0.01em;
 }
 .hero-sub {
@@ -512,7 +514,7 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
 
 .section-head h2 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 0.95; }
 .section-head h2 .l.en { font-weight: 700; letter-spacing: -0.04em; }
-.section-head h2 .l.ka { font-weight: 700; line-height: 1.1; }
+.section-head h2 .l.ka { font-weight: 700; line-height: 0.98; }
 
 /* ---------- work ---------- */
 .case {
@@ -731,11 +733,11 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 3.25rem);
   font-weight: 600;
-  line-height: 1.05;
+  line-height: 0.95;
   max-width: 18em;
 }
 .contact-lead .l.en { letter-spacing: -0.035em; }
-.contact-lead .l.ka { font-weight: 700; line-height: 1.15; }
+.contact-lead .l.ka { font-weight: 700; line-height: 1.0; }
 
 .contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
 

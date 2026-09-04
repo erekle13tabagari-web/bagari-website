@@ -246,11 +246,11 @@ html[data-lang="en"] .l.ka { display: none; }
 /* Negative tracking is Latin-display only. Georgian is never tracked tighter
    than −1% and never letterspaced positively.
    Mtavruli (book p09): titles, subtitles and kickers — yes; paragraphs,
-   descriptions and helper text — never. Browsers deliberately exclude
-   Georgian from text-transform: uppercase, so Mtavruli is written into the
-   markup itself (U+1C90–1CBF) on the .ka spans of h1/h2/h3, .eyebrow and
-   .contact-lead. Latin titles are capped the same way via CSS, matching the
-   book's own display setting. */
+   descriptions and helper text — never. Mtavruli is written into the markup
+   itself (U+1C90–1CBF) and Georgian is exempted from text-transform below:
+   Chrome resolves uppercase on Mtavruli by mapping it back down to
+   Mkhedruli, silently undoing the capitals. Latin is capped via CSS,
+   matching the book's own display setting. */
 /* Futura caps sit at 754/1000 and Mtavruli has no descenders, so headings
    are set tight; body copy gets more leading for the small x-height. */
 h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 0.95; text-wrap: balance; }
@@ -283,7 +283,9 @@ html[data-lang="ka"] p { max-width: 36em; }
   text-transform: uppercase;
   line-height: 1.5;
 }
-/* the Georgian counterpart of a label: Noto Sans Georgian, 12 px, Mtavruli written in the markup */
+/* Georgian labels: same face and size as their Latin counterparts, with
+   Mtavruli already in the markup — so text-transform must be switched off,
+   or Chrome maps the capitals back down to Mkhedruli. */
 .eyebrow .l.ka,
 .case-tags .l.ka,
 .tier-flag .l.ka,
@@ -292,12 +294,13 @@ html[data-lang="ka"] p { max-width: 36em; }
 .btn .l.ka,
 .case-link .l.ka,
 .site-footer .l.ka {
-  font-family: var(--font-ka);
-  font-size: 0.75rem;         /* Mtavruli in the markup; same size as the Latin label */
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   line-height: 1.5;
 }
+.l.ka,
+.lt-opt[data-lang-opt="ka"] { text-transform: none; }
 
 /* ---------- focus: visible everywhere, never removed ---------- */
 :focus-visible {

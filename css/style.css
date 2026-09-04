@@ -693,18 +693,29 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .section-contact > :not(.contact-art) { position: relative; z-index: 1; }
 
 /* verdigris on ink — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
+/* fills the band's full height on the right at every size; the drawing is cropped, never squeezed */
 .contact-art {
   position: absolute;
-  right: calc(-0.15 * var(--gutter));
-  bottom: -6%;
-  width: min(44%, 36rem);
-  aspect-ratio: 888 / 878;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: min(42%, 40rem);
   pointer-events: none;
+}
+/* keep the copy clear of the drawing where they share the band */
+@media (min-width: 961px) {
+  .section-contact .section-head,
+  .section-contact .contact-lead,
+  .section-contact .contact-actions { max-width: 54%; }
 }
 .contact-art .ink-mask {
   width: 100%;
   height: 100%;
   background: var(--band-mark);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center;
+  mask-position: center;
   --art: url("../brand/art/bagari-art-trying-to-sleep.svg");  /* stylesheet-relative: Chrome resolves url() in a custom property where it is substituted */
 }
 .section-contact .section-num { color: var(--band-kicker); }
@@ -765,7 +776,7 @@ html[data-lang="ka"] .site-footer p {
   .hero-art .ink-mask { max-height: 60vh; }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
-  .contact-art { width: 60%; right: -18%; bottom: -10%; opacity: 0.55; }
+  .contact-art { width: 60%; opacity: 0.55; }
   .tiers, .pillars { grid-template-columns: 1fr; }
   .tier, .pillar {
     border-right: none;

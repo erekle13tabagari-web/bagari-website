@@ -34,6 +34,32 @@
     setLang(current === "ka" ? "en" : "ka");
   });
 
+  // ----- the phone dropdown: nav, theme and language live here -----
+  var menuToggle = document.getElementById("menuToggle");
+  var menuPanel = document.getElementById("menuPanel");
+
+  function setMenu(open) {
+    document.documentElement.classList.toggle("menu-open", open);
+    menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  menuToggle.addEventListener("click", function () {
+    setMenu(menuToggle.getAttribute("aria-expanded") !== "true");
+  });
+  // a nav link closes it; the switches do not, so their effect is visible
+  Array.prototype.forEach.call(menuPanel.querySelectorAll(".site-nav a"), function (a) {
+    a.addEventListener("click", function () { setMenu(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setMenu(false);
+  });
+  // never leave it stuck open when the layout goes back to a desktop header
+  if (window.matchMedia) {
+    var wide = window.matchMedia("(min-width: 721px)");
+    var onWide = function (m) { if (m.matches) setMenu(false); };
+    if (wide.addEventListener) wide.addEventListener("change", onWide);
+  }
+
   // ----- surface: Stone or Ink. System preference by default, the switch overrides. -----
   var THEME_KEY = "bagari-theme";
   var themeToggle = document.getElementById("themeToggle");

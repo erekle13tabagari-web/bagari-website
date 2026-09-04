@@ -659,6 +659,24 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
 
 /* ---------- studio: numbered pillars (book p02) ---------- */
+/* the drawing sits to the left of the pillars and scales to their height,
+   so the section reads as one block rather than a row and an afterthought. */
+.studio-body {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  gap: var(--s-5);
+  align-items: stretch;
+}
+.studio-art { position: relative; min-height: 20rem; }
+.studio-art .ink-mask {
+  position: absolute;
+  inset: 0 0 var(--s-5) 0;
+  --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg");
+  mask-position: top left;
+  -webkit-mask-position: top left;
+}
+.studio-art figcaption { position: absolute; left: 0; bottom: 0; }
+
 /* three stacked rows: the numeral holds a fixed left column and the text
    runs beside it, so the headings stop breaking mid-phrase and the copy
    gets a proper measure. */
@@ -699,18 +717,17 @@ html[data-lang="ka"] .pillar p { max-width: 36em; }
   .pillar h3 { font-size: 1.375rem; }
 }
 
-.studio-maker {
+/* the maker note lines up under the pillars, not under the drawing */
+.studio-about {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-  gap: var(--s-5);
-  align-items: start;
+  gap: 0 var(--s-5);
   margin-top: clamp(var(--s-5), 6vw, var(--s-6));
   padding-top: var(--s-4);
   border-top: 1px solid var(--line-strong);
 }
-.studio-art .ink-mask { width: 100%; max-width: 16rem; aspect-ratio: 507.1 / 1170.8; --art: url("../brand/art/bagari-art-a-heart-in-my-hand.svg"); }
-.studio-about p { font-size: 0.9375rem; max-width: 34em; }
-.studio-about p + p { margin-top: var(--s-3); color: var(--muted); }
+.studio-about > p { grid-column: 2; font-size: 0.9375rem; max-width: 34em; }
+.studio-about > p + p { margin-top: var(--s-3); color: var(--muted); }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
@@ -803,6 +820,17 @@ html[data-lang="ka"] .site-footer p {
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  /* stacked: the drawing goes back into the flow above the pillars */
+  .studio-body, .studio-about { grid-template-columns: 1fr; }
+  .studio-about > p { grid-column: 1; }
+  .studio-art { min-height: 0; }
+  .studio-art .ink-mask {
+    position: static;
+    width: 100%;
+    max-width: 11rem;
+    aspect-ratio: 507.1 / 1170.8;
+  }
+  .studio-art figcaption { position: static; margin-top: var(--s-2); }
   .tiers { grid-template-columns: 1fr; }
   .tier,
   .tier:first-child,

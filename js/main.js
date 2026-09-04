@@ -37,7 +37,6 @@
   // ----- surface: Stone or Ink. System preference by default, the switch overrides. -----
   var THEME_KEY = "bagari-theme";
   var themeToggle = document.getElementById("themeToggle");
-  var themeMeta = document.getElementById("themeColor");
   var systemDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
   function effectiveTheme() {
@@ -56,7 +55,6 @@
     themeToggle.setAttribute("aria-label", theme === "dark"
       ? (lang === "ka" ? "ქვის ფონზე გადართვა" : "Switch to stone")
       : (lang === "ka" ? "მელნის ფონზე გადართვა" : "Switch to ink"));
-    if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#131512" : "#EDEBE4");
   }
 
   themeToggle.addEventListener("click", function () {

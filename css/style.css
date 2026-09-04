@@ -74,10 +74,11 @@
   --stone: #EDEBE4;
   --verdigris: #3E8C79;   /* display only — rules, kickers, focus, marks on dark. Never small text on stone. */
   --deep: #2A6153;        /* the same signal where it must carry small text on stone */
-  --wine: #7A2438;        /* links, emphasis, one primary action per view */
+  --wine: #CB3534;        /* links, emphasis, one primary action per view — Redprint red */
+  --blue: #1F4E79;        /* the action on the contrasting band — Blueprint blue */
 
   /* states, defined once */
-  --wine-hover: #5C1A2A;
+  --wine-hover: #A32120;
   --disabled-bg: #C9C5B9;
   --disabled-ink: #7C786D;
   --success: #1B6B4F;
@@ -118,8 +119,8 @@
   --band-muted: var(--muted-on-ink);
   --band-line: var(--line-strong-on-ink);
   --band-kicker: var(--verdigris);
-  --band-primary-bg: var(--verdigris);
-  --band-primary-fg: var(--ink-on-verdigris);
+  --band-primary-bg: var(--blue);
+  --band-primary-fg: var(--stone);
   --band-primary-hover-bg: var(--stone);
   --band-primary-hover-fg: var(--ink);
   --band-secondary: var(--stone);
@@ -216,7 +217,7 @@
   --band-muted: var(--muted-on-stone);
   --band-line: var(--line-strong-on-stone);
   --band-kicker: var(--wine);
-  --band-primary-bg: var(--wine);
+  --band-primary-bg: var(--blue);
   --band-primary-fg: var(--stone);
   --band-primary-hover-bg: var(--wine-hover);
   --band-primary-hover-fg: var(--stone);
@@ -581,8 +582,8 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 /* tier colours (Erekle, 2026-09-04): outside the book's five, by decision.
    Each tier is a solid block of its colour with stone text. */
-.tier-blue  { --tier: #1F4E79; }
-.tier-red   { --tier: #CB3534; }
+.tier-blue  { --tier: var(--blue); }
+.tier-red   { --tier: var(--wine); }
 .tier-black { --tier: #171717; }
 
 .tier {

@@ -220,7 +220,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 
 body {
   background: var(--surface);
@@ -337,6 +337,12 @@ html[data-lang="ka"] p { max-width: 36em; }
 }
 .header-tools { display: flex; align-items: center; gap: var(--s-2); }
 
+/* On desktop the panel is not a box at all — its children lay out in the
+   header exactly as before. It only becomes a dropdown on phones. */
+.header-panel { display: contents; }
+.menu-toggle { display: none; }
+.menu-close-icon { display: none; }
+
 /* the wordmark: Archivo 700, wdth 112, −6.5% — the same setting as /brand/logo/ */
 .brand {
   font-family: var(--font-display);
@@ -348,7 +354,16 @@ html[data-lang="ka"] p { max-width: 36em; }
   text-decoration: none;
 }
 
-.site-nav { display: flex; gap: clamp(1rem, 2.5vw, 1.5rem); }
+.site-nav {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav a { white-space: nowrap; }
 
 .site-nav a {
   color: inherit;
@@ -374,6 +389,7 @@ html[data-lang="ka"] p { max-width: 36em; }
   padding: 0;
   cursor: pointer;
   min-height: 2.25rem;
+  flex: none;
 }
 .lt-opt {
   display: inline-flex;
@@ -401,7 +417,7 @@ html[data-lang="en"] .lt-opt[data-lang-opt="en"],
   gap: var(--s-5);
   align-items: start;
   /* no right padding: the drawing runs off the right edge of the screen */
-  padding: clamp(var(--s-6), 10vh, 8rem) 0 0 var(--gutter);
+  padding: clamp(var(--s-5), 7vh, var(--s-7)) 0 0 var(--gutter);
   overflow: hidden;
 }
 .hero-copy { padding-bottom: var(--s-7); }
@@ -513,14 +529,14 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
 /* ---------- sections: rhythm 96 / 64 ---------- */
 .section {
   border-top: 2px solid var(--rule);
-  padding: clamp(var(--s-6), 8vw, var(--s-7)) var(--gutter);
+  padding: clamp(var(--s-5), 5vw, var(--s-6)) var(--gutter);
 }
 
 .section-head {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  margin-bottom: clamp(var(--s-5), 6vw, var(--s-6));
+  margin-bottom: clamp(var(--s-4), 3vw, var(--s-5));
 }
 
 .section-num { color: var(--kicker); }
@@ -535,7 +551,7 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
   display: grid;
   grid-template-columns: minmax(12rem, 1fr) 2fr;
   gap: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
-  padding: var(--s-5) 0;
+  padding: var(--s-4) 0;
   border-top: 1px solid var(--line-strong);
 }
 .case:first-of-type { border-top: none; padding-top: 0; }
@@ -656,7 +672,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 /* the care note closes the section, centred under the three blocks */
 .care {
-  margin: var(--s-6) auto 0;
+  margin: var(--s-5) auto 0;
   padding: var(--s-5);
   border: 1px solid var(--line);
   max-width: 48rem;
@@ -700,7 +716,7 @@ html[data-lang="ka"] .care p { max-width: 34em; }
   grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
   gap: 0 var(--s-5);
   align-items: start;
-  padding: var(--s-5) 0;
+  padding: var(--s-4) 0;
   border-bottom: 1px solid var(--line-strong);
 }
 .pillar:last-child { border-bottom: none; }
@@ -728,7 +744,7 @@ html[data-lang="ka"] .pillar p { max-width: 36em; }
 
 /* the maker note closes the section, centred under the whole block */
 .studio-about {
-  margin-top: clamp(var(--s-5), 6vw, var(--s-6));
+  margin-top: clamp(var(--s-4), 3vw, var(--s-5));
   padding-top: var(--s-5);
   border-top: 1px solid var(--line-strong);
   text-align: center;
@@ -749,7 +765,7 @@ html[data-lang="ka"] .studio-about > p { max-width: 30em; }
   background: var(--band-bg);
   color: var(--band-fg);
   border-top: none;
-  padding-bottom: clamp(var(--s-6), 10vw, 8rem);
+  padding-bottom: clamp(var(--s-5), 5vw, var(--s-6));
   overflow: hidden;
 }
 .section-contact > :not(.contact-art) { position: relative; z-index: 1; }
@@ -855,12 +871,73 @@ html[data-lang="ka"] .site-footer p {
   .hero-art figcaption { position: static; margin-top: var(--s-2); }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
-  .contact-art { width: 60%; opacity: 0.55; }
+  /* the drawing sits behind the copy here, so it drops back far enough
+     to keep the headline readable */
+  .contact-art { width: 72%; opacity: 0.3; }
 }
 
 @media (max-width: 720px) {
-  .site-header { flex-wrap: wrap; row-gap: var(--s-2); }
-  .site-nav { order: 3; width: 100%; gap: var(--s-3); flex-wrap: wrap; }
+  /* one bar: the menu on the left, the wordmark on the right. Everything
+     else — nav, theme, language — lives in the dropdown, so the header
+     stops eating a fifth of the screen. */
+  html { scroll-padding-top: 4.5rem; }
+  /* the header stays sticky; sticky already anchors the absolute panel */
+  .site-header { padding-block: var(--s-2); }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 2.75rem;
+    padding: 0 0.75rem;
+    background: none;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .menu-open-icon { display: block; }
+  .menu-close-icon { display: none; }
+  html.menu-open .menu-open-icon { display: none; }
+  html.menu-open .menu-close-icon { display: block; }
+  html.menu-open .menu-toggle { background: var(--header-fg); color: var(--header-bg); }
+
+  .header-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--header-bg);
+    color: var(--header-fg);
+    border-bottom: 1px solid var(--header-line);
+    padding: var(--s-2) var(--margin) var(--s-4);
+  }
+  html.menu-open .header-panel { display: block; }
+
+  .site-nav { flex-direction: column; gap: 0; overflow: visible; }
+  .site-nav a {
+    display: block;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--header-line);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+  }
+  .site-nav a:last-child { border-bottom: none; }
+  .site-nav a .l.ka { font-size: 1rem; letter-spacing: 0.04em; }
+  .site-nav a:hover { border-bottom-color: var(--header-line); }
+
+  .header-tools { gap: var(--s-3); margin-top: var(--s-3); }
+  .header-tools > * { flex: 1; }
+  .lang-toggle, .theme-toggle { min-height: 2.75rem; }
+  .lt-opt { flex: 1; }
+
+  .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+  .hero { padding-top: var(--s-4); padding-bottom: var(--s-4); }
+  .hero-art { max-width: 15rem; }
   .case { grid-template-columns: 1fr; gap: var(--s-3); }
+  .case-link { padding-block: var(--s-2); }
   .btn { width: 100%; }
 }

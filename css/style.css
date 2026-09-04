@@ -340,6 +340,28 @@ html[data-lang="ka"] p { max-width: 36em; }
 /* On desktop the panel is not a box at all — its children lay out in the
    header exactly as before. It only becomes a dropdown on phones. */
 .header-panel { display: contents; }
+
+/* back to top: a link, so it still works without JS; JS only decides when
+   it shows. Surface-on-surface with a rule, so it reads on either ground
+   and over the band that inverts. */
+.to-top {
+  position: fixed;
+  right: var(--margin);
+  bottom: var(--margin);
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--text);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+html.show-top .to-top { display: inline-flex; }
+.to-top:hover { background: var(--text); color: var(--surface); }
+.to-top svg { display: block; }
 .menu-toggle { display: none; }
 .menu-close-icon { display: none; }
 
@@ -863,7 +885,9 @@ html[data-lang="ka"] .site-footer p {
   .tier,
   .tier:first-child,
   .tier:last-child { padding: var(--s-5) var(--margin); }
-  .hero { grid-template-columns: 1fr; gap: var(--s-4); }
+  /* stacked, so the drawing no longer bleeds off the right edge — the
+     copy and the buttons get their gutter back */
+  .hero { grid-template-columns: 1fr; gap: var(--s-4); padding-right: var(--gutter); }
   .hero-copy { padding-bottom: 0; }
   /* stacked: the drawing goes back into the flow at its own proportions */
   .hero-art { max-width: 22rem; margin-left: auto; min-height: 0; }
@@ -884,17 +908,21 @@ html[data-lang="ka"] .site-footer p {
   /* the header stays sticky; sticky already anchors the absolute panel */
   .site-header { padding-block: var(--s-2); }
 
+  /* wordmark left, menu right */
+  /* icon only: a square the size of a thumb, named for screen readers by
+     the aria-label the language switch keeps in step */
   .menu-toggle {
+    order: 2;
     display: inline-flex;
     align-items: center;
-    gap: var(--s-2);
-    min-height: 2.75rem;
-    padding: 0 0.75rem;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
     background: none;
     border: 1px solid currentColor;
     border-radius: 0;
     color: inherit;
-    font: inherit;
     cursor: pointer;
   }
   .menu-open-icon { display: block; }
@@ -911,7 +939,9 @@ html[data-lang="ka"] .site-footer p {
     right: 0;
     background: var(--header-bg);
     color: var(--header-fg);
-    border-bottom: 1px solid var(--header-line);
+    /* the panel's own foreground, so the edge still reads on the ink page,
+       where the header and the page share a ground */
+    border-bottom: 2px solid var(--header-fg);
     padding: var(--s-2) var(--margin) var(--s-4);
   }
   html.menu-open .header-panel { display: block; }
@@ -935,8 +965,38 @@ html[data-lang="ka"] .site-footer p {
 
   .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
 
-  .hero { padding-top: var(--s-4); padding-bottom: var(--s-4); }
-  .hero-art { max-width: 15rem; }
+  /* on a phone the 2px rule already separates the sections, so the band of
+     air around it comes down a step */
+  .section { padding-block: var(--s-4); }
+  .tier,
+  .tier:first-child,
+  .tier:last-child { padding-block: var(--s-4); }
+  /* the drawing comes back up beside the copy and keeps running off the
+     right edge, as it does on the wide layout — only narrower */
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 38%;
+    gap: var(--s-3);
+    padding-top: var(--s-4);
+    padding-bottom: var(--s-4);
+    padding-right: 0;
+  }
+  .hero-art {
+    max-width: none;
+    margin-left: 0;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-art .ink-mask {
+    -webkit-mask-position: top right;
+    mask-position: top right;
+  }
+  /* the credit drops to the foot of the column, so the drawing and the
+     caption bracket the copy instead of leaving a hole under the paper */
+  .hero-art figcaption {
+    margin-top: auto;
+    padding: var(--s-3) var(--margin) 0 0;
+  }
   .case { grid-template-columns: 1fr; gap: var(--s-3); }
   .case-link { padding-block: var(--s-2); }
   .btn { width: 100%; }

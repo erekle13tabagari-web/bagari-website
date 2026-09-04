@@ -72,10 +72,9 @@
   /* the five */
   --ink: #131512;
   --stone: #EDEBE4;
-  --verdigris: #3E8C79;   /* display only — rules, kickers, focus, marks on dark. Never small text on stone. */
-  --deep: #2A6153;        /* the same signal where it must carry small text on stone */
   --wine: #CB3534;        /* links, emphasis, one primary action per view — Redprint red */
-  --blue: #1F4E79;        /* the action on the contrasting band — Blueprint blue */
+  --blue: #1F4E79;        /* marks, and the action on the band — Blueprint blue, for use on stone */
+  --blue-lift: #5497D3;   /* the same signal lifted to carry small text on ink (5.9:1) */
 
   /* states, defined once */
   --wine-hover: #A32120;
@@ -85,8 +84,7 @@
   --warning: #8A6A1F;
   --error: #A8231A;
 
-  /* neutral steps — tints of ink and stone, not a sixth hue */
-  --ink-on-verdigris: #08201B;
+  /* neutral steps — tints of ink and stone, not a further hue */
   --line-on-stone: #D6D2C6;
   --line-strong-on-stone: #C9C5B9;
   --muted-on-stone: #6A6A62;
@@ -103,7 +101,8 @@
   --line-strong: var(--line-strong-on-stone);
   --rule: var(--ink);                 /* the 2 px section rules */
   --kicker: var(--wine);
-  --mark: var(--verdigris);           /* dashes, numerals, drawings */
+  --mark: var(--blue);                /* numerals, drawings */
+  --focus: var(--blue);
   --link: var(--wine);
   --link-hover: var(--ink);
   --primary-bg: var(--wine);
@@ -118,13 +117,14 @@
   --band-fg: var(--stone);
   --band-muted: var(--muted-on-ink);
   --band-line: var(--line-strong-on-ink);
-  --band-kicker: var(--verdigris);
+  --band-kicker: var(--blue-lift);
   --band-primary-bg: var(--blue);
   --band-primary-fg: var(--stone);
   --band-primary-hover-bg: var(--stone);
   --band-primary-hover-fg: var(--ink);
   --band-secondary: var(--stone);
-  --band-mark: var(--verdigris);
+  --band-mark: var(--blue-lift);
+  --band-focus: var(--blue-lift);
 
   /* type */
   --font-ka: "Noto Sans Georgian", "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -157,8 +157,8 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* ---- Ink edition. Same five colours on the opposite ground (book p04–p06, p12).
-   Wine lees fails on ink, so verdigris carries links and the primary action;
+/* ---- Ink edition. The same colours on the opposite ground: red stays the
+   primary action, blue lifts to carry kickers, links and marks on ink, and
    the band flips to stone so the page keeps its alternation. ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -169,28 +169,30 @@
     --line: var(--line-on-ink);
     --line-strong: var(--line-strong-on-ink);
     --rule: var(--stone);
-    --kicker: var(--verdigris);
-    --mark: var(--verdigris);
-    --link: var(--verdigris);
+    --kicker: var(--blue-lift);
+    --mark: var(--blue-lift);
+    --focus: var(--blue-lift);
+    --link: var(--blue-lift);
     --link-hover: var(--stone);
-    --primary-bg: var(--verdigris);
-    --primary-fg: var(--ink-on-verdigris);
+    --primary-bg: var(--wine);
+    --primary-fg: var(--stone);
     --primary-hover-bg: var(--stone);
     --primary-hover-fg: var(--ink);
     --secondary: var(--stone);
-    --flag-bg: var(--verdigris);
-    --flag-fg: var(--ink-on-verdigris);
+    --flag-bg: var(--wine);
+    --flag-fg: var(--stone);
     --band-bg: var(--stone);
     --band-fg: var(--ink);
     --band-muted: var(--muted-on-stone);
     --band-line: var(--line-strong-on-stone);
     --band-kicker: var(--wine);
-    --band-primary-bg: var(--wine);
+    --band-primary-bg: var(--blue);
     --band-primary-fg: var(--stone);
-    --band-primary-hover-bg: var(--wine-hover);
+    --band-primary-hover-bg: var(--ink);
     --band-primary-hover-fg: var(--stone);
     --band-secondary: var(--ink);
-    --band-mark: var(--deep);
+    --band-mark: var(--blue);
+    --band-focus: var(--blue);
   }
 }
 :root[data-theme="dark"] {
@@ -201,17 +203,18 @@
   --line: var(--line-on-ink);
   --line-strong: var(--line-strong-on-ink);
   --rule: var(--stone);
-  --kicker: var(--verdigris);
-  --mark: var(--verdigris);
-  --link: var(--verdigris);
+  --kicker: var(--blue-lift);
+  --mark: var(--blue-lift);
+  --focus: var(--blue-lift);
+  --link: var(--blue-lift);
   --link-hover: var(--stone);
-  --primary-bg: var(--verdigris);
-  --primary-fg: var(--ink-on-verdigris);
+  --primary-bg: var(--wine);
+  --primary-fg: var(--stone);
   --primary-hover-bg: var(--stone);
   --primary-hover-fg: var(--ink);
   --secondary: var(--stone);
-  --flag-bg: var(--verdigris);
-  --flag-fg: var(--ink-on-verdigris);
+  --flag-bg: var(--wine);
+  --flag-fg: var(--stone);
   --band-bg: var(--stone);
   --band-fg: var(--ink);
   --band-muted: var(--muted-on-stone);
@@ -219,10 +222,11 @@
   --band-kicker: var(--wine);
   --band-primary-bg: var(--blue);
   --band-primary-fg: var(--stone);
-  --band-primary-hover-bg: var(--wine-hover);
+  --band-primary-hover-bg: var(--ink);
   --band-primary-hover-fg: var(--stone);
   --band-secondary: var(--ink);
-  --band-mark: var(--deep);
+  --band-mark: var(--blue);
+  --band-focus: var(--blue);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -309,11 +313,11 @@ html[data-lang="ka"] p { max-width: 36em; }
 
 /* ---------- focus: visible everywhere, never removed ---------- */
 :focus-visible {
-  outline: 2px solid var(--verdigris);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
-::selection { background: var(--verdigris); color: var(--ink-on-verdigris); }
+::selection { background: var(--blue); color: var(--stone); }
 
 /* ---------- header ---------- */
 .site-header {
@@ -697,6 +701,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
+  --focus: var(--band-focus);   /* the band is the opposite ground, so its focus ring flips too */
   position: relative;
   background: var(--band-bg);
   color: var(--band-fg);
@@ -706,7 +711,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 }
 .section-contact > :not(.contact-art) { position: relative; z-index: 1; }
 
-/* verdigris on ink — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
+/* the band's own signal blue — "marks on dark" (book p05). Cropped by the band, sits behind the copy on narrow screens. */
 /* fills the band's full height on the right at every size; the drawing is cropped, never squeezed */
 .contact-art {
   position: absolute;
@@ -745,7 +750,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 .contact-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); flex-wrap: wrap; }
 
-/* on ink, the primary is verdigris (book p09) and the secondary is a stone rule */
+/* the band inverts: its action is blue, its secondary a rule in the band's own ink */
 .section-contact .btn-solid { background: var(--band-primary-bg); border-color: var(--band-primary-bg); color: var(--band-primary-fg); }
 .section-contact .btn-solid:hover { background: var(--band-primary-hover-bg); border-color: var(--band-primary-hover-bg); color: var(--band-primary-hover-fg); }
 .section-contact .btn-ghost { border-color: var(--band-secondary); color: var(--band-secondary); }

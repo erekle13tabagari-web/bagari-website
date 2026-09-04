@@ -337,6 +337,12 @@ html[data-lang="ka"] p { max-width: 36em; }
 }
 .header-tools { display: flex; align-items: center; gap: var(--s-2); }
 
+/* On desktop the panel is not a box at all — its children lay out in the
+   header exactly as before. It only becomes a dropdown on phones. */
+.header-panel { display: contents; }
+.menu-toggle { display: none; }
+.menu-close-icon { display: none; }
+
 /* the wordmark: Archivo 700, wdth 112, −6.5% — the same setting as /brand/logo/ */
 .brand {
   font-family: var(--font-display);
@@ -871,18 +877,66 @@ html[data-lang="ka"] .site-footer p {
 }
 
 @media (max-width: 720px) {
-  /* the sticky bar is two compact rows: brand and switches, then the nav on
-     a single scrolling line. Wrapping it cost a fifth of the screen. */
-  html { scroll-padding-top: 7rem; }
-  .site-header { flex-wrap: wrap; row-gap: var(--s-2); padding-block: var(--s-2); }
-  /* the four Georgian labels need 389px of 350, so they space out
-     across the bar instead of clipping mid-word */
-  .site-nav { order: 3; width: 100%; gap: var(--s-2); justify-content: space-between; }
-  .site-nav a { padding-block: var(--s-2); }
-  .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  /* one bar: the menu on the left, the wordmark on the right. Everything
+     else — nav, theme, language — lives in the dropdown, so the header
+     stops eating a fifth of the screen. */
+  html { scroll-padding-top: 4.5rem; }
+  /* the header stays sticky; sticky already anchors the absolute panel */
+  .site-header { padding-block: var(--s-2); }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 2.75rem;
+    padding: 0 0.75rem;
+    background: none;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .menu-open-icon { display: block; }
+  .menu-close-icon { display: none; }
+  html.menu-open .menu-open-icon { display: none; }
+  html.menu-open .menu-close-icon { display: block; }
+  html.menu-open .menu-toggle { background: var(--header-fg); color: var(--header-bg); }
+
+  .header-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--header-bg);
+    color: var(--header-fg);
+    border-bottom: 1px solid var(--header-line);
+    padding: var(--s-2) var(--margin) var(--s-4);
+  }
+  html.menu-open .header-panel { display: block; }
+
+  .site-nav { flex-direction: column; gap: 0; overflow: visible; }
+  .site-nav a {
+    display: block;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--header-line);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+  }
+  .site-nav a:last-child { border-bottom: none; }
+  .site-nav a .l.ka { font-size: 1rem; letter-spacing: 0.04em; }
+  .site-nav a:hover { border-bottom-color: var(--header-line); }
+
+  .header-tools { gap: var(--s-3); margin-top: var(--s-3); }
+  .header-tools > * { flex: 1; }
   .lang-toggle, .theme-toggle { min-height: 2.75rem; }
-  .hero { padding-top: var(--s-5); }
-  .hero-art { max-width: 17rem; }
+  .lt-opt { flex: 1; }
+
+  .brand { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+  .hero { padding-top: var(--s-4); padding-bottom: var(--s-4); }
+  .hero-art { max-width: 15rem; }
   .case { grid-template-columns: 1fr; gap: var(--s-3); }
   .case-link { padding-block: var(--s-2); }
   .btn { width: 100%; }

@@ -399,8 +399,9 @@ html[data-lang="en"] .lt-opt[data-lang-opt="en"],
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: var(--s-5);
-  align-items: end;
-  padding: clamp(var(--s-6), 10vh, 8rem) var(--gutter) 0;
+  align-items: start;
+  /* no right padding: the drawing runs off the right edge of the screen */
+  padding: clamp(var(--s-6), 10vh, 8rem) 0 0 var(--gutter);
   overflow: hidden;
 }
 .hero-copy { padding-bottom: var(--s-7); }
@@ -423,26 +424,17 @@ figcaption .l.ka { font-family: var(--font-ka); font-size: 0.8125rem; letter-spa
 
 .hero-art {
   position: relative;
-  align-self: end;
-  justify-self: end;
+  align-self: start;
   width: 100%;
-  max-width: 34rem;
-  margin-right: calc(-0.5 * var(--gutter));
 }
 .hero-art .ink-mask {
   width: 100%;
   aspect-ratio: 746.4 / 960.5;
-  max-height: 78vh;
   --art: url("../brand/art/bagari-art-the-look.svg");
-  mask-position: right bottom;
-  -webkit-mask-position: right bottom;
+  mask-position: top right;
+  -webkit-mask-position: top right;
 }
-.hero-art figcaption {
-  position: absolute;
-  left: 0;
-  bottom: var(--s-3);
-  max-width: 14em;
-}
+.hero-art figcaption { max-width: 14em; }
 
 /* the wipe: 900 ms ease-out, once per session, never blocking content.
    Without JS the class never lands and the drawing is simply there. */
@@ -798,8 +790,7 @@ html[data-lang="ka"] .site-footer p {
   .tier:last-child { padding: var(--s-5) var(--margin); }
   .hero { grid-template-columns: 1fr; gap: var(--s-4); }
   .hero-copy { padding-bottom: 0; }
-  .hero-art { max-width: 22rem; margin-right: calc(-1 * var(--gutter)); }
-  .hero-art .ink-mask { max-height: 60vh; }
+  .hero-art { max-width: 22rem; margin-left: auto; }
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
   .contact-art { width: 60%; opacity: 0.55; }

@@ -11,7 +11,9 @@ face rather than being paired across two families.
 The .woff2 files here are subsets of the supplied OTFs, cut down to the
 ranges the site actually uses: Basic Latin, Latin-1, general punctuation,
 the lari sign, arrows, Mkhedruli (U+10A0–10FF) and Mtavruli (U+1C90–1CBF).
-Roughly 48 KB each. Source OTFs are in /Futura 100 Georgian/.
+Roughly 48 KB each. The source OTFs are deliberately NOT in this repo —
+see below. Erekle holds them locally; they are also in git history up to
+commit 28596c8 if another weight is ever needed.
 
 LICENCE — ACTION REQUIRED
 -------------------------
@@ -23,10 +25,16 @@ Before this goes to production, confirm:
 
   1. The licence covers web embedding (@font-face), not desktop only.
   2. Any pageview or domain limits, and whether they are recorded here.
-  3. Whether the full OTF family may sit in a public repository — it is
-     downloadable by anyone while it does.
+  3. Whether git history may keep the full OTF family. The repository is
+     public, so history remains fetchable by anyone. If the licence turns
+     out to be desktop-only, history has to be rewritten, not just the
+     working tree.
 
-Record the answer here once confirmed.
+Removed from the deployed tree on 2026-09-04: the 24 source OTFs were
+being served publicly from the live site (5.7 MB, the complete family).
+Only the six subsets ship now.
+
+Record the licence answer here once confirmed.
 
 Superseded (removed 2026-09-04): Archivo, Noto Sans Georgian and
 IBM Plex Mono, all SIL Open Font Licence 1.1. Recoverable from git

@@ -672,7 +672,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
   gap: var(--s-5);
-  align-items: end;
+  align-items: start;
   margin-top: clamp(var(--s-5), 6vw, var(--s-6));
   padding-top: var(--s-4);
   border-top: 1px solid var(--line-strong);

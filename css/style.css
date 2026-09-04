@@ -401,7 +401,7 @@ html[data-lang="en"] .lt-opt[data-lang-opt="en"],
   gap: var(--s-5);
   align-items: start;
   /* no right padding: the drawing runs off the right edge of the screen */
-  padding: clamp(var(--s-6), 10vh, 8rem) 0 0 var(--gutter);
+  padding: clamp(var(--s-5), 7vh, var(--s-7)) 0 0 var(--gutter);
   overflow: hidden;
 }
 .hero-copy { padding-bottom: var(--s-7); }
@@ -513,14 +513,14 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
 /* ---------- sections: rhythm 96 / 64 ---------- */
 .section {
   border-top: 2px solid var(--rule);
-  padding: clamp(var(--s-6), 8vw, var(--s-7)) var(--gutter);
+  padding: clamp(var(--s-5), 5vw, var(--s-6)) var(--gutter);
 }
 
 .section-head {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  margin-bottom: clamp(var(--s-5), 6vw, var(--s-6));
+  margin-bottom: clamp(var(--s-4), 3vw, var(--s-5));
 }
 
 .section-num { color: var(--kicker); }
@@ -535,7 +535,7 @@ html[data-lang="ka"] .hero-sub { font-weight: 500; max-width: 30em; }
   display: grid;
   grid-template-columns: minmax(12rem, 1fr) 2fr;
   gap: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
-  padding: var(--s-5) 0;
+  padding: var(--s-4) 0;
   border-top: 1px solid var(--line-strong);
 }
 .case:first-of-type { border-top: none; padding-top: 0; }
@@ -656,7 +656,7 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 
 /* the care note closes the section, centred under the three blocks */
 .care {
-  margin: var(--s-6) auto 0;
+  margin: var(--s-5) auto 0;
   padding: var(--s-5);
   border: 1px solid var(--line);
   max-width: 48rem;
@@ -700,7 +700,7 @@ html[data-lang="ka"] .care p { max-width: 34em; }
   grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
   gap: 0 var(--s-5);
   align-items: start;
-  padding: var(--s-5) 0;
+  padding: var(--s-4) 0;
   border-bottom: 1px solid var(--line-strong);
 }
 .pillar:last-child { border-bottom: none; }
@@ -728,7 +728,7 @@ html[data-lang="ka"] .pillar p { max-width: 36em; }
 
 /* the maker note closes the section, centred under the whole block */
 .studio-about {
-  margin-top: clamp(var(--s-5), 6vw, var(--s-6));
+  margin-top: clamp(var(--s-4), 3vw, var(--s-5));
   padding-top: var(--s-5);
   border-top: 1px solid var(--line-strong);
   text-align: center;
@@ -749,7 +749,7 @@ html[data-lang="ka"] .studio-about > p { max-width: 30em; }
   background: var(--band-bg);
   color: var(--band-fg);
   border-top: none;
-  padding-bottom: clamp(var(--s-6), 10vw, 8rem);
+  padding-bottom: clamp(var(--s-5), 5vw, var(--s-6));
   overflow: hidden;
 }
 .section-contact > :not(.contact-art) { position: relative; z-index: 1; }

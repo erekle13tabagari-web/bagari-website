@@ -570,8 +570,13 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 /* the services section gives up its side padding so the tier blocks reach
    both screen edges; its other children carry the gutter themselves */
 #services { padding-left: 0; padding-right: 0; }
-#services > .section-head,
-#services > .care { margin-left: var(--gutter); margin-right: var(--gutter); }
+#services > .section-head { margin-left: var(--gutter); margin-right: var(--gutter); }
+/* the care note is centred on the section, never pinned to the gutter */
+#services > .care {
+  margin-left: auto;
+  margin-right: auto;
+  width: min(48rem, calc(100% - 2 * var(--margin)));
+}
 
 .tiers {
   display: grid;
@@ -649,12 +654,16 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .tier-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; white-space: nowrap; }
 .tier-time { color: var(--tier-soft); white-space: nowrap; }
 
+/* the care note closes the section, centred under the three blocks */
 .care {
-  margin-top: var(--s-5);
-  padding: var(--s-4) var(--s-5);
+  margin: var(--s-6) auto 0;
+  padding: var(--s-5);
   border: 1px solid var(--line);
-  max-width: 60rem;
+  max-width: 48rem;
+  text-align: center;
 }
+.care p { max-width: 40em; margin-inline: auto; text-wrap: pretty; }
+html[data-lang="ka"] .care p { max-width: 34em; }
 .care strong { font-weight: 600; }
 .care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
 

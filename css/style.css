@@ -147,7 +147,8 @@
 
 /* ---- Ink edition. The same colours on the opposite ground: red stays the
    primary action, blue lifts to carry kickers, links and marks on ink, and
-   the band flips to stone so the page keeps its alternation. ---- */
+   the band flips to stone — where red carries its mark and action, so the
+   accent alternates with the ground the same way everything else does. ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
@@ -174,12 +175,12 @@
     --band-muted: var(--muted-on-stone);
     --band-line: var(--line-strong-on-stone);
     --band-kicker: var(--wine);
-    --band-primary-bg: var(--blue);
+    --band-primary-bg: var(--wine);
     --band-primary-fg: var(--stone);
-    --band-primary-hover-bg: var(--ink);
+    --band-primary-hover-bg: var(--wine-hover);
     --band-primary-hover-fg: var(--stone);
     --band-secondary: var(--ink);
-    --band-mark: var(--blue);
+    --band-mark: var(--wine);
     --band-focus: var(--blue);
   }
 }
@@ -208,12 +209,12 @@
   --band-muted: var(--muted-on-stone);
   --band-line: var(--line-strong-on-stone);
   --band-kicker: var(--wine);
-  --band-primary-bg: var(--blue);
+  --band-primary-bg: var(--wine);
   --band-primary-fg: var(--stone);
-  --band-primary-hover-bg: var(--ink);
+  --band-primary-hover-bg: var(--wine-hover);
   --band-primary-hover-fg: var(--stone);
   --band-secondary: var(--ink);
-  --band-mark: var(--blue);
+  --band-mark: var(--wine);
   --band-focus: var(--blue);
 }
 

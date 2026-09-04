@@ -659,36 +659,45 @@ html[data-lang="ka"] .case-body p { max-width: 36em; }
 .care-note { color: var(--muted); font-size: 0.875rem; margin-top: var(--s-2); }
 
 /* ---------- studio: numbered pillars (book p02) ---------- */
+/* three stacked rows: the numeral holds a fixed left column and the text
+   runs beside it, so the headings stop breaking mid-phrase and the copy
+   gets a proper measure. */
 .pillars {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   border-top: 2px solid var(--rule);
   counter-reset: pillar;
 }
 
 .pillar {
   counter-increment: pillar;
-  padding: var(--s-4) var(--s-4) 0 0;
-  margin-right: var(--s-4);
-  border-right: 1px solid var(--line-strong);
+  display: grid;
+  grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  gap: 0 var(--s-5);
+  align-items: start;
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--line-strong);
 }
-.pillar:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.pillar:last-child { border-bottom: none; }
 
 .pillar::before {
   content: counter(pillar, decimal-leading-zero);
-  display: block;
-  font-family: var(--font-en);
-  font-size: 4rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  grid-row: 1 / span 2;
   font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
   color: var(--mark);
-  margin-bottom: var(--s-3);
 }
 
-.pillar h3 { font-size: 1.5rem; margin-bottom: var(--s-2); max-width: 12em; }
-.pillar p { font-size: 0.9375rem; max-width: 26em; }
+.pillar h3 { font-size: 1.75rem; margin-bottom: var(--s-2); max-width: 18em; }
+.pillar p { font-size: 1rem; max-width: 42em; }
+html[data-lang="ka"] .pillar p { max-width: 36em; }
+
+@media (max-width: 720px) {
+  .pillar { grid-template-columns: 1fr; gap: var(--s-2); padding: var(--s-4) 0; }
+  .pillar::before { grid-row: auto; font-size: 2.75rem; }
+  .pillar h3 { font-size: 1.375rem; }
+}
 
 .studio-maker {
   display: grid;
@@ -807,15 +816,6 @@ html[data-lang="ka"] .site-footer p {
   .studio-maker { grid-template-columns: 1fr; gap: var(--s-4); }
   .studio-art img { max-width: 11rem; }
   .contact-art { width: 60%; opacity: 0.55; }
-  .pillars { grid-template-columns: 1fr; }
-  .pillar {
-    border-right: none;
-    margin-right: 0;
-    padding-right: 0;
-    border-bottom: 1px solid var(--line-strong);
-    padding-bottom: var(--s-4);
-  }
-  .pillar:last-child { border-bottom: none; padding-bottom: 0; }
 }
 
 @media (max-width: 720px) {

@@ -132,31 +132,10 @@
   --vel: 0;
 }
 
-/* ---- Stone edition ---- */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    color-scheme: light;
-    --surface: var(--stone);
-    --text: var(--ink);
-    --muted: var(--muted-on-stone);
-    --line: var(--line-on-stone);
-    --line-strong: var(--line-strong-on-stone);
-    --kicker: var(--wine);
-    --mark: var(--wine);
-    --focus: var(--blue);
-    --link: var(--wine);
-    --primary-bg: var(--wine);
-    --primary-fg: var(--stone);
-    --primary-hover-bg: var(--ink);
-    --primary-hover-fg: var(--stone);
-    --secondary: var(--ink);
-    --band-bg: var(--ink);
-    --band-fg: var(--stone);
-    --band-muted: var(--muted-on-ink);
-    --band-line: var(--line-strong-on-ink);
-    --band-kicker: var(--blue-lift);
-  }
-}
+/* ---- Stone edition. Reached by the switch only: the site commits to Ink
+   the way the reference studios commit to their ground, rather than
+   following the OS. The switch persists, so a reader who wants Stone keeps
+   it. ---- */
 :root[data-theme="light"] {
   color-scheme: light;
   --surface: var(--stone);
@@ -309,11 +288,26 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
   justify-content: space-between;
   gap: var(--s-4);
   padding: var(--s-4) var(--gutter);
-  mix-blend-mode: difference;   /* the wordmark stays legible over any panel */
-  color: #fff;
+  color: var(--text);
   pointer-events: none;
 }
 .site-header > * { pointer-events: auto; }
+/* transparent over the hero, and a ground the moment the page moves, so the
+   nav never has to compete with a photograph or a drawing behind it */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transition: opacity var(--medium) var(--ease);
+}
+html.scrolled .site-header::before { opacity: 0.94; }
+@supports (backdrop-filter: blur(1px)) {
+  html.scrolled .site-header::before { opacity: 0.82; backdrop-filter: blur(10px); }
+}
 
 .brand {
   font-family: var(--font-display);
@@ -324,6 +318,7 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
   text-decoration: none;
 }
 
+.header-panel { display: flex; align-items: center; gap: clamp(var(--s-4), 3vw, var(--s-6)); }
 .site-nav { display: flex; align-items: center; gap: var(--s-5); }
 .site-nav a {
   text-decoration: none;
@@ -399,7 +394,7 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-top: 22vh;
+  padding-top: 15vh;
   padding-bottom: clamp(var(--s-5), 6vh, var(--s-7));
 }
 .hero-eyebrow {
@@ -409,7 +404,7 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.75rem, 10.5vw, 11rem);
+  font-size: clamp(2.5rem, 8.2vw, 8.5rem);
   line-height: 0.82;
   max-width: 14ch;
 }
@@ -420,10 +415,10 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
    by the scroll. It sits behind the type and bleeds off the top and right. */
 .hero-art {
   position: absolute;
-  top: 0;
+  top: 11vh;
   right: 0;
-  width: min(46%, 42rem);
-  height: 100%;
+  width: min(42%, 38rem);
+  height: 78%;
   z-index: -1;
   pointer-events: none;
 }
@@ -584,7 +579,12 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
 .work-result span { color: var(--muted); max-width: 34ch; }
 
 /* ---------- capabilities: the three levels, no prices ---------- */
-.levels { display: grid; gap: 1px; background: var(--line-strong); }
+.levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line-strong);
+}
 .level {
   background: var(--surface);
   padding: clamp(var(--s-5), 5vh, var(--s-6)) clamp(var(--s-4), 4vw, var(--s-6));
@@ -604,9 +604,6 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
 .level[data-level="redprint"] .level-name { color: var(--wine); }
 .level[data-level="blackprint"] .level-name { color: var(--text); }
 :root[data-theme="light"] .level[data-level="blueprint"] .level-name { color: var(--blue); }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) .level[data-level="blueprint"] .level-name { color: var(--blue); }
-}
 .level-for { color: var(--muted); }
 .level ul { display: grid; gap: var(--s-2); }
 .level li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--s-2); }
@@ -731,6 +728,7 @@ html.show-top .to-top { display: inline-flex; }
 .menu-close-icon { display: none; }
 
 @media (max-width: 900px) {
+  .levels { grid-template-columns: 1fr; }
   .studio-grid { grid-template-columns: 1fr; }
   .hero-art { width: 52%; opacity: 0.75; }
 }
@@ -739,6 +737,10 @@ html.show-top .to-top { display: inline-flex; }
   .site-header { padding: var(--s-3) var(--margin); }
   .menu-toggle {
     order: 2;
+    /* the panel is fixed and comes later in the header, so without this it
+       paints over the very button that closes it */
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -778,8 +780,9 @@ html.show-top .to-top { display: inline-flex; }
   .site-nav a::after { display: none; }
   .tools { gap: var(--s-3); margin-top: var(--s-4); }
 
-  .hero-inner { padding-top: 26vh; }
-  .hero-art { width: 62%; opacity: 0.6; }
+  .hero { min-height: 88svh; }
+  .hero-inner { padding-top: 16vh; }
+  .hero-art { top: 8vh; height: 52%; width: 66%; opacity: 0.6; }
   .hero-foot { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
   .section-head { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
   .btn { width: 100%; }

@@ -86,7 +86,7 @@
   --line-strong: var(--line-strong-on-stone);
   --rule: var(--ink);                 /* the 2 px section rules */
   --kicker: var(--wine);
-  --mark: var(--blue);                /* numerals, drawings */
+  --mark: var(--wine);                /* numerals — red on stone, blue on ink */
   --focus: var(--blue);
   --link: var(--wine);
   --link-hover: var(--ink);

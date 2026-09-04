@@ -717,17 +717,21 @@ html[data-lang="ka"] .pillar p { max-width: 36em; }
   .pillar h3 { font-size: 1.375rem; }
 }
 
-/* the maker note lines up under the pillars, not under the drawing */
+/* the maker note closes the section, centred under the whole block */
 .studio-about {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-  gap: 0 var(--s-5);
   margin-top: clamp(var(--s-5), 6vw, var(--s-6));
-  padding-top: var(--s-4);
+  padding-top: var(--s-5);
   border-top: 1px solid var(--line-strong);
+  text-align: center;
 }
-.studio-about > p { grid-column: 2; font-size: 0.9375rem; max-width: 34em; }
+.studio-about > p {
+  font-size: 0.9375rem;
+  max-width: 34em;
+  margin-inline: auto;
+  text-wrap: pretty;
+}
 .studio-about > p + p { margin-top: var(--s-3); color: var(--muted); }
+html[data-lang="ka"] .studio-about > p { max-width: 30em; }
 
 /* ---------- contact: the ink band ---------- */
 .section-contact {
@@ -821,8 +825,7 @@ html[data-lang="ka"] .site-footer p {
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   /* stacked: the drawing goes back into the flow above the pillars */
-  .studio-body, .studio-about { grid-template-columns: 1fr; }
-  .studio-about > p { grid-column: 1; }
+  .studio-body { grid-template-columns: 1fr; }
   .studio-art { min-height: 0; }
   .studio-art .ink-mask {
     position: static;

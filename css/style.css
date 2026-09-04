@@ -302,6 +302,16 @@ html[data-lang="ka"] p { max-width: 36em; }
 .l.ka,
 .lt-opt[data-lang-opt="ka"] { text-transform: none; }
 
+/* Futura carries no heart, so the sign-off draws its own: sized to the
+   face's cap height (754/1000) and filled from the text colour, it matches
+   the letters beside it instead of falling back to a system glyph. */
+.heart {
+  height: 0.754em;
+  width: auto;
+  fill: currentColor;
+  vertical-align: baseline;
+}
+
 /* ---------- focus: visible everywhere, never removed ---------- */
 :focus-visible {
   outline: 2px solid var(--focus);

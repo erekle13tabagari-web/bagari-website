@@ -15,6 +15,9 @@
       if (opt.getAttribute("data-lang-opt") === lang) opt.setAttribute("aria-current", "true");
       else opt.removeAttribute("aria-current");
     });
+    /* both are declared below, so the first call — before they exist — skips them */
+    if (toTop) paintToTop();
+    if (menuToggle) paintMenuLabel();
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
 
@@ -38,10 +41,22 @@
   var menuToggle = document.getElementById("menuToggle");
   var menuPanel = document.getElementById("menuPanel");
 
+  // the button carries no text, so its name is the aria-label — and it says
+  // what the button does now, which flips with the panel
+  function paintMenuLabel() {
+    var ka = document.documentElement.getAttribute("data-lang") === "ka";
+    var open = menuToggle.getAttribute("aria-expanded") === "true";
+    menuToggle.setAttribute("aria-label",
+      ka ? (open ? "მენიუს დახურვა" : "მენიუ") : (open ? "Close menu" : "Menu"));
+  }
+
   function setMenu(open) {
     document.documentElement.classList.toggle("menu-open", open);
     menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    paintMenuLabel();
   }
+
+  paintMenuLabel();
 
   menuToggle.addEventListener("click", function () {
     setMenu(menuToggle.getAttribute("aria-expanded") !== "true");
@@ -100,6 +115,20 @@
     document.documentElement.classList.add("sig-play");
     try { sessionStorage.setItem(SIG_KEY, "1"); } catch (e) {}
   }
+
+  // ----- back to top: appears once a screenful has gone by -----
+  var toTop = document.getElementById("toTop");
+
+  function paintToTop() {
+    var lang = document.documentElement.getAttribute("data-lang");
+    toTop.setAttribute("aria-label", lang === "ka" ? "დასაწყისში დაბრუნება" : "Back to top");
+  }
+  function onScroll() {
+    document.documentElement.classList.toggle("show-top", window.scrollY > window.innerHeight);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  paintToTop();
 
   // ----- reveal on scroll -----
   var reveals = document.querySelectorAll(".reveal");

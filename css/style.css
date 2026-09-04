@@ -290,7 +290,7 @@ html[data-lang="ka"] p { max-width: 36em; }
   text-transform: uppercase;
   line-height: 1.5;
 }
-/* the Georgian counterpart of a label: Noto Sans Georgian, 14 px, no tracking, no case change */
+/* the Georgian counterpart of a label: Noto Sans Georgian, 12 px, Mtavruli written in the markup */
 .eyebrow .l.ka,
 .case-tags .l.ka,
 .tier-flag .l.ka,
@@ -300,9 +300,9 @@ html[data-lang="ka"] p { max-width: 36em; }
 .case-link .l.ka,
 .site-footer .l.ka {
   font-family: var(--font-ka);
-  font-size: 0.875rem;
+  font-size: 0.75rem;         /* Mtavruli in the markup; same size as the Latin label */
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   line-height: 1.5;
 }
 

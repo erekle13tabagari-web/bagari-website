@@ -685,6 +685,75 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
 .btn-ghost { border-color: currentColor; }
 .btn-ghost:hover { background: var(--band-fg); color: var(--band-bg); }
 
+/* ---------- plates ----------
+   Taken from Hermes Agent: their identity is antique engravings duotoned into
+   one saturated colour and screened with a dither. They had to license the
+   engravings. Erekle draws them, and hand-hatched ink already carries the
+   texture their dither manufactures, so the drawings go onto a flooded brand
+   ground and a Bayer screen presses the whole plate like print.
+
+   This is why the work cards need no photography to stop looking unfinished. */
+.plate {
+  position: relative;
+  overflow: clip;
+  aspect-ratio: 3 / 2;
+  background: var(--plate-bg);
+  --plate-bg: var(--redprint);
+  --plate-fg: var(--stone);
+}
+.plate .ink {
+  position: absolute;
+  inset: clamp(var(--s-3), 3vw, var(--s-5));
+  --ink-colour: var(--plate-fg);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+/* the screen: an 8x8 ordered-dither matrix, tiled small and blended, so the
+   plate reads as something printed rather than something rendered */
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAaklEQVR42mNg+N/4X+H/wv8c/zv/a/xf9Z/pEMN+hkMMBxgg9H4GBoP/m/4L/J/43+L/rv8S/2fCVMDwAQYmKQYZhiiGOAYuBh4GLwYfBgwVDDb/9/2X+T/3v8n/bf9F/k/9z3QYxZYDDABycTq0v5/34wAAAABJRU5ErkJggg==");
+  background-repeat: repeat;
+  background-size: 8px 8px;
+  image-rendering: pixelated;
+  mix-blend-mode: overlay;
+  opacity: 0.38;
+  pointer-events: none;
+}
+.plate-blue { --plate-bg: var(--blueprint); }
+.plate-black { --plate-bg: var(--blackprint); }
+.plate-square { aspect-ratio: 1; }
+
+/* technical labels: mono for the Latin-only tics. Georgian has no mono cut in
+   the family, so anything bilingual stays in Futura and only the numbers and
+   markers take the machine voice. */
+.tic {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--kicker);
+}
+
+/* the footer wordmark, set enormous and barely there */
+.footer-mark {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 17vw, 16rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: var(--text);
+  opacity: 0.06;
+  text-align: center;
+  user-select: none;
+  margin-bottom: calc(-0.12em - var(--s-3));
+  pointer-events: none;
+}
+
 /* ---------- footer ---------- */
 .site-footer {
   padding: var(--s-5) var(--gutter);

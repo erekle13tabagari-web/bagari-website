@@ -19,7 +19,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=202609171359">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -157,11 +157,8 @@
           <span class="l en">Three decades of reputation and no way for a guest to book a table. We built the site around the reservation.</span>
           <span class="l ka">ოცდაათწლიანი რეპუტაცია და სტუმრისთვის მაგიდის დაჯავშნის ვერანაირი გზა. საიტი ჯავშნის გარშემო ავაწყვეთ.</span>
         </p>
-        <!-- SLOT: the measured result. Nothing here may go live until it is real. -->
-        <p class="work-result" data-slot="varazi-result">
-          <b>—</b>
-          <span class="label">RESULT PENDING · one measured number, e.g. reservations up N% in the first quarter</span>
-        </p>
+        <!-- SLOT: the measured result. Restore the .work-result row here once
+             the real number exists. Nothing goes live until it is real. -->
       </article>
 
       <article class="rv">
@@ -181,11 +178,8 @@
           <span class="l en">Twenty years and 250+ projects, competing for commercial tenders. The enquiry form takes the specification as a file, not a phone call.</span>
           <span class="l ka">ოცი წელი და 250+ პროექტი, კომერციულ ტენდერებში. ფორმა სპეციფიკაციას ფაილად იღებს და არა სატელეფონო ზარად.</span>
         </p>
-        <!-- SLOT: the measured result. Nothing here may go live until it is real. -->
-        <p class="work-result" data-slot="biomi-result">
-          <b>—</b>
-          <span class="label">RESULT PENDING · one measured number, e.g. N tender enquiries in the first month, from zero</span>
-        </p>
+        <!-- SLOT: the measured result. Restore the .work-result row here once
+             the real number exists. Nothing goes live until it is real. -->
       </article>
 
     </div>
@@ -303,8 +297,8 @@
       <a class="btn btn-solid" href="mailto:erekle13tabagari@gmail.com?subject=Project%20enquiry%20for%20BAGARI">
         <span class="l en">Write to us</span><span class="l ka">ᲛᲝᲒᲕᲬᲔᲠᲔᲗ</span>
       </a>
-      <!-- TODO: real Instagram URL still needed -->
-      <a class="btn btn-ghost" href="#" data-slot="instagram-url">Instagram</a>
+      <!-- SLOT: the Instagram button goes back here once the URL exists. A
+           link pointing nowhere is worse on a live site than no button. -->
     </div>
 
     <div class="contact-art" aria-hidden="true"><div class="ink"></div></div>
@@ -340,8 +334,7 @@
 
     <nav class="footer-col">
       <h3 class="label"><span class="l en">Elsewhere</span><span class="l ka">ᲡᲮᲕᲐᲒᲐᲜ</span></h3>
-      <!-- TODO: real Instagram URL still needed -->
-      <a href="#" data-slot="instagram-url">Instagram</a>
+      <!-- SLOT: Instagram link, once the URL exists. -->
       <a href="mailto:erekle13tabagari@gmail.com"><span class="l en">Email</span><span class="l ka">ᲔᲚᲤᲝᲡᲢᲐ</span></a>
     </nav>
   </div>
@@ -359,6 +352,6 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=202609171359"></script>
 </body>
 </html>

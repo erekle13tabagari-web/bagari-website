@@ -43,34 +43,26 @@ which is exactly what is deployed today. Nothing in this rebuild touches it.
 
 ## State of the tree
 
-- `css/style.css` — **rewritten for v2. Done.**
-- `index.html` — **still v1. Next job.** The page is broken until it is
-  rewritten against the new CSS. Do not deploy this branch as it stands.
-- `js/main.js` — still v1. Needs the motion layer: a single rAF loop writing
-  `--p` (0→1 scroll progress) onto `[data-scrub]` elements and `--vel`
-  (scroll velocity) onto the root, plus reveal observers, the language and
-  theme switches, and the phone menu carried over.
-- `work/varazi.html`, `work/biomi.html` — not started.
-- `Futura 100/` — **untracked as of this branch.** The 26 licensed OTF and
-  TTF source files were being served publicly from the deployed site; they
-  are now removed from the tree. They remain in git history at `28596c8`,
-  which is still unresolved: either make the repo private, or purge history
-  with a force-push.
+v2 is live on `main`. `archive/v1-black-label` holds the v1 site as deployed.
+
+Built: the design system, the work-led page, the motion layer, the plates,
+the Redprint ground with its Stone relief section, and the reference's header
+and footer shapes.
+
+Not built: individual case-study pages at `work/varazi.html` and
+`work/biomi.html`. The home page carries both projects for now.
+
+`Futura 100/` is untracked. The 26 licensed OTF and TTF sources were being
+served publicly from the deployed site and are out of the tree; they remain
+in history at `28596c8`, which is still unresolved. Either make the repo
+private, or purge history with a force-push.
 
 ## What Erekle owes the build
 
-**Photography and art direction.** The references are carried by imagery and
-BAGARI currently has none. Per project:
-
-| Shot | Ratio | Min size | Use |
-|---|---|---|---|
-| Hero | 16:9 | 2400 × 1350 | Work index card, case-study header |
-| Detail × 3 | 4:5 | 1600 × 2000 | Case-study body |
-| In situ × 1 | 3:2 | 2400 × 1600 | The room, the site, the product in context |
-
-For Varazi that means the room, the table, the food, the site on a phone in
-someone's hand. For Biomi, the plant, the documentation, the site on a
-laptop in an office. Screenshots alone will read as thin.
+**Photography and art direction.** No longer blocking. The plate treatment
+carries the work cards, so photography is now an upgrade rather than a
+dependency. If it does arrive: 16:9 at 2400 x 1350 for a card or case header,
+4:5 at 1600 x 2000 for detail, 3:2 at 2400 x 1600 in situ.
 
 **One measured number per project.** This is the single biggest gap between
 BAGARI and every studio in the reference set, and the cheapest to close.

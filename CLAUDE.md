@@ -8,18 +8,30 @@ Owner: Erekle Tabagari — designer, developer and illustrator. He works on
 Windows and reviews changes visually, usually by sending an annotated
 screenshot. Read the annotation as the spec.
 
-## Current state — read this first
+## Current state
 
-The site is mid-rebuild. **v2 is in progress on `claude/brandbook-fav52f` and
-does not render correctly yet: the stylesheet is v2, `index.html` and
-`js/main.js` are still v1.** Do not deploy that branch until they match.
+v2 is live. The site is Redprint-flooded and work-led, with a Stone relief
+section, the drawings used as duotoned and dither-screened plates, and a
+scroll-driven motion layer.
 
-- `main` — v1, live, working.
-- `archive/v1-black-label` — the backup, pinned to the live commit.
-- `claude/brandbook-fav52f` — the v2 rebuild.
+- `main` — v2, live.
+- `archive/v1-black-label` — the v1 site as it was deployed, kept for reference.
 
-`docs/v2-brief.md` has the decisions, what carries over, and what the build
-is waiting on. Start there.
+`docs/v2-brief.md` records the decisions and what the build is still waiting on.
+
+**Two slots are deliberately empty and marked in `index.html`.** Neither may
+be filled with anything invented:
+
+- The measured result under each project. One real number per case, e.g.
+  reservations up N% in a quarter. The `.work-result` markup exists in the
+  stylesheet and the comment marks where the row goes back.
+- The Instagram URL. A link pointing nowhere is worse on a live site than no
+  button, so the button is out until the address exists.
+
+**Publishing stamps a cache tag.** `Update Website.bat` does this. If you
+publish any other way, put a fresh `?v=` on the `css/style.css` and
+`js/main.js` links yourself: a returning visitor holding a cached v1
+stylesheet against v2 markup sees neither design.
 
 ## Traps that have already cost time
 
@@ -62,10 +74,16 @@ standing instruction from Erekle.
 **Colour.** Components never reference a raw colour. They use surface roles
 (`--surface`, `--text`, `--muted`, `--line`, `--kicker`, `--mark`, `--link`,
 `--primary-*`, `--band-*`) which are redefined per edition, so anything works
-on either ground. Three states: bare `:root`, `@media (prefers-color-scheme)`
-guarded with `:root:not([data-theme=…])`, and `:root[data-theme=…]` so the
-switch wins both ways. **In v2, Ink (dark) is the default and Stone is the
-alternate** — the reverse of v1.
+on any ground. **Redprint is the ground in v2**; Stone is reached by the
+switch only, and the OS preference is deliberately not consulted, because the
+site commits to one look the way its reference studios do. A `.relief`
+section drops to the opposite ground so the page alternates.
+
+Two rules the red ground imposes, which are measurements rather than taste:
+text on Redprint is **pure white, never Stone** (5.12:1 against 4.30:1), and
+**nothing on red is dimmed**, because no tint of white on that ground clears
+AA at a small size. Hierarchy comes from size and weight. Blueprint measures
+1.69:1 on Redprint and is unusable there.
 
 **The brand colours.** Redprint `#CB3534`, Blueprint `#1F4E79`, Blackprint
 `#171717`. Blueprint is too dark to carry text on ink; `--blue-lift`

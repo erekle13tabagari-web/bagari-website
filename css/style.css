@@ -323,10 +323,11 @@ html:not(.js) .ink[data-scrub] { clip-path: none; }
   opacity: 0;
   transition: opacity var(--medium) var(--ease);
 }
-html.scrolled .site-header::before { opacity: 0.94; }
-@supports (backdrop-filter: blur(1px)) {
-  html.scrolled .site-header::before { opacity: 0.82; backdrop-filter: blur(10px); }
-}
+/* Fully opaque, like the reference's solid bar with its rule. A translucent
+   header turned to sludge over the inverted contact band, and the section
+   heading underneath read straight through it. It stays transparent over the
+   hero so that one reads full bleed. */
+html.scrolled .site-header::before { opacity: 1; }
 
 .header-panel { display: contents; }
 /* the wordmark precedes the nav in the markup, and auto-placement will not

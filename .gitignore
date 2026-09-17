@@ -3,3 +3,7 @@
 # The site ships only the subsetted woff2 in brand/type/.
 Futura 100 Georgian/
 *.otf
+
+# The licensed originals, in any folder name.
+Futura 100/
+*.ttf

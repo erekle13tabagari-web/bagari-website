@@ -700,17 +700,12 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
 }
 .contact .section-head { border-color: var(--band-line); }
 .contact .section-num { color: var(--band-kicker); }
-/* Full bleed across the whole band, not a panel pinned to the right. At 0.16
-   the pale passages of the drawing dissolved into the ground, so it read as
-   a cropped rectangle that gave up before the edges. At 0.28 it reads as one
-   image running the width of the section, and the headline still measures
-   8.35:1 against it, which is well clear of the 4.5 floor. */
 .contact-art {
   position: absolute;
-  inset: 0;
-  width: auto;
+  inset: 0 0 0 auto;
+  width: min(50%, 40rem);
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0.16;
 }
 .contact-art .ink {
   width: 100%;

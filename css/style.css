@@ -446,6 +446,7 @@ html.scrolled .site-header::before { opacity: 1; }
   overflow: clip;
 }
 .hero-inner {
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -468,25 +469,30 @@ html.scrolled .site-header::before { opacity: 1; }
 
 /* the signature: the drawing occupies the right of the hero and is drawn on
    by the scroll. It sits behind the type and bleeds off the top and right. */
+/* The drawing is a grid item in the hero's first row rather than a free
+   floating box, so its bottom edge IS the rule that closes the hero: no gap,
+   and no detached fragment of the chin hanging above the line. */
 .hero-art {
-  position: absolute;
-  top: 11vh;
-  right: 0;
+  grid-area: 1 / 1;
+  justify-self: end;
+  align-self: stretch;
+  position: relative;
   width: min(42%, 38rem);
-  height: 78%;
+  margin-top: 11vh;
   z-index: -1;
   pointer-events: none;
 }
 .hero-art .ink {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   --art: url("../brand/art/bagari-art-the-look.svg");
-  -webkit-mask-position: top right;
-  mask-position: top right;
+  -webkit-mask-position: bottom right;
+  mask-position: bottom right;
   opacity: 0.9;
 }
 
 .hero-foot {
+  grid-area: 2 / 1;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -895,7 +901,7 @@ html.show-top .to-top { display: inline-flex; }
 @media (max-width: 900px) {
   .levels { grid-template-columns: 1fr; }
   .studio-grid { grid-template-columns: 1fr; }
-  .hero-art { width: 52%; opacity: 0.75; }
+  .hero-art { width: 52%; margin-top: 9vh; opacity: 0.75; }
 }
 
 @media (max-width: 720px) {
@@ -954,7 +960,20 @@ html.show-top .to-top { display: inline-flex; }
 
   .hero { min-height: 88svh; }
   .hero-inner { padding-top: 16vh; }
-  .hero-art { top: 8vh; height: 52%; width: 66%; opacity: 0.6; }
+  /* on a phone the copy sits between the drawing and the rule, so there is
+     no edge to meet: the drawing stays at the top instead of stretching
+     down over the headline */
+  .hero-art {
+    align-self: start;
+    width: 66%;
+    height: 34vh;
+    margin-top: 5vh;
+    opacity: 0.6;
+  }
+  .hero-art .ink {
+    -webkit-mask-position: top right;
+    mask-position: top right;
+  }
   .hero-foot { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
   .section-head { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
   .btn { width: 100%; }

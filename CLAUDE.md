@@ -17,7 +17,10 @@ scroll-driven motion layer.
 - `main` — v2, live.
 - `archive/v1-black-label` — the v1 site as it was deployed, kept for reference.
 
-`docs/v2-brief.md` records the decisions and what the build is still waiting on.
+**`docs/PROJECT-CONTEXT.md` is the full handover** — every decision and the
+reasoning behind it, the traps that have cost time, and everything still open.
+Read it before any substantial work. `docs/v2-brief.md` is the shorter
+rebuild brief that preceded it.
 
 **Two slots are deliberately empty and marked in `index.html`.** Neither may
 be filled with anything invented:

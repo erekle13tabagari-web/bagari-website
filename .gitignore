@@ -7,3 +7,10 @@ Futura 100 Georgian/
 # The licensed originals, in any folder name.
 Futura 100/
 *.ttf
+
+# Design sources and references live beside the repo but never in it.
+# The site ships exported assets from brand/ only.
+*.ai
+*.pdf
+/Bagari Logo.svg
+/Bagari Mark.svg

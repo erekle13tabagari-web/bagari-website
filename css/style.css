@@ -741,10 +741,29 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
     border-color var(--fast) var(--ease);
 }
 .btn .l.en { text-transform: uppercase; }
-.btn-solid { background: var(--wine); border-color: var(--wine); color: var(--stone); }
-.btn-solid:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
+/* Buttons take the surface roles, never a raw colour. Hardcoded to --wine the
+   solid button was red on the red ground and disappeared entirely; the roles
+   resolve to white on red, and to red on stone. */
+.btn-solid {
+  background: var(--primary-bg);
+  border-color: var(--primary-bg);
+  color: var(--primary-fg);
+}
+.btn-solid:hover {
+  background: var(--primary-hover-bg);
+  border-color: var(--primary-hover-bg);
+  color: var(--primary-hover-fg);
+}
 .btn-ghost { border-color: currentColor; }
-.btn-ghost:hover { background: var(--band-fg); color: var(--band-bg); }
+.btn-ghost:hover { background: var(--text); color: var(--surface); }
+/* inside the inverted band the roles are the band's */
+.contact .btn-solid {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: #FFFFFF;
+}
+.contact .btn-solid:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
+.contact .btn-ghost:hover { background: var(--band-fg); color: var(--band-bg); }
 
 /* ---------- plates ----------
    Taken from Hermes Agent: their identity is antique engravings duotoned into
@@ -801,6 +820,75 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
   user-select: none;
   margin-bottom: calc(-0.12em - var(--s-3));
   pointer-events: none;
+}
+
+/* ---------- case study ---------- */
+.case-head { padding-top: clamp(7rem, 16vh, 11rem); }
+.case-back { text-decoration: none; }
+.case-back:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+
+.case-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 9vw, 8rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  margin: clamp(var(--s-4), 4vh, var(--s-6)) 0 var(--s-4);
+}
+
+/* the facts a procurement reader scans for, before any prose */
+.case-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--s-4);
+  margin-top: clamp(var(--s-5), 6vh, var(--s-6));
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-strong);
+}
+.case-meta dt { margin-bottom: var(--s-2); color: var(--muted); }
+.case-meta dd { margin: 0; }
+.case-meta a { text-underline-offset: 0.25em; }
+
+.case-plate {
+  aspect-ratio: 21 / 9;
+  margin-block: clamp(var(--s-5), 7vh, var(--s-7));
+}
+
+.case-body { padding-top: 0; }
+.case-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  padding-bottom: var(--s-3);
+  margin-bottom: clamp(var(--s-4), 4vh, var(--s-5));
+  border-bottom: 1px solid var(--line-strong);
+}
+.case-h .l.en { text-transform: uppercase; }
+
+.case-prose { max-width: 60ch; margin-bottom: clamp(var(--s-6), 9vh, var(--s-7)); }
+.case-prose p + p { margin-top: var(--s-4); }
+
+.case-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: clamp(var(--s-4), 4vw, var(--s-6));
+  margin-bottom: clamp(var(--s-6), 9vh, var(--s-7));
+}
+.case-steps li { display: grid; gap: var(--s-3); align-content: start; }
+.case-steps h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.case-cta { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+@media (max-width: 720px) {
+  .case-plate { aspect-ratio: 3 / 2; }
 }
 
 /* ---------- footer ----------

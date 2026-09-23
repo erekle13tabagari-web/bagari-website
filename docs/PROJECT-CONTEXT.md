@@ -17,7 +17,7 @@ developer and illustrator. The five ink drawings on the site are his own.
 
 Static: no build step, no framework, no package manager. Plain HTML, one
 stylesheet, one script. Deploys from `main` to GitHub Pages at
-<https://erekle13tabagari-web.github.io/bagari-website/>.
+<https://bagari.studio/> (formerly erekle13tabagari-web.github.io/bagari-website).
 
 **How Erekle works:** he reviews visually and sends annotated screenshots.
 Read the annotation as the spec. He is a designer, so he spots real problems

@@ -1141,3 +1141,16 @@ html.show-top .to-top { display: inline-flex; }
 
 /* the submit while the Worker verifies and sends: visibly busy, not frozen */
 .form-submit[disabled] { opacity: 0.55; cursor: wait; }
+
+/* file input on the upload form: inherits the field frame, keeps the native picker */
+.field input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: var(--s-2) var(--s-3);
+  background: transparent;
+}
+.field input[type="file"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; }

@@ -1203,3 +1203,4 @@ html.show-top .to-top { display: inline-flex; }
 #look-iris, #look-head, #look-brow { will-change: transform; }
 @media (max-width: 1100px) { .hero-art .look { opacity: 0.75; } }
 @media (max-width: 720px) { .hero-art .look { opacity: 0.6; } }
+#look-frame-open, #look-frame-closed { transition: opacity 0ms linear; }

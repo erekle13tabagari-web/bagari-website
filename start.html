@@ -19,7 +19,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609241044">
+<link rel="stylesheet" href="css/style.css?v=202609241104">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -218,7 +218,7 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="js/main.js?v=202609241044"></script>
+<script src="js/main.js?v=202609241104"></script>
 <script>
 (function () {
   "use strict";
@@ -257,7 +257,9 @@
       turnstile: tsEl ? tsEl.value : ""
     };
 
+    var restLabel = btn.innerHTML;
     btn.disabled = true;
+    btn.innerHTML = '<span class="l en">Sending&hellip;</span><span class="l ka">ᲘᲒᲖᲐᲕᲜᲔᲑᲐ&hellip;</span>';
     fetch("/api/start", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -273,7 +275,8 @@
     }).catch(function () {
       err.hidden = false;
       btn.disabled = false;
-      if (window.turnstile) try { window.turnstile.reset(); } catch (e) {}
+      btn.innerHTML = restLabel;
+      if (window.turnstile) { try { window.turnstile.reset(); } catch (e) {} }
     });
   });
 })();

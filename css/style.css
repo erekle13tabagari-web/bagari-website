@@ -1138,3 +1138,6 @@ html.show-top .to-top { display: inline-flex; }
 
 .form-done { padding: var(--s-6) 0; }
 .form-done .display { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: var(--s-4); }
+
+/* the submit while the Worker verifies and sends: visibly busy, not frozen */
+.form-submit[disabled] { opacity: 0.55; cursor: wait; }

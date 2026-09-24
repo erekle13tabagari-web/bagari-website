@@ -1198,6 +1198,6 @@ html.show-top .to-top { display: inline-flex; }
 }
 .hero-art.alive .ink { display: none; }
 .look path, .look polygon, .look circle, .look ellipse, .look rect { fill: currentColor; }
-#look-iris { will-change: transform; }
+#look-iris, #look-head, #look-brow { will-change: transform; }
 @media (max-width: 1100px) { .hero-art .look { opacity: 0.75; } }
 @media (max-width: 720px) { .hero-art .look { opacity: 0.6; } }

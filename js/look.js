@@ -24,7 +24,7 @@
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
     : { matches: false };
 
-  var GAZE = { x: 18, y: 7 };            /* how far the iris may slide, drawing units */
+  var GAZE = { x: 42, y: 18 };           /* how far the iris may slide, drawing units; the window clips the rest */
   var LEAN = { x: 6, y: 4 };             /* how far the head follows the pointer */
   var BROW_LIFT = -7;                    /* brow rise while the pointer is on the drawing */
   var EYE_CENTRE = { x: 730, y: 566 };   /* middle of the iris at rest */
@@ -136,8 +136,8 @@
     function look(clientX, clientY) {
       var c = screenCentre();
       if (!c) return;
-      var dx = clamp1((clientX - c.x) / (window.innerWidth * 0.5));
-      var dy = clamp1((clientY - c.y) / (window.innerHeight * 0.5));
+      var dx = clamp1((clientX - c.x) / (window.innerWidth * 0.35));
+      var dy = clamp1((clientY - c.y) / (window.innerHeight * 0.35));
       state.gaze.tx = dx * GAZE.x; state.gaze.ty = dy * GAZE.y; state.gaze.k = 0.12;
       state.lean.tx = dx * LEAN.x; state.lean.ty = dy * LEAN.y;
       tick();

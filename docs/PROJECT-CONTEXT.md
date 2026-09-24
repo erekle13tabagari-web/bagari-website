@@ -163,11 +163,15 @@ on by scrolling — a clip-path wipe scrubbed to scroll progress. This is the
 one thing on the site that belongs to BAGARI rather than the reference set:
 the hand-made asset coupled to the machine.
 
-It happens in exactly **one** place on purpose. The hero drawing arrives
-nearly complete and the scroll only finishes it, because a half-drawn eye on
-first paint reads as a broken image rather than an idea. The plates do not
-scrub at all, for the same reason. Do not spray this effect around; it stops
-being a move and becomes a tic.
+It happens in exactly **one** place on purpose: the studio drawing. The plates
+do not scrub at all. Do not spray this effect around; it stops being a move
+and becomes a tic.
+
+**The hero drawing no longer scrubs; it is alive** (since 2026-09-24, see
+§13). Erekle separated "the look" into layers in Illustrator and `js/look.js`
+assembles them: the iris follows the pointer and glances on its own, the head
+leans a little, and the eye blinks by swapping in his closed-eye drawing. The
+old CSS-mask version stays as the no-JS fallback.
 
 ---
 
@@ -306,3 +310,69 @@ Outbound HTTPS from a cloud session goes through a policy-enforcing egress
 proxy. `biomi.ge` and `hermes-agent.nousresearch.com` are both blocked (403 on
 CONNECT). This is an organisation egress policy, not a fault, and must not be
 routed around. A local session has no such proxy and can fetch either.
+
+---
+
+## 13. State as of 2026-09-24 (infrastructure, forms, the living hero)
+
+Everything below is live. Nothing here is a secret; secrets live only in the
+Cloudflare dashboard and are pasted by Erekle himself.
+
+**Domain and edge.** `bagari.studio` bought via Cloudflare Registrar; zone
+proxied (orange cloud), SSL Full (strict), GitHub Pages behind it. Cloudflare
+Web Analytics (cookieless; deliberately no Google Analytics, so no cookie
+banner). Search Console verified, sitemap submitted. Hardening on the zone:
+DMARC (`p=none`, reports to Cloudflare), a rate limit on `/api/*` (10 requests
+per 10 s per IP; the Free plan's only window), security headers via a response
+transform rule (HSTS, nosniff, referrer policy, permissions policy, frame
+options; no CSP on purpose), and a cache rule for `/brand/*` (edge 7 days,
+browser 1 day; **purge after changing a brand asset**).
+
+**Email.** `hello@bagari.studio` forwards to Gmail (Email Routing). Auto-replies
+go out from `noreply@bagari.studio` through Resend (free tier, EU region).
+
+**Forms.** `start.html` (project enquiry, 8 questions, Turnstile) and the
+upload form on `tools/font-finder.html` (image, Turnstile) both post to one
+Worker, `bagari-start`, routed on `bagari.studio/api/*`. The Worker verifies
+Turnstile, writes a row to D1 (`bagari-leads`, EU: tables `leads` and
+`uploads`, which double as the consent log), stores Font Finder images in R2
+(`bagari-uploads`, EU) and emails the studio a branded notification (image
+attached up to 8 MB plus an HMAC-signed download link), then sends the
+auto-reply in the form's language. The Worker source of truth is
+`worker-start.js` in Erekle's private `bagari-studio` folder (not in this
+repo); deploys are a manual paste into the dashboard editor, and the dashboard
+editor is a cross-origin iframe that automation cannot type into.
+
+**Privacy.** `privacy.html` (version 2026-09-24, drafted, not lawyer-reviewed):
+consent per form, separate marketing opt-in, 24-month retention, EU storage.
+A retention purge Worker is still to be written once the policy is final.
+
+**The living hero.** `brand/art/look-rest.svg`, `look-eye-open.svg`,
+`look-eye-closed.svg`, `look-iris.svg` (the iris file also carries the eye
+opening as a `clipPath`, cut by Erekle in the paper layer). `js/look.js`
+builds one inline SVG from them: iris follows the pointer (42 units sideways,
+14 up, 36 down, clipped to the opening) and glances on its own; head leans
+with the pointer; blinks every 2 to 6 s in three kinds (quick, double, slow
+dissolve). The brow only moves if a separate `look-brow.svg` is supplied,
+because in the current file the brow edge and the profile line are one
+outline. All numbers are constants at the top of `look.js`. Assets come from
+`the look b&w.pdf` (six artboards) exported per artboard with Illustrator;
+the "rest" artboard's content sits 93.1 units left of the others, which the
+file corrects with a wrapping transform.
+
+**Other 2026-09-24 changes.** Header carries Font Finder; mobile-menu links may
+wrap; custom scrollbar (thin ink rule, louder on hover); Google-friendly
+favicons (48-multiple PNGs plus `/favicon.ico`); page titles carry no dash
+(Google rewrote the em dash); phone hero copy sits directly under the
+drawing; hero art flush right with its plate bottom cropped by 7%.
+
+**Open.** A human end-to-end test of the Font Finder upload (Turnstile blocks
+automated browsers); measured results per case; Varazi case page; lawyer
+review of the privacy text and a mention of Font Finder uploads in it; the
+retention purge Worker; font licence; OTFs in history; optional brow, tear
+and lower-lid artboards for more motion.
+
+**Working from more than one machine.** The site, art, scripts and this
+document travel through GitHub. What does not: the private `bagari-studio`
+folder (positioning, leads, the Worker source), the Illustrator sources, and
+the Claude memory folder for this project. Carry those separately.

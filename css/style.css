@@ -1042,6 +1042,7 @@ html.show-top .to-top { display: inline-flex; }
     font-size: clamp(2rem, 11vw, 3.5rem);
     letter-spacing: -0.03em;
     line-height: 1;
+    white-space: normal;
   }
   .site-nav a::after { display: none; }
   .tools { gap: var(--s-3); margin-top: var(--s-4); }

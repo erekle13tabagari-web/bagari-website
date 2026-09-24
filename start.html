@@ -19,7 +19,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609241104">
+<link rel="stylesheet" href="css/style.css?v=202609241121">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -174,8 +174,14 @@
       <div class="fgroup rv">
         <label class="check consent">
           <input type="checkbox" id="f-consent" required>
-          <span class="l en">I agree that BAGARI stores this information to respond to my enquiry.</span>
-          <span class="l ka">ვეთანხმები, რომ BAGARI შეინახავს ამ ინფორმაციას ჩემს განაცხადზე პასუხისთვის.</span>
+          <span class="l en">I agree that BAGARI stores this information to respond to my enquiry (<a href="privacy.html" target="_blank">privacy policy</a>). *</span>
+          <span class="l ka">ვეთანხმები, რომ BAGARI შეინახავს ამ ინფორმაციას ჩემს განაცხადზე პასუხისთვის (<a href="privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>). *</span>
+        </label>
+
+        <label class="check consent">
+          <input type="checkbox" id="f-marketing">
+          <span class="l en">Send me occasional news and offers from BAGARI. Optional.</span>
+          <span class="l ka">გამომიგზავნეთ ხანდახან BAGARI-ის სიახლეები და შეთავაზებები. არასავალდებულო.</span>
         </label>
 
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAFBI1eAS8Nb8IKLS" data-action="start" data-theme="light"></div>
@@ -210,7 +216,7 @@
   <span class="footer-mark" aria-hidden="true">BAGARI</span>
   <div class="footer-base">
     <span>© 2026 BAGARI</span>
-    <span><a href="mailto:hello@bagari.studio">hello@bagari.studio</a></span>
+    <span><a href="privacy.html"><span class="l en">Privacy</span><span class="l ka">ᲙᲝᲜᲤᲘᲓᲔᲜᲪᲘᲐᲚᲣᲠᲝᲑᲐ</span></a> · <a href="mailto:hello@bagari.studio">hello@bagari.studio</a></span>
   </div>
 </footer>
 
@@ -218,7 +224,7 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="js/main.js?v=202609241104"></script>
+<script src="js/main.js?v=202609241121"></script>
 <script>
 (function () {
   "use strict";
@@ -254,6 +260,8 @@
       deadline: form.deadline.value.trim(),
       decider: form.decider.value.trim(),
       lang: document.documentElement.getAttribute("data-lang"),
+      marketing: document.getElementById("f-marketing").checked,
+      policy: "2026-09-24",
       turnstile: tsEl ? tsEl.value : ""
     };
 

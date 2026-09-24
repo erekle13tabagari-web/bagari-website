@@ -479,12 +479,16 @@ html.scrolled .site-header::before { opacity: 1; }
   position: relative;
   width: min(42%, 38rem);
   margin-top: 11vh;
+  /* flush with the viewport edge: undo the section gutter (100vw-based so it
+     still reaches the edge once the layout hits its max width) */
+  margin-right: calc(-1 * max(var(--margin), (100vw - var(--max)) / 2));
+  overflow: clip;
   z-index: -1;
   pointer-events: none;
 }
 .hero-art .ink {
   position: absolute;
-  inset: 0;
+  inset: 0 0 -7% 0; /* the flat bottom of the plate sits below the crop */
   --art: url("../brand/art/bagari-art-the-look.svg");
   -webkit-mask-position: bottom right;
   mask-position: bottom right;

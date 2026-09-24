@@ -24,7 +24,7 @@
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
     : { matches: false };
 
-  var GAZE = { x: 42, y: 18 };           /* how far the iris may slide, drawing units; the window clips the rest */
+  var GAZE = { x: 42, up: 14, down: 36 };  /* how far the iris may slide, drawing units; the window clips the rest */
   var LEAN = { x: 6, y: 4 };             /* how far the head follows the pointer */
   var BROW_LIFT = -7;                    /* brow rise while the pointer is on the drawing */
   var EYE_CENTRE = { x: 730, y: 566 };   /* middle of the iris at rest */
@@ -95,7 +95,8 @@
     irisInner.appendChild(shapesOf(irisSrc));
     frameOpen.appendChild(shapesOf(openSrc));
 
-    var frameClosed = el("g", { id: "look-frame-closed", visibility: "hidden" }, head);
+    var frameClosed = el("g", { id: "look-frame-closed" }, head);
+    frameClosed.style.opacity = "0";
     frameClosed.appendChild(shapesOf(closedSrc));
 
     host.appendChild(svg);
@@ -138,7 +139,7 @@
       if (!c) return;
       var dx = clamp1((clientX - c.x) / (window.innerWidth * 0.35));
       var dy = clamp1((clientY - c.y) / (window.innerHeight * 0.35));
-      state.gaze.tx = dx * GAZE.x; state.gaze.ty = dy * GAZE.y; state.gaze.k = 0.12;
+      state.gaze.tx = dx * GAZE.x; state.gaze.ty = dy * (dy < 0 ? GAZE.up : GAZE.down); state.gaze.k = 0.12;
       state.lean.tx = dx * LEAN.x; state.lean.ty = dy * LEAN.y;
       tick();
     }
@@ -178,7 +179,8 @@
       if (visible && Date.now() - lastPointer > 3000) {
         var glance = Math.random() < 0.35;
         state.gaze.tx = (Math.random() * 2 - 1) * GAZE.x * (glance ? 1 : 0.5);
-        state.gaze.ty = (Math.random() * 2 - 1) * GAZE.y * (glance ? 0.8 : 0.5);
+        var dyr = Math.random() * 2 - 1;
+        state.gaze.ty = dyr * (dyr < 0 ? GAZE.up : GAZE.down) * (glance ? 0.9 : 0.5);
         state.gaze.k = glance ? 0.3 : 0.05;
         state.lean.tx = state.gaze.tx * 0.15; state.lean.ty = state.gaze.ty * 0.15;
         tick();
@@ -188,23 +190,33 @@
     setTimeout(wander, 2500);
 
     /* ---- blink: swap the eye for a moment ---- */
-    function setClosed(on) {
+    /* a quick blink cuts between the frames; a slow one dissolves into the
+       closed eye, rests there, and dissolves back */
+    function setClosed(on, ms) {
       closed = on;
-      parts.open.setAttribute("visibility", on ? "hidden" : "visible");
-      parts.closed.setAttribute("visibility", on ? "visible" : "hidden");
+      parts.open.style.transitionDuration = parts.closed.style.transitionDuration = (ms || 0) + "ms";
+      parts.open.style.opacity = on ? "0" : "1";
+      parts.closed.style.opacity = on ? "1" : "0";
       setBrow();
     }
-    function blink(again) {
+    function blink(kind) {
       if (!visible || document.hidden) return schedule();
-      setClosed(true);
+      if (kind === "slow") {
+        setClosed(true, 220);
+        setTimeout(function () { setClosed(false, 360); setTimeout(schedule, 360); }, 220 + 260);
+        return;
+      }
+      setClosed(true, 0);
       setTimeout(function () {
-        setClosed(false);
-        if (again) setTimeout(function () { blink(false); }, 170);
+        setClosed(false, 0);
+        if (kind === "double") setTimeout(function () { blink("single"); }, 170);
         else schedule();
       }, 110);
     }
     function schedule() {
-      setTimeout(function () { blink(Math.random() < 0.2); }, 2200 + Math.random() * 4300);
+      var r = Math.random();
+      var kind = r < 0.25 ? "slow" : r < 0.4 ? "double" : "single";
+      setTimeout(function () { blink(kind); }, 2200 + Math.random() * 4300);
     }
     schedule();
 
@@ -215,7 +227,7 @@
     }
 
     /* for the studio */
-    window.__look = { blink: function () { blink(false); }, look: look, closed: setClosed,
+    window.__look = { blink: blink, look: look, closed: setClosed,
       brow: function (on) { over = !!on; setBrow(); } };
   }
 })();

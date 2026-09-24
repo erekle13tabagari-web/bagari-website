@@ -19,7 +19,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="../css/style.css?v=202609241121">
+<link rel="stylesheet" href="../css/style.css?v=202609241218">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -34,6 +34,7 @@
     } catch (e) {}
   })();
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -155,19 +156,76 @@
 
     <div class="case-prose rv">
       <p>
-        <span class="l en">A public version is on the way. Until then it works at the studio, on the images our projects bring in. Want to try it on your own image? Send it to us.</span>
-        <span class="l ka">საჯარო ვერსია გზაშია. მანამდე ის სტუდიაში მუშაობს, ჩვენი პროექტების სურათებზე. გინდათ საკუთარ სურათზე სცადოთ? გამოგვიგზავნეთ.</span>
+        <span class="l en">A public version is on the way. Until then it works at the studio, on the images our projects bring in. Want to try it on your own image? Send it below and we reply with the result.</span>
+        <span class="l ka">საჯარო ვერსია გზაშია. მანამდე ის სტუდიაში მუშაობს, ჩვენი პროექტების სურათებზე. გინდათ საკუთარ სურათზე სცადოთ? გამოგვიგზავნეთ ქვემოთ და შედეგს გიპასუხებთ.</span>
       </p>
     </div>
 
     <div class="case-cta rv">
-      <a class="btn btn-solid" href="mailto:hello@bagari.studio?subject=Font%20Finder">
+      <a class="btn btn-solid" href="#upload">
         <span class="l en">Send an image</span><span class="l ka">ᲡᲣᲠᲐᲗᲘᲡ ᲒᲐᲒᲖᲐᲕᲜᲐ</span>
       </a>
       <a class="btn btn-ghost" href="../start.html">
         <span class="l en">Start a project</span><span class="l ka">ᲞᲠᲝᲔᲥᲢᲘᲡ ᲓᲐᲬᲧᲔᲑᲐ</span>
       </a>
     </div>
+  </section>
+
+  <!-- ============ UPLOAD ============ -->
+  <section class="relief section form-section" id="upload">
+    <form id="ffForm" novalidate enctype="multipart/form-data">
+      <fieldset class="fgroup rv">
+        <legend class="label"><span class="l en">Send an image</span><span class="l ka">ᲡᲣᲠᲐᲗᲘᲡ ᲒᲐᲒᲖᲐᲕᲜᲐ</span></legend>
+
+        <div class="field">
+          <label for="ff-image"><span class="l en">Image of Georgian text (JPG, PNG or WEBP, up to 10 MB)</span><span class="l ka">ქართული ტექსტის სურათი (JPG, PNG ან WEBP, 10 მბ-მდე)</span> *</label>
+          <input id="ff-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif" required>
+        </div>
+
+        <div class="frow frow-2">
+          <div class="field">
+            <label for="ff-name"><span class="l en">Your name</span><span class="l ka">თქვენი სახელი</span> *</label>
+            <input id="ff-name" name="name" type="text" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="ff-email"><span class="l en">Email for the result</span><span class="l ka">ელფოსტა შედეგისთვის</span> *</label>
+            <input id="ff-email" name="email" type="email" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="ff-note"><span class="l en">What is it, and where did you see it? (optional)</span><span class="l ka">რა არის და სად ნახეთ? (არასავალდებულო)</span></label>
+          <textarea id="ff-note" name="note" rows="2"></textarea>
+        </div>
+
+        <input type="hidden" name="lang" id="ff-lang" value="en">
+
+        <label class="check consent">
+          <input type="checkbox" id="ff-consent" required>
+          <span class="l en">I agree that BAGARI stores this image and my details to reply with the result (<a href="../privacy.html" target="_blank">privacy policy</a>). *</span>
+          <span class="l ka">ვეთანხმები, რომ BAGARI შეინახავს ამ სურათსა და ჩემს მონაცემებს შედეგის გამოსაგზავნად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>). *</span>
+        </label>
+
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAFBI1eAS8Nb8IKLS" data-action="fontfinder" data-theme="light"></div>
+
+        <button class="btn btn-solid form-submit" type="submit" id="ffSubmit">
+          <span class="l en">Send image</span><span class="l ka">ᲡᲣᲠᲐᲗᲘᲡ ᲒᲐᲒᲖᲐᲕᲜᲐ</span>
+        </button>
+
+        <p class="form-note" id="ffError" hidden>
+          <span class="l en">Something went wrong. Check the file is an image under 10 MB and try again, or write to hello@bagari.studio.</span>
+          <span class="l ka">რაღაც შეცდომა მოხდა. შეამოწმეთ, რომ ფაილი 10 მბ-ზე ნაკლები სურათია, და სცადეთ თავიდან, ან მოგვწერეთ: hello@bagari.studio.</span>
+        </p>
+      </fieldset>
+
+      <div class="form-done" id="ffDone" hidden>
+        <p class="display"><span class="l en">Received.</span><span class="l ka">ᲛᲘᲦᲔᲑᲣᲚᲘᲐ.</span></p>
+        <p>
+          <span class="l en">We will run it through the Font Finder and send the result to your email, usually within one working day.</span>
+          <span class="l ka">გავატარებთ Font Finder-ში და შედეგს თქვენს ელფოსტაზე გამოგიგზავნით, ჩვეულებრივ ერთ სამუშაო დღეში.</span>
+        </p>
+      </div>
+    </form>
   </section>
 
 </main>
@@ -184,6 +242,47 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="../js/main.js?v=202609241121"></script>
+<script src="../js/main.js?v=202609241218"></script>
+<script>
+(function () {
+  "use strict";
+  var form = document.getElementById("ffForm");
+  var btn = document.getElementById("ffSubmit");
+  var err = document.getElementById("ffError");
+  var done = document.getElementById("ffDone");
+  var MAX = 10 * 1024 * 1024;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    err.hidden = true;
+    if (!form.reportValidity()) return;
+    var f = form.image.files[0];
+    if (!f || f.size > MAX) { err.hidden = false; return; }
+
+    document.getElementById("ff-lang").value = document.documentElement.getAttribute("data-lang") || "en";
+    var restLabel = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="l en">Sending&hellip;</span><span class="l ka">ᲘᲒᲖᲐᲕᲜᲔᲑᲐ&hellip;</span>';
+
+    fetch("/api/font-finder", { method: "POST", body: new FormData(form) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r && r.ok) {
+          form.querySelector(".fgroup").hidden = true;
+          done.hidden = false;
+          done.scrollIntoView({ block: "center" });
+        } else {
+          throw new Error("send failed");
+        }
+      })
+      .catch(function () {
+        err.hidden = false;
+        btn.disabled = false;
+        btn.innerHTML = restLabel;
+        if (window.turnstile) { try { window.turnstile.reset(); } catch (e) {} }
+      });
+  });
+})();
+</script>
 </body>
 </html>

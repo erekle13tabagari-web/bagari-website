@@ -6,10 +6,12 @@
  *   look-eye-closed.svg  the same eye closed
  *   look-iris.svg        the iris, plus the window the artist cut in the paper
  *                        (#look-open), which clips the iris to the eye opening
+ *   look-brow.svg        optional: the brow on its own artboard (with the rest
+ *                        layer exported without it); only then does it move
  * Motion: the iris slides toward the pointer and wanders on its own; the
- * whole head leans a little with the pointer; the brow lifts when the pointer
- * is over the drawing; a blink swaps the open eye for the closed one.
- * Every line on screen is the ink as drawn.
+ * whole head leans a little with the pointer; the brow, when separate, lifts
+ * while the pointer is over the drawing; a blink swaps the open eye for the
+ * closed one. Every line on screen is the ink as drawn.
  */
 (function () {
   "use strict";
@@ -26,7 +28,6 @@
   var LEAN = { x: 6, y: 4 };             /* how far the head follows the pointer */
   var BROW_LIFT = -7;                    /* brow rise while the pointer is on the drawing */
   var EYE_CENTRE = { x: 730, y: 566 };   /* middle of the iris at rest */
-  var BROW_LIMIT = { bottom: 530, right: 1010 }; /* sub-paths of the rest layer above and left of this are the brow */
 
   function el(name, attrs, parent) {
     var node = document.createElementNS(NS, name);
@@ -59,72 +60,19 @@
     return g;
   }
 
-  /* ---- split a path's sub-paths into absolute-coordinate strings ---- */
-  var ARGC = { m: 2, l: 2, h: 1, v: 1, c: 6, s: 4, q: 4, t: 2, a: 7, z: 0 };
-  function subpaths(d) {
-    var toks = d.match(/[a-zA-Z]|-?\d*\.?\d+(?:e-?\d+)?/g) || [];
-    var out = [], cur = "", i = 0, cmd = "", x = 0, y = 0, sx = 0, sy = 0;
-    function emit(s) { cur += s; }
-    while (i < toks.length) {
-      var t = toks[i];
-      if (/[a-zA-Z]/.test(t)) { cmd = t; i++; if (/z/i.test(cmd)) { x = sx; y = sy; emit("Z"); continue; } }
-      var n = ARGC[cmd.toLowerCase()], nums = toks.slice(i, i + n).map(Number); i += n;
-      var C = cmd.toUpperCase(), rel = cmd !== C;
-      if (C === "M") {
-        if (rel) { x += nums[0]; y += nums[1]; } else { x = nums[0]; y = nums[1]; }
-        sx = x; sy = y;
-        if (cur) out.push(cur);
-        cur = "M" + x + " " + y;
-        cmd = rel ? "l" : "L";
-      } else if (C === "L" || C === "T") {
-        if (rel) { x += nums[0]; y += nums[1]; } else { x = nums[0]; y = nums[1]; }
-        emit(C + x + " " + y);
-      } else if (C === "H") { x = rel ? x + nums[0] : nums[0]; emit("L" + x + " " + y); }
-      else if (C === "V") { y = rel ? y + nums[0] : nums[0]; emit("L" + x + " " + y); }
-      else if (C === "C" || C === "S" || C === "Q") {
-        var pts = [];
-        for (var k = 0; k < nums.length; k += 2) pts.push(rel ? x + nums[k] : nums[k], rel ? y + nums[k + 1] : nums[k + 1]);
-        x = pts[pts.length - 2]; y = pts[pts.length - 1];
-        emit(C + pts.join(" "));
-      } else if (C === "A") {
-        x = rel ? x + nums[5] : nums[5]; y = rel ? y + nums[6] : nums[6];
-        emit("A" + nums.slice(0, 5).join(" ") + " " + x + " " + y);
-      }
-    }
-    if (cur) out.push(cur);
-    return out;
-  }
-
-  /* the brow lives in the rest layer's compound path; lift it out so it can move */
-  function splitBrow(restG, svg) {
-    var brow = el("g", { id: "look-brow" });
-    var probe = el("path", {}, svg);
-    var paths = Array.prototype.slice.call(restG.querySelectorAll("path"));
-    paths.forEach(function (p) {
-      var keep = [], lift = [];
-      subpaths(p.getAttribute("d")).forEach(function (s) {
-        probe.setAttribute("d", s);
-        var b = probe.getBBox();
-        (b.y + b.height < BROW_LIMIT.bottom && b.x + b.width < BROW_LIMIT.right ? lift : keep).push(s);
-      });
-      if (!lift.length) return;
-      if (keep.length) p.setAttribute("d", keep.join("")); else p.remove();
-      el("path", { d: lift.join("") }, brow);
-    });
-    probe.remove();
-    if (restG.hasAttribute("transform")) brow.setAttribute("transform", restG.getAttribute("transform"));
-    return brow;
-  }
-
+  /* the brow is optional: a separate artboard makes it move, otherwise it is
+     part of the rest layer and stays still */
+  var browUrl = host.getAttribute("data-art-brow");
   Promise.all([
     fetchSvg(host.getAttribute("data-art-rest")),
     fetchSvg(host.getAttribute("data-art-eye-open")),
     fetchSvg(host.getAttribute("data-art-eye-closed")),
-    fetchSvg(host.getAttribute("data-art-iris"))
+    fetchSvg(host.getAttribute("data-art-iris")),
+    browUrl ? fetchSvg(browUrl) : Promise.resolve(null)
   ]).then(build).catch(function () { /* the CSS mask stays in place */ });
 
   function build(parts) {
-    var restSrc = parts[0], openSrc = parts[1], closedSrc = parts[2], irisSrc = parts[3];
+    var restSrc = parts[0], openSrc = parts[1], closedSrc = parts[2], irisSrc = parts[3], browSrc = parts[4];
     var svg = el("svg", {
       "class": "look", viewBox: restSrc.getAttribute("viewBox"), "aria-hidden": "true",
       preserveAspectRatio: "xMaxYMax meet"
@@ -151,7 +99,8 @@
     frameClosed.appendChild(shapesOf(closedSrc));
 
     host.appendChild(svg);
-    var brow = splitBrow(rest, svg);
+    var brow = browSrc ? shapesOf(browSrc) : el("g", {});
+    brow.setAttribute("id", "look-brow");
     head.insertBefore(brow, rest);
     host.classList.add("alive");
     fitToLayout();

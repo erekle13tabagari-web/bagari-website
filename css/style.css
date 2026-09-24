@@ -1051,8 +1051,10 @@ html.show-top .to-top { display: inline-flex; }
   .site-nav a::after { display: none; }
   .tools { gap: var(--s-3); margin-top: var(--s-4); }
 
-  .hero { min-height: 88svh; }
-  .hero-inner { padding-top: 16vh; }
+  /* the copy follows straight after the drawing instead of sitting at the
+     bottom of a full screen with empty ground above it */
+  .hero { min-height: auto; }
+  .hero-inner { justify-content: flex-start; padding-top: calc(5vh + 34vh + var(--s-5)); }
   /* on a phone the copy sits between the drawing and the rule, so there is
      no edge to meet: the drawing stays at the top instead of stretching
      down over the headline */

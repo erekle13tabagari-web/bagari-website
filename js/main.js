@@ -216,6 +216,115 @@
     scrubs.forEach(function (el) { el.style.setProperty("--p", "1"); });
   }
 
+  /* ---------- the work carousel ----------
+   * Touch scrolls it natively (with snap); a mouse drags it. The cards are
+   * cloned into COPIES sets with the real ones in the middle, and whenever the
+   * track comes to rest it is moved back to the equivalent position in the
+   * middle set. The move lands on an identical card, so it cannot be seen,
+   * and the loop never runs out in either direction. */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-carousel]"), function (carousel) {
+    var track = carousel.querySelector(".work-track");
+    var originals = Array.prototype.slice.call(track.children);
+    if (!originals.length) return;
+    var COPIES = 7, MIDDLE = 3;
+
+    for (var c = 0; c < COPIES; c++) {
+      if (c === MIDDLE) { originals.forEach(function (o) { track.appendChild(o); }); continue; }
+      originals.forEach(function (o) {
+        var copy = o.cloneNode(true);
+        copy.setAttribute("aria-hidden", "true");
+        copy.classList.add("is-clone");
+        Array.prototype.forEach.call(copy.querySelectorAll("a, button, [tabindex]"), function (f) {
+          f.setAttribute("tabindex", "-1");
+        });
+        track.appendChild(copy);
+      });
+    }
+    var cards = Array.prototype.slice.call(track.children);
+    var n = originals.length;
+
+    function posOf(card) {
+      var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+      return card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft - pad;
+    }
+    function metrics() {
+      var base = posOf(cards[MIDDLE * n]);
+      return { base: base, set: posOf(cards[(MIDDLE + 1) * n]) - base, step: posOf(cards[1]) - posOf(cards[0]) };
+    }
+    function jump(x) {
+      track.style.scrollBehavior = "auto";
+      track.scrollLeft = x;
+      track.style.scrollBehavior = "";
+    }
+    function recentre() {
+      var m = metrics(), x = track.scrollLeft;
+      if (m.set <= 0) return;
+      var off = ((x - m.base) % m.set + m.set) % m.set;
+      if (Math.abs(m.base + off - x) > 1) jump(m.base + off);
+    }
+    jump(metrics().base);
+
+    var dragging = false, settleTimer = 0;
+    function settle() {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () { if (!dragging) recentre(); }, 140);
+    }
+    track.addEventListener("scroll", settle, { passive: true });
+
+    var resizeTimer = 0, lastWidth = track.clientWidth;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (track.clientWidth === lastWidth) return;
+        lastWidth = track.clientWidth;
+        jump(metrics().base);
+      }, 150);
+    });
+
+    /* mouse drag; touch and pen keep the browser's own swipe */
+    var startX = 0, lastX = 0, lastT = 0, vel = 0, moved = false, pointerId = null, swallowClick = false;
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      pointerId = e.pointerId;
+      startX = lastX = e.clientX; lastT = e.timeStamp; vel = 0; moved = false;
+    });
+    track.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== pointerId) return;
+      if (!moved) {
+        if (Math.abs(e.clientX - startX) < 5) return;
+        moved = dragging = true;
+        track.classList.add("dragging");
+        track.setPointerCapture(pointerId);
+      }
+      var dx = e.clientX - lastX, dt = Math.max(1, e.timeStamp - lastT);
+      track.scrollLeft -= dx;
+      vel = vel * 0.6 + (dx / dt) * 0.4;
+      lastX = e.clientX; lastT = e.timeStamp;
+    });
+    function release(e) {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      if (!moved) return;
+      dragging = false;
+      swallowClick = true;
+      setTimeout(function () { swallowClick = false; }, 60);
+      recentre();
+      var m = metrics();
+      /* a flick goes on to the next card in its direction, never further;
+         a slow drag settles on whichever card is nearest */
+      var at = (track.scrollLeft - m.base) / m.step;
+      var i = Math.abs(vel) > 0.3 ? (vel < 0 ? Math.ceil(at) : Math.floor(at)) : Math.round(at);
+      track.classList.remove("dragging");
+      track.scrollTo({ left: m.base + i * m.step, behavior: reduced.matches ? "auto" : "smooth" });
+    }
+    track.addEventListener("pointerup", release);
+    track.addEventListener("pointercancel", release);
+    track.addEventListener("click", function (e) {
+      if (swallowClick) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+    track.addEventListener("dragstart", function (e) { e.preventDefault(); });
+  });
+
   /* ---------- show the back-to-top past the first screen ---------- */
   function onScroll() {
     var y = window.scrollY;

@@ -372,6 +372,16 @@ review of the privacy text and a mention of Font Finder uploads in it; the
 retention purge Worker; font licence; OTFs in history; optional brow, tear
 and lower-lid artboards for more motion.
 
+**Font Finder, live (2026-09-25).** `tools/font-finder.html` is the app's own
+interface (its CSS and JS live beside it in `tools/`), not the site's layout.
+"Analyze" posts to the Worker (`/api/font-finder/analyze`, v6), which checks
+Turnstile and relays the image to the engine on a Hetzner CX23 in Nuremberg
+(about $7 a month) through a Cloudflare Tunnel at `ff.bagari.studio`, with a
+shared key. The engine accepts only analysis from outside; retraining and
+feedback stay local. Results render in the app's panels in about a second.
+If the engine is unreachable the page falls back to the email route. Server
+details live in Erekle's private notes, not here.
+
 **Working from more than one machine.** The site, art, scripts and this
 document travel through GitHub. What does not: the private `bagari-studio`
 folder (positioning, leads, the Worker source), the Illustrator sources, and

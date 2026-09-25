@@ -573,6 +573,7 @@ html.scrolled .site-header::before { opacity: 1; }
   text-wrap: balance;
 }
 .statement .lede { margin-inline: auto; font-style: italic; text-wrap: pretty; }
+.statement .display .line { display: block; }
 
 /* ---------- work ---------- */
 /* the work carousel: bleeds to the viewport edges, native swipe with snap on

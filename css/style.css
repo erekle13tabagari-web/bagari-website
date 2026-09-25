@@ -1154,6 +1154,10 @@ html.show-top .to-top { display: inline-flex; }
     align-self: flex-start;
   }
   .tools { gap: var(--s-3); margin-top: var(--s-4); }
+  /* the Font Finder button spans the longest word under it (Capabilities / ᲞᲠᲝᲔᲥᲢᲔᲑᲘ):
+     the list is as wide as its widest link and the button stretches to it */
+  .nav-left { width: max-content; max-width: 100%; align-items: stretch; }
+  .site-nav a.btn-cta.nav-ff { align-self: stretch; height: 3rem; font-size: 0.8125rem; }
 }
 
 @media (max-width: 720px) {

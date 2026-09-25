@@ -179,12 +179,17 @@ html[data-lang="ka"] .l.ka { display: inline; }
   text-decoration: none;
   min-width: 0;
 }
+/* the drawn wordmark (placeholder, ../brand/logo/bagari-wordmark.svg) in the text colour */
 .wordmark {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: -0.06em;
-  line-height: 1;
+  display: block;
+  flex: none;
+  width: 4.45rem;
+  height: 2.25rem;
+  background: currentColor;
+  -webkit-mask: url("../brand/logo/bagari-wordmark.svg") center / contain no-repeat;
+  mask: url("../brand/logo/bagari-wordmark.svg") center / contain no-repeat;
+  font-size: 0;
+  overflow: hidden;
 }
 
 .header-tools { display: flex; align-items: center; gap: var(--s-2); }

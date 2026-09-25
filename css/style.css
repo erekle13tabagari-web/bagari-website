@@ -1164,7 +1164,8 @@ html.show-top .to-top { display: inline-flex; }
   /* the copy follows straight after the drawing instead of sitting at the
      bottom of a full screen with empty ground above it */
   .hero { min-height: auto; }
-  .hero-inner { justify-content: flex-start; padding-top: 23vh; } /* just under the eye: the copy sits beside the nose, not under the chin */
+  .hero-inner { justify-content: flex-start; padding-top: 23vh; padding-bottom: 0; } /* just under the eye: the copy sits beside the nose, not under the chin; the headline sits on the rule */
+  .hero-eyebrow { margin-bottom: var(--s-2); } /* a small step from the red line to the headline */
   /* sections stack, so each gap is two paddings; on a phone 10vh each read as empty screens */
   .section { padding-block: var(--s-5); }
   /* on a phone the copy sits between the drawing and the rule, so there is
@@ -1174,7 +1175,7 @@ html.show-top .to-top { display: inline-flex; }
     align-self: stretch;
     width: 66%;
     margin-top: 5vh;
-    margin-bottom: clamp(var(--s-5), 6vh, var(--s-7)); /* the hero-inner bottom padding: the drawing ends on the headline baseline */
+    margin-bottom: 0; /* matches the hero-inner bottom padding: the drawing ends where the headline does, on the rule */
     opacity: 0.6;
   }
   .hero h1 { font-size: 2.25rem; }

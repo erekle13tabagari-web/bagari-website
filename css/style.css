@@ -748,9 +748,11 @@ a.level:hover .level-cta .l { text-decoration: underline; text-underline-offset:
 .tier-note { margin-top: var(--s-4); color: var(--kicker); }
 .tier-note[hidden] { display: none; }
 .care-note {
-  max-width: 56ch;
+  max-width: 60ch;
   margin: var(--s-5) auto 0;
   text-align: center;
+  font-size: clamp(1rem, 0.9rem + 0.45vw, 1.25rem); /* same as the statement's paragraph */
+  text-wrap: pretty;
   font-style: italic; /* no italic file ships: the browser slants the regular cut, as Futura Oblique does */
 }
 

@@ -1525,3 +1525,28 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
   .case-head { padding-top: 6.5rem; }
   .start-page .case-title { margin-top: 0; }   /* its title is the first line: the same 28px under the header as elsewhere */
 }
+
+/* TEST: the studio's heart behind "A heart in my hand", breathing like the slogan's */
+.studio-heart {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: min(80%, 19rem);
+  aspect-ratio: 20 / 18.4;
+  translate: -50% -50%;
+  fill: var(--mark);
+  z-index: 0;
+  pointer-events: none;
+  transform-origin: 50% 55%;
+  animation: heart-breathe-soft 4.2s ease-in-out infinite;
+}
+.studio-art .ink { position: relative; z-index: 1; }
+@media (min-width: 901px) { .studio-art .ink { position: absolute; } }
+@keyframes heart-breathe-soft {
+  0%, 100% { transform: scale(1); }
+  38%      { transform: scale(1.06); }
+  55%      { transform: scale(1.045); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-heart { animation: none; }
+}

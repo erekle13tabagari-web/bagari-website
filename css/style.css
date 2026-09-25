@@ -1563,3 +1563,6 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 @media (max-width: 900px) {
   .studio-art .ink.ink-fill { position: absolute; top: 0; left: 0; }  /* the drawing is in flow here; the fill lies on it */
 }
+/* the caption crosses the heart's point: full ink so it reads on the red */
+.studio-art figcaption { position: relative; z-index: 2; color: var(--text); }
+@media (min-width: 901px) { .studio-art figcaption { position: absolute; } }

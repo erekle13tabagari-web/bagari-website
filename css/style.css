@@ -1557,7 +1557,7 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 /* TEST: the drawing is opaque where it crosses the heart. A silhouette of the
    figure, in the page ground, sits between the heart and the ink */
 .studio-art .ink.ink-fill {
-  --art: url("../brand/art/bagari-art-a-heart-in-my-hand-silhouette.png");
+  --art: url("../brand/art/bagari-art-a-heart-in-my-hand-silhouette.png?v=3");
   --ink-colour: var(--surface);
 }
 @media (max-width: 900px) {

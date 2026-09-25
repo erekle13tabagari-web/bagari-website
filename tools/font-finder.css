@@ -1,0 +1,370 @@
+/* ============================================================
+   BAGARI Font Finder, the public page
+   The app's own interface (georgian-font-finder/frontend/style.css) carried
+   onto the site, so the page and the tool look like one product. Ink is the
+   default ground, Stone the alternate. Components use surface roles only.
+   Georgian capitals are Mtavruli code points written in the markup, never
+   text-transform: Chrome maps Mtavruli back down to Mkhedruli.
+   ============================================================ */
+
+/* ---------- type: Futura 100 GEO, one family for Latin, Mkhedruli and Mtavruli ---------- */
+@font-face { font-family: "Futura 100 GEO Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("../brand/type/futura-text-400.woff2") format("woff2"); }
+@font-face { font-family: "Futura 100 GEO Text"; font-style: normal; font-weight: 500; font-display: swap; src: url("../brand/type/futura-text-500.woff2") format("woff2"); }
+@font-face { font-family: "Futura 100 GEO Text"; font-style: normal; font-weight: 600; font-display: swap; src: url("../brand/type/futura-text-600.woff2") format("woff2"); }
+@font-face { font-family: "Futura 100 GEO Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("../brand/type/futura-text-700.woff2") format("woff2"); }
+@font-face { font-family: "Futura 100 GEO"; font-style: normal; font-weight: 600; font-display: swap; src: url("../brand/type/futura-display-600.woff2") format("woff2"); }
+@font-face { font-family: "Futura 100 GEO"; font-style: normal; font-weight: 700; font-display: swap; src: url("../brand/type/futura-display-700.woff2") format("woff2"); }
+
+/* ---------- tokens ---------- */
+:root {
+  --ink: #131512;
+  --stone: #EDEBE4;
+  --wine: #CB3534;        /* Redprint */
+  --blue: #1F4E79;        /* Blueprint, for use on stone */
+  --blue-lift: #5497D3;   /* the same signal lifted to carry text on ink */
+
+  --line-on-stone: #D6D2C6;
+  --line-strong-on-stone: #C9C5B9;
+  --muted-on-stone: #6A6A62;
+  --line-on-ink: #26271F;
+  --line-strong-on-ink: #38392F;
+  --muted-on-ink: #8C8B82;
+
+  /* surface roles. INK is the default edition. */
+  color-scheme: dark;
+  --surface: var(--ink);
+  --surface-2: #191B18;
+  --text: var(--stone);
+  --muted: var(--muted-on-ink);
+  --line: var(--line-on-ink);
+  --line-strong: var(--line-strong-on-ink);
+  --kicker: var(--blue-lift);
+  --mark: var(--blue-lift);
+  --focus: var(--blue-lift);
+  --link: var(--blue-lift);
+  --primary-bg: var(--wine);
+  --primary-fg: var(--stone);
+  --primary-hover-bg: var(--stone);
+  --primary-hover-fg: var(--ink);
+
+  --font: "Futura 100 GEO Text", "Futura 100 GEO", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Futura 100 GEO", "Futura 100 GEO Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* 8-pt base: 4 · 8 · 16 · 24 · 40 · 64 · 96 · 160 */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 1rem;
+  --s-4: 1.5rem;
+  --s-5: 2.5rem;
+  --s-6: 4rem;
+  --s-7: 6rem;
+  --s-8: 10rem;
+
+  --max: 64rem;
+  --margin: clamp(1.25rem, 4vw, 4rem);
+  --gutter: max(var(--margin), calc((100% - var(--max)) / 2));
+
+  --fast: 180ms;
+  --medium: 560ms;
+  --slow: 900ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- Stone edition: the switch sets it; the site stores "light" for it ---- */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --surface: var(--stone);
+  --surface-2: #E6E3DA;
+  --text: var(--ink);
+  --muted: var(--muted-on-stone);
+  --line: var(--line-on-stone);
+  --line-strong: var(--line-strong-on-stone);
+  --kicker: var(--wine);
+  --mark: var(--blue);
+  --focus: var(--blue);
+  --link: var(--wine);
+  --primary-bg: var(--wine);
+  --primary-fg: var(--stone);
+  --primary-hover-bg: var(--ink);
+  --primary-hover-fg: var(--stone);
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  line-height: 1.55;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button, select, input, textarea { font: inherit; color: inherit; }
+h1, h2, h3, p, pre, figure, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.hidden, [hidden] { display: none !important; }
+
+/* Georgian is capitalised in the markup, as Mtavruli code points. */
+.l { display: none; }
+html[data-lang="en"] .l.en,
+html[data-lang="ka"] .l.ka { display: inline; }
+.l.ka,
+.lt-opt[data-lang-opt="ka"] { text-transform: none; }
+
+/* ---------- shared type ---------- */
+.label {
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+}
+.label .l.en { text-transform: uppercase; }
+.kicker { color: var(--kicker); }
+.kicker .num { color: var(--muted); margin-right: var(--s-2); }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.85;
+  text-wrap: balance;
+}
+.display .l.en { text-transform: uppercase; letter-spacing: -0.04em; }
+.display .l.ka { letter-spacing: -0.005em; line-height: 0.92; }
+
+.display-sm {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.lede {
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  line-height: 1.35;
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+.muted { color: var(--muted); }
+.note { font-size: 0.875rem; line-height: 1.45; }
+.note a { color: var(--link); text-underline-offset: 0.2em; }
+
+/* ---------- header ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--gutter);
+  border-bottom: 1px solid var(--line-strong);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  text-decoration: none;
+  min-width: 0;
+}
+.monogram { width: 2rem; height: 2rem; flex: none; }
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.product {
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  color: var(--muted);
+  padding-left: var(--s-3);
+  border-left: 1px solid var(--line-strong);
+}
+.product .l.en { text-transform: uppercase; }
+
+.header-tools { display: flex; align-items: center; gap: var(--s-2); }
+.tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 var(--s-2);
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  transition: border-color var(--fast) var(--ease);
+}
+.tool:hover { border-color: var(--text); }
+.tool .lt-opt { opacity: 0.4; transition: opacity var(--fast) var(--ease); }
+.tool .lt-opt[aria-current] { opacity: 1; }
+.tool .lt-sep { opacity: 0.4; }
+.theme-toggle .lt-opt svg { display: block; }
+
+/* ---------- page ---------- */
+.app { flex: 1; padding: clamp(var(--s-5), 6vh, var(--s-7)) var(--gutter) var(--s-6); }
+.app > * + * { margin-top: clamp(var(--s-5), 5vh, var(--s-6)); }
+#ffForm { display: grid; gap: var(--s-3); }
+
+.intro { display: grid; gap: var(--s-4); }
+.intro h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); max-width: 12ch; }
+
+/* ---------- upload ---------- */
+.upload { display: grid; gap: var(--s-3); }
+.upload-zone {
+  position: relative;
+  min-height: 15rem;
+  display: flex;                 /* not grid: a grid track would grow to the preview's intrinsic width */
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-4);
+  border: 1px dashed var(--line-strong);
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.upload-zone:hover, .upload-zone.drag-over { border-color: var(--kicker); background: var(--surface-2); }
+.upload-content { display: grid; justify-items: center; gap: var(--s-2); text-align: center; color: var(--muted); pointer-events: none; }
+.upload-content svg { color: var(--kicker); margin-bottom: var(--s-2); }
+.upload-title { color: var(--text); font-weight: 500; }
+.upload-hint { font-size: 0.875rem; }
+.preview { max-width: 100%; min-width: 0; max-height: 22rem; object-fit: contain; }
+.upload-note { color: var(--muted); }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 3.25rem;
+  padding: 0 var(--s-5);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+.btn .l.en { text-transform: uppercase; }
+.btn-solid { background: var(--primary-bg); border-color: var(--primary-bg); color: var(--primary-fg); }
+.btn-solid:hover:not(:disabled) { background: var(--primary-hover-bg); border-color: var(--primary-hover-bg); color: var(--primary-hover-fg); }
+.btn-ghost { border-color: var(--line-strong); color: var(--text); }
+.btn-ghost:hover:not(:disabled) { border-color: var(--text); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.analyze-btn { width: 100%; }
+
+/* ---------- panels ---------- */
+.panel {
+  border: 1px solid var(--line-strong);
+  padding: var(--s-4);
+  display: grid;
+  gap: var(--s-3);
+  align-content: start;
+  min-width: 0;
+}
+
+/* ---------- the send panel: where the result goes ---------- */
+.send-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.field { display: grid; gap: var(--s-2); min-width: 0; }
+.field-wide { grid-column: 1 / -1; }
+.field label { font-size: 0.875rem; color: var(--muted); }
+.field input,
+.field textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--s-2) var(--s-3);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  font-size: 1rem;
+}
+.field textarea { resize: vertical; min-height: 4.5rem; }
+.field input:focus,
+.field textarea:focus { border-color: var(--focus); outline: none; }
+.consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-2);
+  align-items: start;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.consent input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--wine); }
+.consent a { color: var(--link); text-underline-offset: 0.2em; }
+
+/* ---------- feedback / status ---------- */
+.error-box {
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--wine);
+  color: var(--wine);
+  font-size: 0.9375rem;
+}
+:root:not([data-theme="light"]) .error-box { color: var(--stone); background: color-mix(in srgb, var(--wine) 22%, transparent); }
+.spinner { display: flex; align-items: center; gap: var(--s-3); }
+.spin {
+  width: 1.25rem; height: 1.25rem;
+  border: 1px solid var(--line-strong);
+  border-top-color: var(--mark);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- footer ---------- */
+.site-footer {
+  padding: var(--s-4) var(--gutter) var(--s-5);
+  border-top: 1px solid var(--line-strong);
+  display: grid;
+  gap: var(--s-2);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.model-info { color: var(--kicker); }
+.site-footer a { text-underline-offset: 0.2em; }
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- phone ---------- */
+@media (max-width: 720px) {
+  .site-header { padding: var(--s-3) var(--margin); }
+  .product { display: none; }
+  .send-grid { grid-template-columns: 1fr; }
+  .intro h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+  .btn { width: 100%; }
+}
+
+/* only the message for what went wrong shows */
+.error-box:not([data-show="type"]) [data-err="type"],
+.error-box:not([data-show="send"]) [data-err="send"] { display: none !important; }

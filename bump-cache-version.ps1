@@ -16,7 +16,7 @@ Get-ChildItem -Path $PSScriptRoot -Recurse -Filter *.html |
     # matches css/style.css or js/main.js, with or without an existing ?v=
     $new = [regex]::Replace(
       $text,
-      '((?:css/style\.css|js/main\.js|js/look\.js))(\?v=[^"]*)?"',
+      '((?:css/style\.css|js/main\.js|js/look\.js|font-finder\.css|font-finder\.js))(\?v=[^"]*)?"',
       { param($m) $m.Groups[1].Value + '?v=' + $ver + '"' }
     )
     if ($new -ne $text) {

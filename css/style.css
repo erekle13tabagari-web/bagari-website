@@ -567,12 +567,12 @@ html.scrolled .site-header::before { opacity: 1; }
 .statement { max-width: 52ch; margin-inline: auto; text-align: center; }
 .statement p + p { margin-top: var(--s-4); }
 .statement .display {
-  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  font-size: clamp(1.5rem, 2.7vw, 2.5rem);
   line-height: 1.02;
   margin-bottom: var(--s-4);
   text-wrap: balance;
 }
-.statement .lede { margin-inline: auto; font-style: italic; text-wrap: pretty; }
+.statement .lede { margin-inline: auto; font-style: italic; text-wrap: pretty; font-size: clamp(1rem, 0.9rem + 0.45vw, 1.25rem); }
 .statement .display .line { display: block; }
 
 /* ---------- work ---------- */

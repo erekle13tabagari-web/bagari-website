@@ -421,6 +421,18 @@ html[data-lang="ka"] .l.ka { display: inline; }
 .ocr-fixed { text-decoration: underline dotted var(--mark); text-decoration-skip-ink: none; text-underline-offset: 0.2em; cursor: help; }
 #copyBtn { justify-self: start; }
 
+/* ---------- corrections: a wrong typeface, a misread word ---------- */
+.fix { display: grid; gap: var(--s-2); min-width: 0; }
+.fix > .fix-open { justify-self: start; }
+.fix-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.fix-form { display: grid; gap: var(--s-2); padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.fix-form .field textarea { min-height: 3.5rem; font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem); line-height: 1.5; }
+.fix-consent { font-size: 0.8125rem; }
+.fix-consent a { color: var(--link); text-underline-offset: 0.2em; }
+.fix-done { color: var(--kicker); font-size: 0.875rem; }
+.fix-error { color: var(--wine); font-size: 0.875rem; }
+:root:not([data-theme="light"]) .fix-error { color: var(--mark); }
+
 @media (max-width: 720px) {
   .result-grid { grid-template-columns: 1fr; }
   .panel-wide { grid-column: 1; }

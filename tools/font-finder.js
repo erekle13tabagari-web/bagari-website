@@ -126,6 +126,8 @@
     if (TYPES.indexOf(f.type) < 0 || f.size > MAX) { showError("type"); return; }
     file = f;
     lastData = null;
+    ticket = "";
+    resetFixes(false);
     preview.src = URL.createObjectURL(f);
     preview.classList.remove("hidden");
     content.classList.add("hidden");
@@ -213,6 +215,92 @@
     results.classList.remove("hidden");
   }
 
+  /* ---------- corrections: a wrong typeface, a misread word ----------
+   * Offered only with a ticket from the Worker, which proves this image was just
+   * analysed there. The image and the fix are kept for review, never trained on unseen. */
+  var ticket = "";
+  var fixes = [$("fixFont"), $("fixText")];
+  var fontListLoaded = false;
+
+  function loadFontList() {
+    if (fontListLoaded) return;
+    fontListLoaded = true;
+    fetch("ff-fonts.json").then(function (r) { return r.json(); }).then(function (d) {
+      var seen = {}, html = "";
+      (d.fonts || []).forEach(function (f) {
+        [f.n].concat(f.a || []).forEach(function (n) {
+          if (!seen[n]) { seen[n] = 1; html += '<option value="' + esc(n) + '"></option>'; }
+        });
+      });
+      $("ffFontList").innerHTML = html;
+    }).catch(function () { fontListLoaded = false; });
+  }
+
+  function resetFix(box, offered) {
+    var open = box.querySelector(".fix-open");
+    open.classList.toggle("hidden", !offered);
+    open.setAttribute("aria-expanded", "false");
+    box.querySelector(".fix-form").classList.add("hidden");
+    box.querySelector(".fix-done").classList.add("hidden");
+    box.querySelector(".fix-error").classList.add("hidden");
+    box.querySelector(".fix-send").disabled = false;
+    if (box.id === "fixFont") box.classList.toggle("hidden", !offered);
+  }
+  function resetFixes(offered) { fixes.forEach(function (b) { resetFix(b, offered); }); }
+
+  fixes.forEach(function (box) {
+    var kind = box.getAttribute("data-kind");
+    var open = box.querySelector(".fix-open"), formEl = box.querySelector(".fix-form");
+    var input = box.querySelector(".fix-value"), sendBtn = box.querySelector(".fix-send");
+
+    open.addEventListener("click", function () {
+      var show = formEl.classList.contains("hidden");
+      formEl.classList.toggle("hidden", !show);
+      open.setAttribute("aria-expanded", show ? "true" : "false");
+      box.querySelector(".fix-error").classList.add("hidden");
+      if (!show) return;
+      if (kind === "font") { loadFontList(); input.value = ""; }
+      else input.value = $("ocrText").textContent;
+      input.focus();
+    });
+    box.querySelector(".fix-cancel").addEventListener("click", function () {
+      formEl.classList.add("hidden");
+      open.setAttribute("aria-expanded", "false");
+      open.focus();
+    });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && (kind === "font" || e.ctrlKey || e.metaKey)) { e.preventDefault(); sendBtn.click(); }
+    });
+
+    sendBtn.addEventListener("click", function () {
+      var value = input.value.trim();
+      if (!value || !file || !ticket || !lastData) { input.focus(); return; }
+      if (kind === "text" && value === $("ocrText").textContent.trim()) { input.focus(); return; }
+      sendBtn.disabled = true;
+      box.querySelector(".fix-error").classList.add("hidden");
+      var data = new FormData();
+      data.append("image", file);
+      data.append("ticket", ticket);
+      data.append("kind", kind);
+      data.append("value", value);
+      data.append("predicted", (lastData.font && lastData.font.label) || "");
+      data.append("ocr", $("ocrText").textContent);
+      data.append("lang", lang());
+      fetch("/api/font-finder/correct", { method: "POST", body: data })
+        .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+        .then(function (r) {
+          if (!r || !r.ok) throw new Error("fix failed");
+          formEl.classList.add("hidden");
+          open.classList.add("hidden");
+          box.querySelector(".fix-done").classList.remove("hidden");
+        })
+        .catch(function () {
+          sendBtn.disabled = false;
+          box.querySelector(".fix-error").classList.remove("hidden");
+        });
+    });
+  });
+
   $("copyBtn").addEventListener("click", function () {
     var b = this;
     navigator.clipboard.writeText($("ocrText").textContent).then(function () {
@@ -240,7 +328,9 @@
       .then(function (r) { return r.json().catch(function () { return { ok: false, offline: true }; }); })
       .then(function (r) {
         if (r && r.ok && r.result) {
+          ticket = r.ticket || "";
           showResults(r.result);
+          resetFixes(!!ticket);
           (window.matchMedia("(min-width: 900px)").matches ? form : results).scrollIntoView({ block: "start", behavior: "smooth" });
           renderTurnstile(true);          /* a fresh token for the next image */
           btn.disabled = false;

@@ -371,8 +371,8 @@
     btn.disabled = true;
     spinner.classList.remove("hidden");
     (sending ? send() : analyze())
-      .catch(function () {
-        showError("send");
+      .catch(function (e) {
+        showError(e && e.message === "check" ? "check" : "send");
         btn.disabled = false;
         renderTurnstile(true);
       })

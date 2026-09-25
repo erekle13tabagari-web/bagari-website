@@ -771,7 +771,8 @@ a.level:hover .level-cta .l { text-decoration: underline; text-underline-offset:
 }
 /* side by side, the drawing is exactly as tall as the text: top of the title to the last line */
 @media (min-width: 901px) {
-  .studio-grid { align-items: stretch; }
+  .studio-grid { align-items: stretch; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+  .studio-body { max-width: 55rem; } /* the text moves left, its line length stays */
   .studio-art .ink { position: absolute; inset: 0; width: auto; aspect-ratio: auto; }
   .studio-art figcaption { position: absolute; top: 100%; left: 0; right: 0; text-align: center; }
 }

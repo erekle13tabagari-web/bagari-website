@@ -351,7 +351,8 @@ html[data-lang="ka"] .l.ka { display: inline; }
 
 /* only the message for what went wrong shows */
 .error-box:not([data-show="type"]) [data-err="type"],
-.error-box:not([data-show="send"]) [data-err="send"] { display: none !important; }
+.error-box:not([data-show="send"]) [data-err="send"],
+.error-box:not([data-show="check"]) [data-err="check"] { display: none !important; }
 
 /* ---------- mode: live analysis, or the email route when the engine is offline ---------- */
 #ffForm:not([data-mode="send"]) .mode-send,

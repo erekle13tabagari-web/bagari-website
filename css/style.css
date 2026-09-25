@@ -588,6 +588,17 @@ html.scrolled .site-header::before { opacity: 1; }
   margin-inline: 0.04em;
   vertical-align: -0.02em;
   fill: var(--mark);
+  transform-origin: 50% 55%;
+  animation: heart-breathe 4.2s ease-in-out infinite;
+}
+/* breathing, not beating: a slow swell and a slower release */
+@keyframes heart-breathe {
+  0%, 100% { transform: scale(1); }
+  38%      { transform: scale(1.12); }
+  55%      { transform: scale(1.09); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .statement .heart { animation: none; }
 }
 
 /* ---------- work ---------- */

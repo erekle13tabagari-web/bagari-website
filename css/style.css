@@ -685,10 +685,10 @@ html.scrolled .site-header::before { opacity: 1; }
 }
 .level {
   background: var(--surface);
-  padding: clamp(var(--s-5), 5vh, var(--s-6)) clamp(var(--s-4), 4vw, var(--s-6));
-  display: grid;
+  padding: var(--s-5) clamp(var(--s-4), 4vw, var(--s-6));
+  display: flex;
+  flex-direction: column;
   gap: var(--s-4);
-  align-content: start;
 }
 .level-name {
   font-family: var(--font-display);
@@ -706,6 +706,38 @@ html.scrolled .site-header::before { opacity: 1; }
 .level ul { display: grid; gap: var(--s-2); }
 .level li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--s-2); }
 .level li::before { content: "—"; color: var(--muted); }
+
+/* each level is a link into the enquiry form */
+a.level { color: inherit; text-decoration: none; transition: background var(--fast) var(--ease); }
+a.level:focus-visible { outline: 2px solid var(--text); outline-offset: -4px; }
+.level-cta { margin-top: auto; padding-top: var(--s-2); color: var(--text); }
+.level-cta .arrow { display: inline-block; transition: transform var(--fast) var(--ease); }
+a.level:hover .level-cta .arrow { transform: translateX(0.35em); }
+a.level:hover .level-cta .l { text-decoration: underline; text-underline-offset: 0.3em; }
+
+/* Redprint is the recommended level: it floods with its own colour. Text on
+   Redprint is pure white and nothing on it is dimmed (the AA rule for red). */
+.level[data-level="redprint"] {
+  background: var(--redprint);
+  color: #FFFFFF;
+  --text: #FFFFFF;
+  --muted: #FFFFFF;
+  --kicker: #FFFFFF;
+}
+.level[data-level="redprint"] .level-name { color: #FFFFFF; }
+.level[data-level="redprint"] .tic { color: #FFFFFF; }
+.level { position: relative; }
+.level-badge {
+  position: absolute;
+  top: calc(var(--s-5) - var(--s-1));
+  right: clamp(var(--s-4), 4vw, var(--s-6));
+  padding: var(--s-1) var(--s-2);
+  background: #FFFFFF;
+  color: var(--redprint);
+}
+#capabilities .section-head { margin-bottom: var(--s-4); }
+.tier-note { margin-top: var(--s-4); color: var(--kicker); }
+.tier-note[hidden] { display: none; }
 .care-note {
   max-width: 56ch;
   margin: var(--s-5) auto 0;

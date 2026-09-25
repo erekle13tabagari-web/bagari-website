@@ -22,7 +22,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609251050">
+<link rel="stylesheet" href="css/style.css?v=202609251057">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -80,6 +80,7 @@
       <span class="l en">Eight questions, about five minutes. There are no wrong answers, and we read every one before we reply.</span>
       <span class="l ka">რვა კითხვა, დაახლოებით ხუთი წუთი. არასწორი პასუხები არ არსებობს, და ყველა პასუხს ვკითხულობთ, სანამ გიპასუხებთ.</span>
     </p>
+    <p class="label tier-note rv" id="tierNote" hidden><span class="l en">Level: <b data-tier-name></b></span><span class="l ka">ᲓᲝᲜᲔ: <b data-tier-name></b></span></p>
   </section>
 
   <section class="relief section form-section">
@@ -228,11 +229,21 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="js/main.js?v=202609251050"></script>
+<script src="js/main.js?v=202609251057"></script>
 <script>
 (function () {
   "use strict";
   var form = document.getElementById("startForm");
+
+  /* arriving from a capability card: start.html?tier=redprint */
+  var TIERS = { blueprint: "Blueprint", redprint: "Redprint", blackprint: "Blackprint" };
+  var tier = (new URLSearchParams(location.search).get("tier") || "").toLowerCase();
+  if (!TIERS.hasOwnProperty(tier)) tier = "";
+  if (tier) {
+    var note = document.getElementById("tierNote");
+    Array.prototype.forEach.call(note.querySelectorAll("[data-tier-name]"), function (b) { b.textContent = TIERS[tier]; });
+    note.hidden = false;
+  }
   var btn = document.getElementById("submitBtn");
   var err = document.getElementById("formError");
   var done = document.getElementById("formDone");
@@ -265,6 +276,7 @@
       decider: form.decider.value.trim(),
       lang: document.documentElement.getAttribute("data-lang"),
       marketing: document.getElementById("f-marketing").checked,
+      tier: tier,
       policy: "2026-09-24",
       turnstile: tsEl ? tsEl.value : ""
     };

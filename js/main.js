@@ -325,6 +325,36 @@
     track.addEventListener("dragstart", function (e) { e.preventDefault(); });
   });
 
+  /* ---------- scrollbar: shown only while the pointer is on it ----------
+   * Chromium reports mouse movement over the page scrollbar to the document,
+   * with clientX past the content width; that is the only hover signal the
+   * strip gives. A held button keeps it shown while the thumb is dragged. */
+  var sbHide = 0;
+  var sbSheet = document.createElement("style");
+  sbSheet.media = "not all";
+  sbSheet.textContent =
+    "::-webkit-scrollbar-track{background:var(--ink)}" +
+    "::-webkit-scrollbar-thumb{background:var(--redprint);border:2px solid var(--ink)}";
+  document.head.appendChild(sbSheet);
+  function showBar(on) {
+    root.classList.toggle("sb-show", on);
+    sbSheet.media = on ? "all" : "not all";
+  }
+  document.addEventListener("mousemove", function (e) {
+    var onBar = e.clientX >= root.clientWidth - 1 && root.scrollHeight > root.clientHeight;
+    if (onBar || (e.buttons && root.classList.contains("sb-show"))) {
+      clearTimeout(sbHide);
+      if (!root.classList.contains("sb-show")) showBar(true);
+    } else if (root.classList.contains("sb-show")) {
+      clearTimeout(sbHide);
+      sbHide = setTimeout(function () { showBar(false); }, 350);
+    }
+  }, { passive: true });
+  document.addEventListener("mouseleave", function () {
+    clearTimeout(sbHide);
+    sbHide = setTimeout(function () { showBar(false); }, 350);
+  });
+
   /* ---------- show the back-to-top past the first screen ---------- */
   function onScroll() {
     var y = window.scrollY;

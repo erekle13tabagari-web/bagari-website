@@ -1,7 +1,8 @@
-/* BAGARI Font Finder, the public page: the app's interface, sending to the studio.
- * The model runs at the studio for now, so "send for analysis" posts the image to
- * the site's Worker (/api/font-finder), which stores it and emails the studio;
- * the result goes back to the visitor by email. */
+/* BAGARI Font Finder, the public page: the app's interface, analysing live.
+ * "Analyze" posts the image to the site's Worker (/api/font-finder/analyze), which
+ * checks Turnstile and relays it to the engine on the studio's server. The results
+ * render with the app's own panels and wording. If the engine cannot be reached,
+ * the form switches to the email route (/api/font-finder) instead. */
 (function () {
   "use strict";
 
@@ -9,16 +10,56 @@
   var $ = function (id) { return document.getElementById(id); };
   var TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/heic", "image/heif"];
   var MAX = 10 * 1024 * 1024;
+  var LOW = 75;   /* OCR word confidence below which a word is marked uncertain */
+
+  /* the app's result strings (georgian-font-finder/frontend/app.js) */
+  var T = {
+    en: {
+      confidence: "Confidence: {p}%", alsoKnown: "Also known as: {list}",
+      noteWords: "Averaged over {n} word crop and the full image", noteWords_pl: "Averaged over {n} word crops and the full image",
+      noteWhole: "Classified from the whole image (no words detected)",
+      ocrMeta: "OCR confidence {c}% · {n} word", ocrMeta_pl: "OCR confidence {c}% · {n} words",
+      ocrFixed: "{n} corrected (dotted)", ocrLow: "{n} uncertain (dashed)", ocrOld: "read with the Old Georgian model",
+      tipFixed: "OCR read “{orig}”, corrected from the dictionary", tipLow: "OCR confidence {c}%, check this word",
+      noText: "(no text detected)",
+      scripts: { Mkhedruli: "Mkhedruli", Mtavruli: "Mtavruli", Asomtavruli: "Asomtavruli", Nuskhuri: "Nuskhuri", Unknown: "Unknown" },
+      note_from_font: "Inferred from the identified font", note_mtavruli_from_font: "Mkhedruli capitals, inferred from the identified font",
+      note_no_georgian: "No Georgian characters recognised in the text", note_counts: "{n} of {total} Georgian characters"
+    },
+    ka: {
+      confidence: "სანდოობა: {p}%", alsoKnown: "ასევე ცნობილია როგორც: {list}",
+      noteWords: "საშუალო {n} სიტყვის ფრაგმენტზე და მთელ სურათზე",
+      noteWhole: "კლასიფიცირებულია მთელი სურათით (სიტყვები ვერ მოიძებნა)",
+      ocrMeta: "OCR სანდოობა {c}% · {n} სიტყვა",
+      ocrFixed: "{n} შესწორებული (წერტილოვანი)", ocrLow: "{n} საეჭვო (წყვეტილი)", ocrOld: "წაკითხულია ძველი ქართულის მოდელით",
+      tipFixed: "OCR-მა წაიკითხა „{orig}“, შესწორდა ლექსიკონით", tipLow: "OCR სანდოობა {c}%, გადაამოწმეთ ეს სიტყვა",
+      noText: "(ტექსტი ვერ მოიძებნა)",
+      scripts: { Mkhedruli: "მხედრული", Mtavruli: "მთავრული", Asomtavruli: "ასომთავრული", Nuskhuri: "ნუსხური", Unknown: "უცნობი" },
+      note_from_font: "დადგენილია ამოცნობილი შრიფტით", note_mtavruli_from_font: "მხედრულის მთავრული ასოები, დადგენილია ამოცნობილი შრიფტით",
+      note_no_georgian: "ტექსტში ქართული ასოები ვერ მოიძებნა", note_counts: "{n} {total}-დან ქართული ასოა"
+    }
+  };
 
   var form = $("ffForm"), zone = $("uploadZone"), fileInput = $("fileInput");
-  var content = $("uploadContent"), preview = $("preview"), sendPanel = $("sendPanel");
-  var btn = $("analyzeBtn"), errorBox = $("errorBox"), spinner = $("spinner"), done = $("donePanel");
+  var content = $("uploadContent"), preview = $("preview"), checkBox = $("turnstileBox");
+  var sendPanel = $("sendPanel"), btn = $("analyzeBtn"), errorBox = $("errorBox");
+  var spinner = $("spinner"), results = $("results"), done = $("donePanel");
   var langToggle = $("langToggle"), themeToggle = $("themeToggle");
 
-  var file = null, widget = null, turnstileLoaded = false;
+  var file = null, widget = null, turnstileLoaded = false, lastData = null;
+
+  function lang() { return root.getAttribute("data-lang") === "ka" ? "ka" : "en"; }
+  function t(key, p) {
+    p = p || {};
+    var d = T[lang()];
+    var s = (p.n !== undefined && p.n !== 1 && d[key + "_pl"]) ? d[key + "_pl"] : (d[key] || T.en[key] || key);
+    return s.replace(/\{(\w+)\}/g, function (_, k) { return p[k] !== undefined ? p[k] : ""; });
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
 
   /* ---------- language: the site's stored choice, else the browser's ---------- */
-  function lang() { return root.getAttribute("data-lang") === "ka" ? "ka" : "en"; }
   function setLang(l) {
     root.setAttribute("data-lang", l);
     root.setAttribute("lang", l);
@@ -27,6 +68,8 @@
       if (o.getAttribute("data-lang-opt") === l) o.setAttribute("aria-current", "true"); else o.removeAttribute("aria-current");
     });
     try { localStorage.setItem("bagari-lang", l); } catch (e) {}
+    paintTheme();
+    if (lastData) showResults(lastData);
   }
   function initialLang() {
     try { var s = localStorage.getItem("bagari-lang"); if (s === "ka" || s === "en") return s; } catch (e) {}
@@ -37,11 +80,11 @@
   /* ---------- surface: Ink by default, Stone by the switch ("light" on the site too) ---------- */
   function theme() { return root.getAttribute("data-theme") === "light" ? "light" : "dark"; }
   function paintTheme() {
-    var t = theme();
+    var th = theme();
     themeToggle.querySelectorAll(".lt-opt").forEach(function (o) {
-      if (o.getAttribute("data-theme-opt") === t) o.setAttribute("aria-current", "true"); else o.removeAttribute("aria-current");
+      if (o.getAttribute("data-theme-opt") === th) o.setAttribute("aria-current", "true"); else o.removeAttribute("aria-current");
     });
-    themeToggle.setAttribute("aria-label", t === "dark"
+    themeToggle.setAttribute("aria-label", th === "dark"
       ? (lang() === "ka" ? "ქვის ფონზე გადართვა" : "Switch to stone")
       : (lang() === "ka" ? "მელნის ფონზე გადართვა" : "Switch to ink"));
   }
@@ -50,7 +93,7 @@
     if (next === "light") root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
     try { localStorage.setItem("bagari-theme", next); } catch (e) {}
     paintTheme();
-    renderTurnstile(true);
+    if (widget !== null) renderTurnstile(true);
   });
 
   /* ---------- choosing the image: click, keyboard, drag & drop, paste ---------- */
@@ -77,31 +120,33 @@
     }
   });
 
-  function showError(kind) {
-    errorBox.setAttribute("data-show", kind);
-    errorBox.classList.remove("hidden");
-  }
+  function showError(kind) { errorBox.setAttribute("data-show", kind); errorBox.classList.remove("hidden"); }
   function hideError() { errorBox.classList.add("hidden"); }
+  function setMode(m) { form.setAttribute("data-mode", m); }
 
   function setFile(f) {
     hideError();
     if (TYPES.indexOf(f.type) < 0 || f.size > MAX) { showError("type"); return; }
     file = f;
+    lastData = null;
     preview.src = URL.createObjectURL(f);
     preview.classList.remove("hidden");
     content.classList.add("hidden");
-    sendPanel.classList.remove("hidden");
+    results.classList.add("hidden");
     done.classList.add("hidden");
+    sendPanel.classList.add("hidden");
+    setMode("analyze");
+    checkBox.classList.remove("hidden");
     btn.classList.remove("hidden");
     btn.disabled = false;
-    renderTurnstile(false);
+    renderTurnstile(widget !== null);
   }
 
-  /* ---------- Turnstile: rendered once the panel opens, in the page's surface ---------- */
+  /* ---------- Turnstile: explicit render, in the page's surface; one token per request ---------- */
   window.ffTurnstileReady = function () { turnstileLoaded = true; if (file) renderTurnstile(false); };
-  function renderTurnstile(force) {
+  function renderTurnstile(fresh) {
     if (!turnstileLoaded || !window.turnstile) return;
-    if (widget !== null && !force) return;
+    if (widget !== null && !fresh) return;
     if (widget !== null) { try { window.turnstile.remove(widget); } catch (e) {} widget = null; }
     widget = window.turnstile.render("#turnstileBox", {
       sitekey: "0x4AAAAAAFBI1eAS8Nb8IKLS",
@@ -109,42 +154,141 @@
       theme: theme() === "light" ? "light" : "dark"
     });
   }
+  function token() {
+    return widget !== null && window.turnstile ? (window.turnstile.getResponse(widget) || "") : "";
+  }
 
-  /* ---------- sending ---------- */
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    hideError();
-    if (!file) return;
-    if (!form.reportValidity()) return;
+  /* ---------- results, rendered as the app renders them ---------- */
+  function showResults(data) {
+    lastData = data;
+    var sc = data.script || {};
+    $("scriptLabel").textContent = T[lang()].scripts[sc.label] || sc.label || "";
+    var scPct = Math.round((sc.confidence || 0) * 100);
+    $("scriptBar").style.width = scPct + "%";
+    $("scriptConf").textContent = t("confidence", { p: scPct });
+    $("scriptNote").textContent = sc.note_key ? t("note_" + sc.note_key, sc.note_params || {}) : (sc.note || "");
 
+    var fn = data.font || {};
+    $("fontLabel").textContent = fn.label || "";
+    var fnPct = Math.round((fn.confidence || 0) * 100);
+    $("fontBar").style.width = fnPct + "%";
+    $("fontConf").textContent = fn.confidence > 0 ? t("confidence", { p: fnPct }) : "";
+    $("uncertainBadge").classList.toggle("hidden", !fn.uncertain);
+    $("fontAlias").textContent = fn.aliases && fn.aliases.length ? t("alsoKnown", { list: fn.aliases.join(", ") }) : "";
+    $("fontNote").textContent = fn.note || (fn.words_used > 0 ? t("noteWords", { n: fn.words_used }) : t("noteWhole"));
+
+    var scores = $("fontScores");
+    if (fn.top && fn.top.length) {
+      scores.innerHTML = fn.top.map(function (r) {
+        var pct = Math.round(r.score * 100);
+        var title = r.aliases && r.aliases.length ? ' title="' + esc(r.aliases.join(", ")) + '"' : "";
+        return '<div class="score-row"><span class="name"' + title + ">" + esc(r.font) + '</span><span class="bar"><i style="width:' + pct + '%"></i></span><span class="pct">' + pct + "%</span></div>";
+      }).join("");
+      scores.classList.remove("hidden");
+    } else {
+      scores.classList.add("hidden");
+    }
+
+    /* OCR: dictionary-corrected words dotted, low-confidence words dashed */
+    var o = data.ocr || {};
+    var ocr = $("ocrText");
+    var renderWord = function (w) {
+      if (w.orig) return '<span class="ocr-fixed" title="' + esc(t("tipFixed", { orig: w.orig })) + '">' + esc(w.text) + "</span>";
+      if (w.conf < LOW) return '<span class="ocr-low" title="' + esc(t("tipLow", { c: Math.round(w.conf) })) + '">' + esc(w.text) + "</span>";
+      return esc(w.text);
+    };
+    if (o.lines && o.lines.length) ocr.innerHTML = o.lines.map(function (line) { return line.map(renderWord).join(" "); }).join("\n");
+    else ocr.textContent = data.ocr_text || t("noText");
+
+    var flat = [].concat.apply([], o.lines || []);
+    var lowCount = flat.filter(function (w) { return !w.orig && w.conf < LOW; }).length;
+    var fixCount = flat.filter(function (w) { return w.orig; }).length;
+    var meta = [];
+    if (o.confidence != null) meta.push(t("ocrMeta", { c: Math.round(o.confidence), n: o.words }));
+    if (fixCount) meta.push(t("ocrFixed", { n: fixCount }));
+    if (lowCount) meta.push(t("ocrLow", { n: lowCount }));
+    if (o.lang === "kat_old") meta.push(t("ocrOld"));
+    $("ocrMeta").textContent = meta.join(" · ");
+
+    results.classList.remove("hidden");
+  }
+
+  $("copyBtn").addEventListener("click", function () {
+    var b = this;
+    navigator.clipboard.writeText($("ocrText").textContent).then(function () {
+      b.classList.add("is-alt");
+      setTimeout(function () { b.classList.remove("is-alt"); }, 1500);
+    });
+  });
+
+  /* ---------- the two requests ---------- */
+  function goOffline() {
+    setMode("send");
+    sendPanel.classList.remove("hidden");
+    $("ff-email").required = true;
+    $("ff-consent").required = true;
+    renderTurnstile(true);
+    btn.disabled = false;
+    sendPanel.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  function analyze() {
+    var data = new FormData();
+    data.append("image", file);
+    data.append("cf-turnstile-response", token());
+    return fetch("/api/font-finder/analyze", { method: "POST", body: data })
+      .then(function (r) { return r.json().catch(function () { return { ok: false, offline: true }; }); })
+      .then(function (r) {
+        if (r && r.ok && r.result) {
+          showResults(r.result);
+          results.scrollIntoView({ block: "start", behavior: "smooth" });
+          renderTurnstile(true);          /* a fresh token for the next image */
+          btn.disabled = false;
+        } else if (r && r.offline) {
+          goOffline();
+        } else {
+          throw new Error(r && r.error || "failed");
+        }
+      });
+  }
+
+  function send() {
     var data = new FormData();
     data.append("image", file);
     data.append("email", $("ff-email").value.trim());
     data.append("name", $("ff-name").value.trim());
     data.append("note", $("ff-note").value.trim());
     data.append("lang", lang());
-    data.append("cf-turnstile-response", widget !== null && window.turnstile ? (window.turnstile.getResponse(widget) || "") : "");
-
-    btn.disabled = true;
-    spinner.classList.remove("hidden");
-
-    fetch("/api/font-finder", { method: "POST", body: data })
+    data.append("cf-turnstile-response", token());
+    return fetch("/api/font-finder", { method: "POST", body: data })
       .then(function (r) { return r.json(); })
       .then(function (r) {
         if (!r || !r.ok) throw new Error("send failed");
         sendPanel.classList.add("hidden");
+        checkBox.classList.add("hidden");
         btn.classList.add("hidden");
         done.classList.remove("hidden");
         done.scrollIntoView({ block: "center", behavior: "smooth" });
-      })
+      });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    hideError();
+    if (!file) return;
+    var sending = form.getAttribute("data-mode") === "send";
+    if (sending && !form.reportValidity()) return;
+    btn.disabled = true;
+    spinner.classList.remove("hidden");
+    (sending ? send() : analyze())
       .catch(function () {
         showError("send");
         btn.disabled = false;
-        if (widget !== null && window.turnstile) { try { window.turnstile.reset(widget); } catch (e) {} }
+        renderTurnstile(true);
       })
       .then(function () { spinner.classList.add("hidden"); });
   });
 
+  setMode("analyze");
   setLang(initialLang());
-  paintTheme();
 })();

@@ -1024,7 +1024,7 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
   height: 1em;
   display: inline-block;
   vertical-align: -0.12em;
-  fill: currentColor;
+  fill: var(--mark); /* Redprint; white on the red edition, where red would vanish */
 }
 
 /* ---------- back to top ---------- */

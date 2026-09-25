@@ -738,7 +738,7 @@ a.level:hover .level-cta .l { text-decoration: underline; text-underline-offset:
   background: #FFFFFF;
   color: var(--redprint);
 }
-#capabilities .section-head { margin-bottom: var(--s-4); }
+#capabilities .section-head { margin-bottom: 0; } /* the level cards sit on the rule */
 .tier-note { margin-top: var(--s-4); color: var(--kicker); }
 .tier-note[hidden] { display: none; }
 .care-note {

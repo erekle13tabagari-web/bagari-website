@@ -64,9 +64,6 @@
     root.setAttribute("data-lang", l);
     root.setAttribute("lang", l);
     langToggle.setAttribute("aria-label", l === "ka" ? "Switch to English" : "ქართულზე გადართვა");
-    langToggle.querySelectorAll(".lt-opt").forEach(function (o) {
-      if (o.getAttribute("data-lang-opt") === l) o.setAttribute("aria-current", "true"); else o.removeAttribute("aria-current");
-    });
     try { localStorage.setItem("bagari-lang", l); } catch (e) {}
     paintTheme();
     if (lastData) showResults(lastData);
@@ -77,13 +74,13 @@
   }
   langToggle.addEventListener("click", function () { setLang(lang() === "ka" ? "en" : "ka"); });
 
-  /* ---------- surface: Ink by default, Stone by the switch ("light" on the site too) ---------- */
+  /* ---------- surface: black (Ink) by default; the tool keeps its own choice, apart from the site's ---------- */
   function theme() { return root.getAttribute("data-theme") === "light" ? "light" : "dark"; }
   function paintTheme() {
     var th = theme();
-    themeToggle.querySelectorAll(".lt-opt").forEach(function (o) {
-      if (o.getAttribute("data-theme-opt") === th) o.setAttribute("aria-current", "true"); else o.removeAttribute("aria-current");
-    });
+    /* the icon shows the surface you would move to, as on the main site */
+    themeToggle.querySelector(".theme-icon-light").style.display = th === "dark" ? "block" : "none";
+    themeToggle.querySelector(".theme-icon-dark").style.display = th === "dark" ? "none" : "block";
     themeToggle.setAttribute("aria-label", th === "dark"
       ? (lang() === "ka" ? "ქვის ფონზე გადართვა" : "Switch to stone")
       : (lang() === "ka" ? "მელნის ფონზე გადართვა" : "Switch to ink"));
@@ -91,7 +88,7 @@
   themeToggle.addEventListener("click", function () {
     var next = theme() === "dark" ? "light" : "dark";
     if (next === "light") root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
-    try { localStorage.setItem("bagari-theme", next); } catch (e) {}
+    try { localStorage.setItem("bagari-ff-theme", next); } catch (e) {}
     paintTheme();
     if (widget !== null) renderTurnstile(true);
   });
@@ -134,6 +131,7 @@
     content.classList.add("hidden");
     results.classList.add("hidden");
     done.classList.add("hidden");
+    form.classList.remove("has-results");
     sendPanel.classList.add("hidden");
     setMode("analyze");
     checkBox.classList.remove("hidden");
@@ -151,7 +149,8 @@
     widget = window.turnstile.render("#turnstileBox", {
       sitekey: "0x4AAAAAAFBI1eAS8Nb8IKLS",
       action: "fontfinder",
-      theme: theme() === "light" ? "light" : "dark"
+      theme: theme() === "light" ? "light" : "dark",
+      appearance: "interaction-only"
     });
   }
   function token() {
@@ -210,6 +209,7 @@
     if (o.lang === "kat_old") meta.push(t("ocrOld"));
     $("ocrMeta").textContent = meta.join(" · ");
 
+    form.classList.add("has-results");
     results.classList.remove("hidden");
   }
 
@@ -241,7 +241,7 @@
       .then(function (r) {
         if (r && r.ok && r.result) {
           showResults(r.result);
-          results.scrollIntoView({ block: "start", behavior: "smooth" });
+          (window.matchMedia("(min-width: 900px)").matches ? form : results).scrollIntoView({ block: "start", behavior: "smooth" });
           renderTurnstile(true);          /* a fresh token for the next image */
           btn.disabled = false;
         } else if (r && r.offline) {

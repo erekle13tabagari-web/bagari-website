@@ -120,8 +120,7 @@ ul { padding: 0; list-style: none; }
 .l { display: none; }
 html[data-lang="en"] .l.en,
 html[data-lang="ka"] .l.ka { display: inline; }
-.l.ka,
-.lt-opt[data-lang-opt="ka"] { text-transform: none; }
+.l.ka { text-transform: none; }
 
 /* ---------- shared type ---------- */
 .label {
@@ -180,7 +179,6 @@ html[data-lang="ka"] .l.ka { display: inline; }
   text-decoration: none;
   min-width: 0;
 }
-.monogram { width: 2rem; height: 2rem; flex: none; }
 .wordmark {
   font-family: var(--font-display);
   font-weight: 700;
@@ -188,16 +186,6 @@ html[data-lang="ka"] .l.ka { display: inline; }
   letter-spacing: -0.06em;
   line-height: 1;
 }
-.product {
-  font-weight: 600;
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  line-height: 1.2;
-  color: var(--muted);
-  padding-left: var(--s-3);
-  border-left: 1px solid var(--line-strong);
-}
-.product .l.en { text-transform: uppercase; }
 
 .header-tools { display: flex; align-items: center; gap: var(--s-2); }
 .tool {
@@ -218,24 +206,21 @@ html[data-lang="ka"] .l.ka { display: inline; }
   transition: border-color var(--fast) var(--ease);
 }
 .tool:hover { border-color: var(--text); }
-.tool .lt-opt { opacity: 0.4; transition: opacity var(--fast) var(--ease); }
-.tool .lt-opt[aria-current] { opacity: 1; }
-.tool .lt-sep { opacity: 0.4; }
-.theme-toggle .lt-opt svg { display: block; }
 
 /* ---------- page ---------- */
-.app { flex: 1; padding: clamp(var(--s-5), 6vh, var(--s-7)) var(--gutter) var(--s-6); }
-.app > * + * { margin-top: clamp(var(--s-5), 5vh, var(--s-6)); }
+.app { flex: 1; padding: clamp(var(--s-4), 4vh, var(--s-5)) var(--gutter) var(--s-5); }
+.app > * + * { margin-top: clamp(var(--s-4), 3vh, var(--s-5)); }
 #ffForm { display: grid; gap: var(--s-3); }
 
-.intro { display: grid; gap: var(--s-4); }
-.intro h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); max-width: 12ch; }
+.intro { display: grid; gap: var(--s-3); }
+.intro h1 { font-size: clamp(2.25rem, 4.6vw, 3.75rem); max-width: 18ch; }
+.intro .lede { font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem); max-width: 80ch; }
 
 /* ---------- upload ---------- */
 .upload { display: grid; gap: var(--s-3); }
 .upload-zone {
   position: relative;
-  min-height: 10rem;
+  min-height: 8rem;
   display: flex;                 /* not grid: a grid track would grow to the preview's intrinsic width */
   align-items: center;
   justify-content: center;
@@ -249,7 +234,7 @@ html[data-lang="ka"] .l.ka { display: inline; }
 .upload-content svg { color: var(--kicker); margin-bottom: var(--s-1); width: 1.5rem; height: 1.5rem; }
 .upload-title { color: var(--text); font-weight: 500; }
 .upload-hint { font-size: 0.875rem; }
-.preview { max-width: 100%; min-width: 0; max-height: 22rem; object-fit: contain; }
+.preview { max-width: 100%; min-width: 0; max-height: 14rem; object-fit: contain; }
 .upload-note { color: var(--muted); }
 
 /* ---------- buttons ---------- */
@@ -285,9 +270,9 @@ html[data-lang="ka"] .l.ka { display: inline; }
 /* ---------- panels ---------- */
 .panel {
   border: 1px solid var(--line-strong);
-  padding: var(--s-4);
+  padding: var(--s-3) var(--s-4);
   display: grid;
-  gap: var(--s-3);
+  gap: var(--s-2);
   align-content: start;
   min-width: 0;
 }
@@ -359,7 +344,6 @@ html[data-lang="ka"] .l.ka { display: inline; }
 /* ---------- phone ---------- */
 @media (max-width: 720px) {
   .site-header { padding: var(--s-3) var(--margin); }
-  .product { display: none; }
   .send-grid { grid-template-columns: 1fr; }
   .intro h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
   .btn { width: 100%; }
@@ -421,14 +405,14 @@ html[data-lang="ka"] .l.ka { display: inline; }
 
 .ocr-output {
   font-family: var(--font);
-  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
   min-height: 3.5rem;
-  max-height: 14rem;
+  max-height: 9rem;
   overflow-y: auto;
-  padding: var(--s-3);
+  padding: var(--s-2) var(--s-3);
   margin: 0;
   border: 1px solid var(--line);
   background: var(--surface-2);
@@ -444,5 +428,64 @@ html[data-lang="ka"] .l.ka { display: inline; }
   .score-row { grid-template-columns: minmax(0, 1fr) 5rem 3rem; }
 }
 
-/* narrower than any current phone: the monogram carries the brand alone */
-@media (max-width: 319px) { .wordmark { display: none; } }
+/* ---------- results beside the image on wide screens, so nothing needs a scroll ---------- */
+@media (min-width: 900px) {
+  #ffForm.has-results {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--s-4);
+    align-items: start;
+  }
+  #ffForm.has-results > * { grid-column: 1; }
+  /* the panels join the form grid: the extracted text sits under the image,
+     script and typeface stack on the right */
+  #ffForm.has-results > .results,
+  #ffForm.has-results .result-grid { display: contents; }
+  #ffForm.has-results .upload { grid-row: 1; }
+  #ffForm.has-results .result-side { grid-column: 2; grid-row: 1 / span 2; display: grid; gap: var(--s-2); align-content: start; }
+  #ffForm.has-results #panelText { grid-column: 1; grid-row: 2; }
+  #ffForm.has-results .font-scores { gap: var(--s-1); }
+  #ffForm.has-results .score-row:nth-child(n+4) { display: none; }
+}
+
+/* ---------- header: always the white (Stone) bar, whatever the page surface below ----------
+   The toggles and the back button follow the main site's: 36 px, one outline in
+   the text colour, the theme icon showing the surface you would move to. */
+.site-header {
+  background: var(--stone);
+  color: var(--ink);
+  border-bottom-color: var(--line-strong-on-stone);
+  --focus: var(--blue);
+}
+.header-left { display: flex; align-items: center; gap: var(--s-4); min-width: 0; }
+.site-header .wordmark { text-decoration: none; }
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 2.25rem;
+  padding: 0 var(--s-3);
+  border: 1px solid currentColor;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.back-btn .l.en { text-transform: uppercase; }
+.back-btn:hover { background: var(--ink); color: var(--stone); }
+.site-header .tool {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid currentColor;
+  gap: 0;
+}
+.site-header .tool:hover { background: var(--ink); color: var(--stone); }
+.site-header .tool .l.en { text-transform: uppercase; }
+
+@media (max-width: 400px) {
+  .header-left { gap: var(--s-3); }
+  .back-btn { padding: 0 var(--s-2); }
+}
+/* outside the side-by-side view the two panels keep the result grid's columns */
+.result-side { display: contents; }

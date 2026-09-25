@@ -111,9 +111,8 @@
     if (!reduced.matches) animate(svg, { iris: irisInner, head: head, brow: brow, open: frameOpen, closed: frameClosed });
 
     function fitToLayout() {
-      /* the phone layout keeps the drawing at the top instead of the bottom */
-      var top = window.matchMedia && window.matchMedia("(max-width: 720px)").matches;
-      svg.setAttribute("preserveAspectRatio", top ? "xMaxYMin meet" : "xMaxYMax meet");
+      /* bottom-anchored everywhere: on a phone the drawing ends on the headline baseline */
+      svg.setAttribute("preserveAspectRatio", "xMaxYMax meet");
     }
   }
 

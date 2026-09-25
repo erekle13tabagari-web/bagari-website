@@ -567,7 +567,40 @@ html.scrolled .site-header::before { opacity: 1; }
 }
 
 /* ---------- work ---------- */
-.work-list { display: grid; gap: clamp(var(--s-5), 6vh, var(--s-7)); }
+/* the work carousel: bleeds to the viewport edges, native swipe with snap on
+   touch, mouse drag added by main.js; main.js also clones the cards so it loops */
+.work-carousel {
+  --card-gap: var(--s-4);
+  --bleed: max(var(--margin), (100vw - var(--max)) / 2);
+  margin-inline: calc(-1 * var(--bleed));
+}
+.work-track {
+  display: flex;
+  gap: var(--card-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bleed);
+  padding-inline: var(--bleed);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.work-track::-webkit-scrollbar { display: none; }
+.work-card {
+  flex: 0 0 calc((100% - var(--card-gap)) / 2.15);
+  scroll-snap-align: start;
+  min-width: 0;
+}
+.work-card a { -webkit-user-drag: none; }
+@media (hover: hover) and (pointer: fine) {
+  .work-track { cursor: grab; }
+  .work-track.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .work-track.dragging a { pointer-events: none; }
+}
+@media (max-width: 720px) {
+  .work-carousel { --card-gap: var(--s-3); }
+  .work-card { flex-basis: 86%; }
+}
 
 .work-item { position: relative; text-decoration: none; display: block; }
 .work-figure {
@@ -673,6 +706,12 @@ html.scrolled .site-header::before { opacity: 1; }
 .level ul { display: grid; gap: var(--s-2); }
 .level li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--s-2); }
 .level li::before { content: "—"; color: var(--muted); }
+.care-note {
+  max-width: 56ch;
+  margin: var(--s-5) auto 0;
+  text-align: center;
+  font-style: italic; /* no italic file ships: the browser slants the regular cut, as Futura Oblique does */
+}
 
 /* ---------- studio ---------- */
 .studio-grid {
@@ -982,6 +1021,7 @@ html.show-top .to-top { display: inline-flex; }
 
 @media (max-width: 1100px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
 }
 
 /* the Georgian call to action is long enough to burst the header row before
@@ -1003,7 +1043,8 @@ html.show-top .to-top { display: inline-flex; }
     padding: var(--s-3) var(--margin);
   }
   .brand { text-align: left; }
-  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: max-content minmax(0, 1fr); column-gap: var(--s-3); }
+  .footer-brand { grid-column: 1 / -1; }
   .menu-toggle {
     order: 2;
     /* the panel is fixed and comes later in the header, so without this it
@@ -1061,18 +1102,17 @@ html.show-top .to-top { display: inline-flex; }
      no edge to meet: the drawing stays at the top instead of stretching
      down over the headline */
   .hero-art {
-    align-self: start;
+    align-self: stretch;
     width: 66%;
-    height: 34vh;
     margin-top: 5vh;
+    margin-bottom: clamp(var(--s-5), 6vh, var(--s-7)); /* the hero-inner bottom padding: the drawing ends on the headline baseline */
     opacity: 0.6;
   }
-  .hero-art .ink {
-    -webkit-mask-position: top right;
-    mask-position: top right;
-  }
+  .hero h1 { font-size: 2.25rem; }
+  .level { padding-block: var(--s-4); gap: var(--s-3); }
+  .care-note { margin-top: var(--s-4); }
   .hero-foot { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
-  .section-head { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
+  .section-head { flex-direction: column; align-items: flex-start; gap: var(--s-2); margin-bottom: var(--s-4); }
   .btn { width: 100%; }
 }
 

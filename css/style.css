@@ -1518,3 +1518,10 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 }
 .plate-split .client-logo .l { width: min(72%, 14rem); }
 .plate-split .site-preview { height: 100%; }
+
+/* phones: the header is fixed and 76px tall (2.75rem button + 1rem above and below);
+   the phone section rhythm must not pull a page's first block up under it */
+@media (max-width: 720px) {
+  .case-head { padding-top: 6.5rem; }
+  .start-page .case-title { margin-top: 0; }   /* its title is the first line: the same 28px under the header as elsewhere */
+}

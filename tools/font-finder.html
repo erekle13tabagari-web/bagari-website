@@ -23,7 +23,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="font-finder.css?v=202609251311">
+<link rel="stylesheet" href="font-finder.css?v=202609251319">
 
 <script>
   /* before first paint: the site's stored language; the tool's own surface, black unless set to Stone */
@@ -149,16 +149,57 @@
             <p class="meta" id="fontConf"></p>
             <p class="note muted" id="fontNote"></p>
             <div class="font-scores hidden" id="fontScores"></div>
+            <div class="fix hidden" id="fixFont" data-kind="font">
+              <button class="btn btn-ghost btn-sm fix-open" type="button" aria-expanded="false" aria-controls="fixFontForm"><span class="l en">Wrong font?</span><span class="l ka">ᲡᲮᲕᲐ ᲨᲠᲘᲤᲢᲘᲐ?</span></button>
+              <div class="fix-form hidden" id="fixFontForm">
+                <div class="field">
+                  <label for="fixFontInput"><span class="l en">Which font is it?</span><span class="l ka">რომელი შრიფტია?</span></label>
+                  <input id="fixFontInput" class="fix-value" type="text" list="ffFontList" autocomplete="off" maxlength="120" placeholder="BPG DejaVu Sans">
+                  <datalist id="ffFontList"></datalist>
+                </div>
+                <p class="note muted fix-consent">
+                  <span class="l en">Sending keeps this image with your fix, so we can teach the tool (<a href="../privacy.html" target="_blank">privacy policy</a>).</span>
+                  <span class="l ka">გაგზავნისას ეს სურათი თქვენს შესწორებასთან ერთად შეინახება ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span>
+                </p>
+                <div class="fix-actions">
+                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l en">Send</span><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
+                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l en">Cancel</span><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
+                </div>
+              </div>
+              <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
+            </div>
           </article>
           </div>
           <article class="panel panel-wide" id="panelText">
             <p class="label kicker"><span class="num">03</span><span class="l en">Extracted text</span><span class="l ka">ᲐᲛᲝᲙᲘᲗᲮᲣᲚᲘ ᲢᲔᲥᲡᲢᲘ</span></p>
             <pre class="ocr-output" id="ocrText"></pre>
             <p class="note muted" id="ocrMeta"></p>
-            <button class="btn btn-ghost btn-sm swap" id="copyBtn" type="button">
-              <span class="on"><span class="l en">Copy</span><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
-              <span class="off"><span class="l en">Copied</span><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
-            </button>
+            <div class="fix" id="fixText" data-kind="text">
+              <div class="fix-actions">
+                <button class="btn btn-ghost btn-sm swap" id="copyBtn" type="button">
+                  <span class="on"><span class="l en">Copy</span><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
+                  <span class="off"><span class="l en">Copied</span><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
+                </button>
+                <button class="btn btn-ghost btn-sm fix-open hidden" type="button" aria-expanded="false" aria-controls="fixTextForm"><span class="l en">Fix the text</span><span class="l ka">ᲢᲔᲥᲡᲢᲘᲡ ᲒᲐᲡᲬᲝᲠᲔᲑᲐ</span></button>
+              </div>
+              <div class="fix-form hidden" id="fixTextForm">
+                <div class="field">
+                  <label for="fixTextInput"><span class="l en">Type the text exactly as the image shows it</span><span class="l ka">ჩაწერეთ ტექსტი ზუსტად ისე, როგორც სურათზეა</span></label>
+                  <textarea id="fixTextInput" class="fix-value" rows="2" maxlength="4000" spellcheck="false"></textarea>
+                </div>
+                <p class="note muted fix-consent">
+                  <span class="l en">Sending keeps this image with your fix, so we can teach the tool (<a href="../privacy.html" target="_blank">privacy policy</a>).</span>
+                  <span class="l ka">გაგზავნისას ეს სურათი თქვენს შესწორებასთან ერთად შეინახება ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span>
+                </p>
+                <div class="fix-actions">
+                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l en">Send</span><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
+                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l en">Cancel</span><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
+                </div>
+              </div>
+              <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
+            </div>
           </article>
         </div>
       </section>
@@ -183,7 +224,7 @@
     <p>© 2026 <a href="../index.html">BAGARI</a> · <a href="../privacy.html"><span class="l en">Privacy</span><span class="l ka">კონფიდენციალურობა</span></a> · <a href="mailto:hello@bagari.studio">hello@bagari.studio</a></p>
   </footer>
 
-  <script src="font-finder.js?v=202609251311"></script>
+  <script src="font-finder.js?v=202609251319"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ffTurnstileReady" async defer></script>
 </body>
 </html>

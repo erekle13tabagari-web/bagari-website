@@ -356,11 +356,23 @@
   });
 
   /* ---------- show the back-to-top past the first screen ---------- */
+  /* at the end of the page the button would sit on the footer's last line,
+     so it rises to stay just above the footer's bottom rule */
+  var footerBase = document.querySelector(".footer-base");
+  function liftToTop() {
+    if (!toTop || !footerBase) return;
+    var gap = 16;
+    var buttonBottom = window.innerHeight - (parseFloat(getComputedStyle(toTop).bottom) || 0);
+    var lift = buttonBottom - (footerBase.getBoundingClientRect().top - gap);
+    toTop.style.transform = lift > 0 ? "translateY(" + (-lift).toFixed(1) + "px)" : "";
+  }
   function onScroll() {
     var y = window.scrollY;
     root.classList.toggle("scrolled", y > 24);
     root.classList.toggle("show-top", y > window.innerHeight);
+    liftToTop();
   }
+  window.addEventListener("resize", liftToTop);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 })();

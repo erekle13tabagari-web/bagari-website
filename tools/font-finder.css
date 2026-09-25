@@ -432,6 +432,7 @@ html[data-lang="ka"] .l.ka { display: inline; }
 .fix-consent a { color: var(--link); text-underline-offset: 0.2em; }
 .fix-done { color: var(--kicker); font-size: 0.875rem; }
 .fix-error { color: var(--wine); font-size: 0.875rem; }
+.fix-warn { color: var(--text); font-size: 0.875rem; padding-left: var(--s-2); border-left: 2px solid var(--mark); }
 :root:not([data-theme="light"]) .fix-error { color: var(--mark); }
 
 @media (max-width: 720px) {
@@ -456,6 +457,11 @@ html[data-lang="ka"] .l.ka { display: inline; }
   #ffForm.has-results .upload { grid-row: 1; }
   #ffForm.has-results .result-side { grid-column: 2; grid-row: 1 / span 2; display: grid; gap: var(--s-2); align-content: start; }
   #ffForm.has-results #panelText { grid-column: 1; grid-row: 2; }
+  /* both columns end on the same line: any extra height goes to the second row,
+     so the extracted text and the typeface panel stretch to meet */
+  #ffForm.has-results { grid-template-rows: auto 1fr; }
+  #ffForm.has-results .result-side { align-self: stretch; grid-template-rows: auto 1fr; }
+  #ffForm.has-results #panelText { align-self: stretch; }
   #ffForm.has-results .font-scores { gap: var(--s-1); }
   #ffForm.has-results .score-row:nth-child(n+4) { display: none; }
 }

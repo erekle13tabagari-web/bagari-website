@@ -1082,7 +1082,7 @@ html[data-lang="ka"] .case-logo .l.ka { display: block; }
   padding-bottom: clamp(var(--s-5), 7vh, var(--s-7));
 }
 .footer-brand { display: grid; gap: var(--s-3); align-content: start; }
-.footer-brand .brand { justify-self: start; width: 5.9rem; height: 3rem; }
+.footer-brand .brand { grid-area: auto; justify-self: start; width: 7.1rem; height: 3.6rem; background: var(--mark); } /* red on Stone, white on the red edition, like the heart */
 .footer-brand p { max-width: 26ch; }
 .footer-brand a[href^="mailto:"] { overflow-wrap: anywhere; }
 .footer-col { display: grid; gap: var(--s-2); align-content: start; }

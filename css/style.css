@@ -890,6 +890,25 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
   -webkit-mask-position: center;
   mask-position: center;
 }
+/* a client's logo on its plate: one colour (the plate's ink), centred, in the page's
+   language; the drawing stays behind it, stepped back so the logo reads */
+.client-logo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.client-logo .l {
+  width: min(64%, 26rem);
+  background: var(--plate-fg);
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+}
+html[data-lang="en"] .client-logo .l.en,
+html[data-lang="ka"] .client-logo .l.ka { display: block; }
+.plate:has(> .client-logo) .ink { opacity: 0.22; }
 .plate-blue { --plate-bg: var(--blueprint); }
 .plate-ink { --plate-bg: var(--ink); }
 .plate-black { --plate-bg: var(--blackprint); }

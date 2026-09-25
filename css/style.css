@@ -1484,20 +1484,6 @@ html.show-top .to-top { display: inline-flex; }
   overflow: hidden;
   text-decoration: none;
 }
-.site-preview-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  flex: none;
-  height: 2rem;
-  padding: 0 var(--s-3);
-  background: var(--stone);
-  color: var(--ink);
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-}
-.site-preview-bar i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: color-mix(in srgb, var(--ink) 22%, transparent); }
-.site-preview-bar span { margin-left: var(--s-2); }
 .site-preview-view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
 /* the capture pans top to bottom and back; hovering holds it where it is */
 .site-preview-view img {
@@ -1523,3 +1509,12 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
   .case-plate-split { grid-template-columns: 1fr; grid-template-rows: 11rem auto; height: auto; }
   .site-preview { height: 70vh; margin: 0; }
 }
+
+/* the same split on a work card: the card keeps its 3:2 plate; a third for the
+   logo and drawing, two thirds for the site, flush */
+.plate-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.plate-split .client-logo .l { width: min(72%, 14rem); }
+.plate-split .site-preview { height: 100%; }

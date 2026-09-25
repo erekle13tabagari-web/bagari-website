@@ -235,18 +235,18 @@ html[data-lang="ka"] .l.ka { display: inline; }
 .upload { display: grid; gap: var(--s-3); }
 .upload-zone {
   position: relative;
-  min-height: 15rem;
+  min-height: 10rem;
   display: flex;                 /* not grid: a grid track would grow to the preview's intrinsic width */
   align-items: center;
   justify-content: center;
-  padding: var(--s-4);
+  padding: var(--s-3);
   border: 1px dashed var(--line-strong);
   cursor: pointer;
   transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
 }
 .upload-zone:hover, .upload-zone.drag-over { border-color: var(--kicker); background: var(--surface-2); }
 .upload-content { display: grid; justify-items: center; gap: var(--s-2); text-align: center; color: var(--muted); pointer-events: none; }
-.upload-content svg { color: var(--kicker); margin-bottom: var(--s-2); }
+.upload-content svg { color: var(--kicker); margin-bottom: var(--s-1); width: 1.5rem; height: 1.5rem; }
 .upload-title { color: var(--text); font-weight: 500; }
 .upload-hint { font-size: 0.875rem; }
 .preview { max-width: 100%; min-width: 0; max-height: 22rem; object-fit: contain; }
@@ -280,7 +280,7 @@ html[data-lang="ka"] .l.ka { display: inline; }
 .btn-ghost { border-color: var(--line-strong); color: var(--text); }
 .btn-ghost:hover:not(:disabled) { border-color: var(--text); }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.analyze-btn { width: 100%; }
+.analyze-btn { width: 100%; min-height: 2.75rem; }
 
 /* ---------- panels ---------- */
 .panel {
@@ -443,3 +443,6 @@ html[data-lang="ka"] .l.ka { display: inline; }
   .btn-sm { width: auto; }
   .score-row { grid-template-columns: minmax(0, 1fr) 5rem 3rem; }
 }
+
+/* narrower than any current phone: the monogram carries the brand alone */
+@media (max-width: 319px) { .wordmark { display: none; } }

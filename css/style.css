@@ -1530,10 +1530,10 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 .studio-heart {
   position: absolute;
   left: 50%;
-  top: 62%;
+  bottom: -0.75rem;               /* the point sits just under the caption (phones: the caption is inside the figure) */
   width: min(80%, 19rem);
   aspect-ratio: 20 / 18.4;
-  translate: -50% -50%;
+  translate: -50% 0;
   fill: var(--mark);
   z-index: 0;
   pointer-events: none;
@@ -1541,7 +1541,10 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
   animation: heart-breathe-soft 4.2s ease-in-out infinite;
 }
 .studio-art .ink { position: relative; z-index: 1; }
-@media (min-width: 901px) { .studio-art .ink { position: absolute; } }
+@media (min-width: 901px) {
+  .studio-art .ink { position: absolute; }
+  .studio-heart { bottom: -2.9rem; }   /* wide: the caption hangs below the figure */
+}
 @keyframes heart-breathe-soft {
   0%, 100% { transform: scale(1); }
   38%      { transform: scale(1.06); }

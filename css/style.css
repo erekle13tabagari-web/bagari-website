@@ -974,7 +974,7 @@ figcaption { color: var(--muted); margin-top: var(--s-3); }
 .footer-brand p { max-width: 26ch; }
 .footer-brand a[href^="mailto:"] { overflow-wrap: anywhere; }
 .footer-col { display: grid; gap: var(--s-2); align-content: start; }
-.footer-col h3 { margin-bottom: var(--s-1); }
+.footer-col h3 { margin-bottom: var(--s-1); color: var(--kicker); }
 .footer-col a { text-decoration: none; }
 .footer-col a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
 
@@ -1020,7 +1020,7 @@ html.show-top .to-top { display: inline-flex; }
 .menu-close-icon { display: none; }
 
 @media (max-width: 1100px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .footer-brand { grid-column: 1 / -1; }
 }
 
@@ -1043,8 +1043,9 @@ html.show-top .to-top { display: inline-flex; }
     padding: var(--s-3) var(--margin);
   }
   .brand { text-align: left; }
-  .footer-grid { grid-template-columns: max-content minmax(0, 1fr); column-gap: var(--s-3); }
-  .footer-brand { grid-column: 1 / -1; }
+  /* the link columns share a row and wrap only when a language needs the room */
+  .footer-grid { display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-3); }
+  .footer-brand { flex: 1 0 100%; }
   .menu-toggle {
     order: 2;
     /* the panel is fixed and comes later in the header, so without this it

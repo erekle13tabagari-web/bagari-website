@@ -22,7 +22,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="../css/style.css?v=202609251704">
+<link rel="stylesheet" href="../css/style.css?v=202609251710">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -122,9 +122,21 @@
     </dl>
   </section>
 
-  <figure class="plate plate-blue case-plate rv">
+  <!-- the plate, split: the client's logo on the drawing at the left, the site itself at the right.
+       biomi.ge refuses to be framed (X-Frame-Options: SAMEORIGIN), so the preview is a full-page
+       capture that scrolls; the whole frame links to the live site. -->
+  <figure class="plate plate-blue case-plate case-plate-split rv">
+    <div class="case-plate-side">
     <div class="client-logo" role="img" aria-label="Biomi Holding"><span class="l en" style="--logo:url('../brand/clients/biomi-en.svg');aspect-ratio:402.61/74.97"></span><span class="l ka" style="--logo:url('../brand/clients/biomi-ka.svg');aspect-ratio:494.02/74.89"></span></div>
     <div class="ink" style="--art:url('../brand/art/bagari-art-ancient-texts.svg')" aria-hidden="true"></div>
+    </div>
+    <a class="site-preview" href="https://biomi.ge/" target="_blank" rel="noopener">
+      <span class="site-preview-bar" aria-hidden="true"><i></i><i></i><i></i><span>biomi.ge</span></span>
+      <span class="site-preview-view">
+        <img class="l en" src="img/biomi-home-en.jpg" alt="The biomi.ge homepage in English, scrolling from top to bottom. Opens the live site." loading="lazy" width="960" height="3957">
+        <img class="l ka" src="img/biomi-home-ka.jpg" alt="biomi.ge-ის მთავარი გვერდი, ზემოდან ქვემოთ. გახსნის საიტს." loading="lazy" width="960" height="4149">
+      </span>
+    </a>
   </figure>
 
   <!-- ============ THE BRIEF ============ -->
@@ -240,6 +252,6 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="../js/main.js?v=202609251704"></script>
+<script src="../js/main.js?v=202609251710"></script>
 </body>
 </html>

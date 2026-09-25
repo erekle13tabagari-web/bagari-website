@@ -1445,3 +1445,70 @@ html.show-top .to-top { display: inline-flex; }
 @media (max-width: 1100px) { .hero-art .look { opacity: 0.75; } }
 @media (max-width: 720px) { .hero-art .look { opacity: 0.6; } }
 #look-frame-open, #look-frame-closed { transition: opacity 0ms linear; }
+
+/* ---------- case study: tighter rhythm (one clear step between blocks, not two) ---------- */
+.case-head:has(.case-meta) { padding-bottom: var(--s-5); }
+.case-plate { margin-block: 0 var(--s-5); }
+.case-prose { margin-bottom: var(--s-5); }
+.case-steps { margin-bottom: var(--s-5); }
+.case-body { padding-bottom: var(--s-6); }
+
+/* ---------- case plate, split: logo on the drawing at the left, the site at the right ---------- */
+.case-plate-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  aspect-ratio: auto;
+  height: clamp(26rem, 72vh, 46rem);
+}
+.case-plate-side { position: relative; }              /* the drawing and the logo sit in here */
+.case-plate-side:has(> .client-logo) .ink { opacity: 0.22; }
+
+.site-preview {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin: clamp(var(--s-4), 3vw, var(--s-5)) clamp(var(--s-4), 3vw, var(--s-5)) clamp(var(--s-4), 3vw, var(--s-5)) 0;
+  border: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
+  background: #fff;
+  overflow: hidden;
+  text-decoration: none;
+}
+.site-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: none;
+  height: 2rem;
+  padding: 0 var(--s-3);
+  background: var(--stone);
+  color: var(--ink);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+.site-preview-bar i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: color-mix(in srgb, var(--ink) 22%, transparent); }
+.site-preview-bar span { margin-left: var(--s-2); }
+.site-preview-view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+/* the capture pans top to bottom and back; hovering holds it where it is */
+.site-preview-view img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  animation: site-pan 48s ease-in-out infinite;
+}
+html[data-lang="en"] .site-preview-view .l.en,
+html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
+.site-preview:hover .site-preview-view img,
+.site-preview:focus-visible .site-preview-view img { animation-play-state: paused; }
+@keyframes site-pan {
+  0%, 6%    { object-position: 50% 0%; }
+  47%, 53%  { object-position: 50% 100%; }
+  94%, 100% { object-position: 50% 0%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-preview-view img { animation: none; }
+}
+@media (max-width: 720px) {
+  .case-plate-split { grid-template-columns: 1fr; grid-template-rows: 11rem auto; height: auto; }
+  .site-preview { height: 70vh; margin: 0 var(--s-3) var(--s-3); }
+}

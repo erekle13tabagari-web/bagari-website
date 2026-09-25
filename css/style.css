@@ -1266,8 +1266,10 @@ html.show-top .to-top { display: inline-flex; }
 .start-art { display: none; }
 .start-page .case-head { padding-bottom: var(--s-5); }
 .start-page .form-section { padding-block: var(--s-5); }
-.start-page .fgroup { margin-bottom: var(--s-5); }
-.start-page .fgroup legend { margin-bottom: var(--s-3); }
+.start-page .fgroup { margin-bottom: var(--s-4); }
+.start-page .fgroup > .field:last-child,
+.start-page .fgroup > .frow:last-child > .field { margin-bottom: 0; } /* the group's own gap is the only one */
+.start-page .fgroup legend { margin-bottom: var(--s-2); }
 .start-page .field { margin-bottom: var(--s-3); }
 .start-page .field > label, .start-page .flabel { margin-bottom: var(--s-1); }
 .start-page .check { padding: 0.125rem 0; }

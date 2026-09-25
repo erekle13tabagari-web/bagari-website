@@ -561,13 +561,18 @@ html.scrolled .site-header::before { opacity: 1; }
 }
 
 /* ---------- statement ---------- */
-.statement { max-width: 46ch; }
+/* the studio's statement: centred, the line bold, the explanation oblique */
+.section:has(> .statement) { padding-block: clamp(var(--s-5), 6vh, var(--s-6)) 0; }
+.section:has(> .statement) + #work { padding-top: clamp(var(--s-5), 6vh, var(--s-6)); }
+.statement { max-width: 52ch; margin-inline: auto; text-align: center; }
 .statement p + p { margin-top: var(--s-4); }
 .statement .display {
   font-size: clamp(1.75rem, 3.4vw, 3.25rem);
   line-height: 1.02;
-  margin-bottom: var(--s-5);
+  margin-bottom: var(--s-4);
+  text-wrap: balance;
 }
+.statement .lede { margin-inline: auto; font-style: italic; text-wrap: pretty; }
 
 /* ---------- work ---------- */
 /* the work carousel: bleeds to the viewport edges, native swipe with snap on
@@ -1064,6 +1069,10 @@ html.show-top .to-top { display: inline-flex; }
 @media (max-width: 1024px) {
   .btn-cta { display: none; }
   .btn-cta.nav-ff { display: inline-flex; }
+}
+/* Georgian labels are longer: its header row needs about 1200px to carry the call to action too */
+@media (max-width: 1200px) {
+  html[data-lang="ka"] .site-header .btn-cta:not(.nav-ff) { display: none; }
 }
 
 @media (max-width: 900px) {

@@ -24,7 +24,12 @@
       noText: "(no text detected)",
       scripts: { Mkhedruli: "Mkhedruli", Mtavruli: "Mtavruli", Asomtavruli: "Asomtavruli", Nuskhuri: "Nuskhuri", Unknown: "Unknown" },
       note_from_font: "Inferred from the identified font", note_mtavruli_from_font: "Mkhedruli capitals, inferred from the identified font",
-      note_no_georgian: "No Georgian characters recognised in the text", note_counts: "{n} of {total} Georgian characters"
+      note_no_georgian: "No Georgian characters recognised in the text", note_counts: "{n} of {total} Georgian characters",
+      fixSame: "That is what the tool already read. Change only the words that are wrong.",
+      fixMixed: "“{w}” mixes Georgian and Latin letters. Check the keyboard layout.",
+      fixBig: "That changes most of the text. If the image really says this, press Send again.",
+      fixSameFont: "That is the font the tool already named.",
+      fixUnknownFont: "“{f}” is not one of the fonts the tool knows. If you are sure, press Send again."
     },
     ka: {
       confidence: "სანდოობა: {p}%", alsoKnown: "ასევე ცნობილია როგორც: {list}",
@@ -36,7 +41,12 @@
       noText: "(ტექსტი ვერ მოიძებნა)",
       scripts: { Mkhedruli: "მხედრული", Mtavruli: "მთავრული", Asomtavruli: "ასომთავრული", Nuskhuri: "ნუსხური", Unknown: "უცნობი" },
       note_from_font: "დადგენილია ამოცნობილი შრიფტით", note_mtavruli_from_font: "მხედრულის მთავრული ასოები, დადგენილია ამოცნობილი შრიფტით",
-      note_no_georgian: "ტექსტში ქართული ასოები ვერ მოიძებნა", note_counts: "{n} {total}-დან ქართული ასოა"
+      note_no_georgian: "ტექსტში ქართული ასოები ვერ მოიძებნა", note_counts: "{n} {total}-დან ქართული ასოა",
+      fixSame: "ინსტრუმენტმა ზუსტად ეს წაიკითხა. შეცვალეთ მხოლოდ არასწორი სიტყვები.",
+      fixMixed: "„{w}“ ქართულ და ლათინურ ასოებს ურევს. შეამოწმეთ კლავიატურის ენა.",
+      fixBig: "ეს ტექსტის უმეტეს ნაწილს ცვლის. თუ სურათზე მართლა ასე წერია, კიდევ ერთხელ დააჭირეთ გაგზავნას.",
+      fixSameFont: "ინსტრუმენტმა სწორედ ეს შრიფტი დაასახელა.",
+      fixUnknownFont: "„{f}“ არ არის იმ შრიფტებს შორის, რომლებსაც ინსტრუმენტი იცნობს. თუ დარწმუნებული ხართ, კიდევ ერთხელ დააჭირეთ გაგზავნას."
     }
   };
 
@@ -220,7 +230,47 @@
    * analysed there. The image and the fix are kept for review, never trained on unseen. */
   var ticket = "";
   var fixes = [$("fixFont"), $("fixText")];
-  var fontListLoaded = false;
+  var fontListLoaded = false, knownFonts = {};
+
+  /* ---------- sanity checks before a fix is sent ----------
+   * A visitor can be wrong too: a Latin letter typed on the wrong keyboard layout,
+   * the tool's own reading sent back unchanged, a font name with a typo. Hard errors
+   * stop the send; doubtful ones ask for a second press. */
+  var GEO = /[Ⴀ-ჿᲐ-Ჿⴀ-⴯]/, LAT = /[A-Za-z]/;
+  function norm(s) {
+    /* Mtavruli folds to Mkhedruli, so a capitals-only reading equals its lowercase form */
+    return String(s).replace(/[Ა-ᲺᲽ-Ჿ]/g, function (c) {
+      return String.fromCharCode(c.charCodeAt(0) - 0xBC0);
+    }).replace(/\s+/g, " ").trim();
+  }
+  function distance(a, b) {
+    a = a.slice(0, 600); b = b.slice(0, 600);
+    var prev = [], cur, i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur = [i];
+      for (j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  /* returns { hard: message } or { soft: message } or null */
+  function checkFix(kind, value) {
+    if (kind === "text") {
+      var ocr = norm($("ocrText").textContent), v = norm(value);
+      if (v === ocr) return { hard: t("fixSame") };
+      var mixed = v.split(" ").filter(function (w) { return GEO.test(w) && LAT.test(w); })[0];
+      if (mixed) return { hard: t("fixMixed", { w: mixed }) };
+      if (ocr && distance(ocr, v) > 0.6 * Math.max(ocr.length, v.length)) return { soft: t("fixBig") };
+      return null;
+    }
+    var predicted = ((lastData && lastData.font && lastData.font.label) || "").toLowerCase();
+    if (value.toLowerCase() === predicted) return { hard: t("fixSameFont") };
+    if (fontListLoaded && Object.keys(knownFonts).length && !knownFonts[value.toLowerCase()]) return { soft: t("fixUnknownFont", { f: value }) };
+    return null;
+  }
 
   function loadFontList() {
     if (fontListLoaded) return;
@@ -229,7 +279,7 @@
       var seen = {}, html = "";
       (d.fonts || []).forEach(function (f) {
         [f.n].concat(f.a || []).forEach(function (n) {
-          if (!seen[n]) { seen[n] = 1; html += '<option value="' + esc(n) + '"></option>'; }
+          if (!seen[n]) { seen[n] = 1; knownFonts[n.toLowerCase()] = n; html += '<option value="' + esc(n) + '"></option>'; }
         });
       });
       $("ffFontList").innerHTML = html;
@@ -243,6 +293,8 @@
     box.querySelector(".fix-form").classList.add("hidden");
     box.querySelector(".fix-done").classList.add("hidden");
     box.querySelector(".fix-error").classList.add("hidden");
+    box.querySelector(".fix-warn").classList.add("hidden");
+    box.removeAttribute("data-confirmed");
     box.querySelector(".fix-send").disabled = false;
     if (box.id === "fixFont") box.classList.toggle("hidden", !offered);
   }
@@ -274,8 +326,19 @@
 
     sendBtn.addEventListener("click", function () {
       var value = input.value.trim();
+      if (kind === "font" && knownFonts[value.toLowerCase()]) value = knownFonts[value.toLowerCase()];   /* the list's exact spelling */
       if (!value || !file || !ticket || !lastData) { input.focus(); return; }
-      if (kind === "text" && value === $("ocrText").textContent.trim()) { input.focus(); return; }
+      var warn = box.querySelector(".fix-warn");
+      var issue = checkFix(kind, value);
+      if (issue && (issue.hard || box.getAttribute("data-confirmed") !== value)) {
+        warn.textContent = issue.hard || issue.soft;
+        warn.classList.remove("hidden");
+        if (issue.soft) box.setAttribute("data-confirmed", value);   /* a second press with the same value sends */
+        input.focus();
+        return;
+      }
+      warn.classList.add("hidden");
+      box.removeAttribute("data-confirmed");
       sendBtn.disabled = true;
       box.querySelector(".fix-error").classList.add("hidden");
       var data = new FormData();

@@ -23,7 +23,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="font-finder.css?v=202609251118">
+<link rel="stylesheet" href="font-finder.css?v=202609251141">
 
 <script>
   /* before first paint: the site's stored language and surface ("light" is Stone) */
@@ -80,16 +80,18 @@
           <img id="preview" class="preview hidden" alt="">
         </div>
 
+        <div id="turnstileBox" class="check-box hidden"></div>
+
         <div class="panel hidden" id="sendPanel">
-          <p class="label kicker"><span class="num">01</span><span class="l en">Where should the result go?</span><span class="l ka">ᲡᲐᲓ ᲒᲐᲛᲝᲒᲘᲒᲖᲐᲕᲜᲝᲗ ᲨᲔᲓᲔᲒᲘ?</span></p>
+          <p class="label kicker"><span class="num">!</span><span class="l en">Where should the result go?</span><span class="l ka">ᲡᲐᲓ ᲒᲐᲛᲝᲒᲘᲒᲖᲐᲕᲜᲝᲗ ᲨᲔᲓᲔᲒᲘ?</span></p>
           <p class="note muted">
-            <span class="l en">For now the Font Finder runs at the studio: we analyse your image and email you the result, usually within one working day. A public version is on the way.</span>
-            <span class="l ka">ჯერჯერობით Font Finder სტუდიაში მუშაობს: სურათს ჩვენ ვაანალიზებთ და შედეგს ელფოსტით გამოგიგზავნით, ჩვეულებრივ ერთ სამუშაო დღეში. საჯარო ვერსია გზაშია.</span>
+            <span class="l en">The tool is unavailable right now. Leave your email and we will run your image and send you the result, usually within one working day.</span>
+            <span class="l ka">ინსტრუმენტი ამჟამად მიუწვდომელია. დაგვიტოვეთ ელფოსტა, სურათს ჩვენ გავატარებთ და შედეგს გამოგიგზავნით, ჩვეულებრივ ერთ სამუშაო დღეში.</span>
           </p>
           <div class="send-grid">
             <div class="field">
               <label for="ff-email"><span class="l en">Email for the result</span><span class="l ka">ელფოსტა შედეგისთვის</span> *</label>
-              <input id="ff-email" name="email" type="email" required autocomplete="email">
+              <input id="ff-email" name="email" type="email" autocomplete="email">
             </div>
             <div class="field">
               <label for="ff-name"><span class="l en">Your name (optional)</span><span class="l ka">თქვენი სახელი (არასავალდებულო)</span></label>
@@ -101,17 +103,17 @@
             </div>
           </div>
           <label class="consent">
-            <input type="checkbox" id="ff-consent" required>
+            <input type="checkbox" id="ff-consent">
             <span>
               <span class="l en">I agree that BAGARI stores this image and my details to reply with the result (<a href="../privacy.html" target="_blank">privacy policy</a>). *</span>
               <span class="l ka">ვეთანხმები, რომ BAGARI შეინახავს ამ სურათსა და ჩემს მონაცემებს შედეგის გამოსაგზავნად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>). *</span>
             </span>
           </label>
-          <div id="turnstileBox"></div>
         </div>
 
         <button class="btn btn-solid analyze-btn" id="analyzeBtn" type="submit" disabled>
-          <span class="l en">Send for analysis</span><span class="l ka">ᲐᲜᲐᲚᲘᲖᲖᲔ ᲒᲐᲒᲖᲐᲕᲜᲐ</span>
+          <span class="mode-analyze"><span class="l en">Analyze</span><span class="l ka">ᲐᲜᲐᲚᲘᲖᲘ</span></span>
+          <span class="mode-send"><span class="l en">Send for analysis</span><span class="l ka">ᲐᲜᲐᲚᲘᲖᲖᲔ ᲒᲐᲒᲖᲐᲕᲜᲐ</span></span>
         </button>
       </section>
 
@@ -121,10 +123,46 @@
         <span class="l en" data-err="send">Something went wrong. Check the file is an image under 10 MB and try again, or write to hello@bagari.studio.</span>
         <span class="l ka" data-err="send">რაღაც შეცდომა მოხდა. შეამოწმეთ, რომ ფაილი 10 მბ-ზე ნაკლები სურათია, და სცადეთ თავიდან, ან მოგვწერეთ: hello@bagari.studio.</span>
       </div>
-      <div class="spinner hidden" id="spinner"><span class="spin"></span><p class="muted"><span class="l en">Sending</span><span class="l ka">ᲘᲒᲖᲐᲕᲜᲔᲑᲐ</span></p></div>
+      <div class="spinner hidden" id="spinner"><span class="spin"></span>
+        <p class="muted mode-analyze"><span class="l en">Analyzing</span><span class="l ka">ანალიზი მიმდინარეობს</span></p>
+        <p class="muted mode-send"><span class="l en">Sending</span><span class="l ka">იგზავნება</span></p>
+      </div>
+
+      <section class="results hidden" id="results">
+        <div class="result-grid">
+          <article class="panel">
+            <p class="label kicker"><span class="num">01</span><span class="l en">Script</span><span class="l ka">ᲓᲐᲛᲬᲔᲠᲚᲝᲑᲐ</span></p>
+            <p class="display-sm" id="scriptLabel"></p>
+            <div class="bar"><i id="scriptBar"></i></div>
+            <p class="meta" id="scriptConf"></p>
+            <p class="note muted" id="scriptNote"></p>
+          </article>
+          <article class="panel">
+            <p class="label kicker"><span class="num">02</span><span class="l en">Typeface</span><span class="l ka">ᲨᲠᲘᲤᲢᲘ</span></p>
+            <div class="value-row">
+              <p class="display-sm" id="fontLabel"></p>
+              <span class="badge hidden" id="uncertainBadge"><span class="l en">Uncertain</span><span class="l ka">ᲡᲐᲔᲭᲕᲝ</span></span>
+            </div>
+            <p class="note muted" id="fontAlias"></p>
+            <div class="bar"><i id="fontBar"></i></div>
+            <p class="meta" id="fontConf"></p>
+            <p class="note muted" id="fontNote"></p>
+            <div class="font-scores hidden" id="fontScores"></div>
+          </article>
+          <article class="panel panel-wide">
+            <p class="label kicker"><span class="num">03</span><span class="l en">Extracted text</span><span class="l ka">ᲐᲛᲝᲙᲘᲗᲮᲣᲚᲘ ᲢᲔᲥᲡᲢᲘ</span></p>
+            <pre class="ocr-output" id="ocrText"></pre>
+            <p class="note muted" id="ocrMeta"></p>
+            <button class="btn btn-ghost btn-sm swap" id="copyBtn" type="button">
+              <span class="on"><span class="l en">Copy</span><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
+              <span class="off"><span class="l en">Copied</span><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
+            </button>
+          </article>
+        </div>
+      </section>
 
       <section class="panel hidden" id="donePanel">
-        <p class="label kicker"><span class="num">02</span><span class="l en">Received</span><span class="l ka">ᲛᲘᲦᲔᲑᲣᲚᲘᲐ</span></p>
+        <p class="label kicker"><span class="num">!</span><span class="l en">Received</span><span class="l ka">ᲛᲘᲦᲔᲑᲣᲚᲘᲐ</span></p>
         <p class="display-sm"><span class="l en">The result is on its way.</span><span class="l ka">შედეგი გზაშია.</span></p>
         <p class="note muted">
           <span class="l en">We will run it through the Font Finder and send the result to your email, usually within one working day.</span>
@@ -143,7 +181,7 @@
     <p>© 2026 <a href="../index.html">BAGARI</a> · <a href="../privacy.html"><span class="l en">Privacy</span><span class="l ka">კონფიდენციალურობა</span></a> · <a href="mailto:hello@bagari.studio">hello@bagari.studio</a></p>
   </footer>
 
-  <script src="font-finder.js?v=202609251118"></script>
+  <script src="font-finder.js?v=202609251141"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ffTurnstileReady" async defer></script>
 </body>
 </html>

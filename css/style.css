@@ -1054,7 +1054,9 @@ html.show-top .to-top { display: inline-flex; }
   /* the copy follows straight after the drawing instead of sitting at the
      bottom of a full screen with empty ground above it */
   .hero { min-height: auto; }
-  .hero-inner { justify-content: flex-start; padding-top: calc(5vh + 34vh + var(--s-5)); }
+  .hero-inner { justify-content: flex-start; padding-top: 23vh; } /* just under the eye: the copy sits beside the nose, not under the chin */
+  /* sections stack, so each gap is two paddings; on a phone 10vh each read as empty screens */
+  .section { padding-block: var(--s-5); }
   /* on a phone the copy sits between the drawing and the rule, so there is
      no edge to meet: the drawing stays at the top instead of stretching
      down over the headline */

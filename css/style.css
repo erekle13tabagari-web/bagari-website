@@ -1478,9 +1478,9 @@ html.show-top .to-top { display: inline-flex; }
   display: flex;
   flex-direction: column;
   min-height: 0;
-  margin: clamp(var(--s-4), 3vw, var(--s-5)) clamp(var(--s-4), 3vw, var(--s-5)) clamp(var(--s-4), 3vw, var(--s-5)) 0;
-  border: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
-  background: #fff;
+  margin: 0;                                   /* flush with the plate: top, right, bottom */
+  border: 0;
+  background: #16172c;                         /* the site's own ground, never a light edge */
   overflow: hidden;
   text-decoration: none;
 }
@@ -1521,5 +1521,5 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 }
 @media (max-width: 720px) {
   .case-plate-split { grid-template-columns: 1fr; grid-template-rows: 11rem auto; height: auto; }
-  .site-preview { height: 70vh; margin: 0 var(--s-3) var(--s-3); }
+  .site-preview { height: 70vh; margin: 0; }
 }

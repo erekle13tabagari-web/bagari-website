@@ -415,6 +415,9 @@ html.scrolled .site-header::before { opacity: 1; }
   border-color: var(--primary-hover-bg);
   color: var(--primary-hover-fg);
 }
+/* Font Finder leads the menu as a button twin of Start a project */
+.site-nav a.btn-cta { letter-spacing: 0.14em; }
+.site-nav a.btn-cta::after { display: none; }
 
 /* ---------- sections ---------- */
 .section { padding: clamp(var(--s-6), 10vh, var(--s-8)) var(--gutter); }
@@ -1060,6 +1063,7 @@ html.show-top .to-top { display: inline-flex; }
    the phone layout takes over; the Contact link already covers it */
 @media (max-width: 1024px) {
   .btn-cta { display: none; }
+  .btn-cta.nav-ff { display: inline-flex; }
 }
 
 @media (max-width: 900px) {
@@ -1068,16 +1072,15 @@ html.show-top .to-top { display: inline-flex; }
   .hero-art { width: 52%; margin-top: 9vh; opacity: 0.75; }
 }
 
-@media (max-width: 720px) {
+/* the burger menu takes over below 960px: from there down the Georgian
+   header row (the longest labels) no longer fits beside the centred wordmark */
+@media (max-width: 960px) {
   .site-header {
     display: flex;
     justify-content: space-between;
     padding: var(--s-3) var(--margin);
   }
   .brand { text-align: left; }
-  /* the link columns share a row and wrap only when a language needs the room */
-  .footer-grid { display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-3); }
-  .footer-brand { flex: 1 0 100%; }
   .menu-toggle {
     order: 2;
     /* the panel is fixed and comes later in the header, so without this it
@@ -1123,7 +1126,21 @@ html.show-top .to-top { display: inline-flex; }
     white-space: normal;
   }
   .site-nav a::after { display: none; }
+  .site-nav a.btn-cta {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    align-self: flex-start;
+  }
   .tools { gap: var(--s-3); margin-top: var(--s-4); }
+}
+
+@media (max-width: 720px) {
+  /* the link columns share a row and wrap only when a language needs the room */
+  .footer-grid { display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-3); }
+  .footer-brand { flex: 1 0 100%; }
 
   /* the copy follows straight after the drawing instead of sitting at the
      bottom of a full screen with empty ground above it */

@@ -963,6 +963,32 @@ html[data-lang="ka"] .client-logo .l.ka { display: block; }
   margin: clamp(var(--s-4), 4vh, var(--s-6)) 0 var(--s-4);
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* a case study titled with the client's logo: its own colours on Stone; on the
+   red edition the logo takes the text colour, where blue on red would fight */
+.case-logo { line-height: 0; }
+.case-logo .l { width: min(100%, 44rem); }
+html[data-lang="en"] .case-logo .l.en,
+html[data-lang="ka"] .case-logo .l.ka { display: block; }
+.case-logo img { display: block; width: 100%; height: auto; }
+:root:not([data-theme="light"]) .case-logo .l {
+  background: var(--text);
+  -webkit-mask: var(--logo) left center / contain no-repeat;
+  mask: var(--logo) left center / contain no-repeat;
+}
+:root:not([data-theme="light"]) .case-logo img { visibility: hidden; }
+
 /* the facts a procurement reader scans for, before any prose */
 .case-meta {
   display: grid;

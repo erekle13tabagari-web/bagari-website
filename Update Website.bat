@@ -29,6 +29,8 @@ REM --- Refresh the ?v= tag on style.css / main.js so visitors' browsers fetch
 REM     the new files instead of serving a cached copy. ---
 echo   [1/5] Refreshing cache tags and checking for changes...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0bump-cache-version.ps1"
+REM --- Rebuild the Georgian twins under ka\ from the bilingual pages. ---
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0build-ka.ps1"
 
 git add -A
 git diff --cached --quiet

@@ -44,9 +44,26 @@
     return (navigator.language || "").toLowerCase().indexOf("ka") === 0 ? "ka" : "en";
   }
 
-  setLang(initialLang());
+  /* One address per language: English pages at the root, Georgian twins under
+     /ka/ (built by build-ka.ps1 on every publish). A page states its language in
+     data-page-lang; the switch remembers the choice and moves to the twin. */
+  var PAGE_LANG = root.getAttribute("data-page-lang");
+  function twinUrl(lang) {
+    var p = location.pathname;
+    var isKa = /^\/ka(\/|$)/.test(p);
+    if (lang === "ka" && !isKa) p = "/ka" + (p === "/" ? "/" : p);
+    if (lang === "en" && isKa) p = p.replace(/^\/ka/, "") || "/";
+    return p + location.search + location.hash;
+  }
+  setLang(PAGE_LANG || initialLang());
   langToggle.addEventListener("click", function () {
-    setLang(root.getAttribute("data-lang") === "ka" ? "en" : "ka");
+    var next = root.getAttribute("data-lang") === "ka" ? "en" : "ka";
+    if (PAGE_LANG) {
+      try { localStorage.setItem(LANG_KEY, next); } catch (e) {}
+      location.href = twinUrl(next);
+      return;
+    }
+    setLang(next);
   });
 
   /* ---------- surface: Stone by default, Slate as the alternate ---------- */

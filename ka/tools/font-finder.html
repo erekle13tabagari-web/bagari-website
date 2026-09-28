@@ -1,34 +1,32 @@
-﻿<!DOCTYPE html>
-<html lang="en" data-lang="en" data-page-lang="en">
+<!DOCTYPE html>
+<html lang="ka" data-lang="ka" data-page-lang="ka">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Georgian Font Finder by BAGARI</title>
-<meta name="description" content="A tool that reads Georgian text from images, names the typeface among 257 Georgian faces, and tells the four scripts apart. Built and trained at BAGARI.">
-<link rel="canonical" href="https://bagari.studio/tools/font-finder.html">
+<title>ქართული შრიფტების მაძიებელი, BAGARI</title>
+<meta name="description" content="ინსტრუმენტი კითხულობს ქართულ ტექსტს სურათიდან, 257 ქართულ შრიფტს შორის ამოიცნობს შრიფტს და განასხვავებს ოთხ დამწერლობას.">
+<link rel="canonical" href="https://bagari.studio/ka/tools/font-finder.html">
 <link rel="alternate" hreflang="en" href="https://bagari.studio/tools/font-finder.html">
 <link rel="alternate" hreflang="ka" href="https://bagari.studio/ka/tools/font-finder.html">
 <link rel="alternate" hreflang="x-default" href="https://bagari.studio/tools/font-finder.html">
-<meta name="ka-title" content="ქართული შრიფტების მაძიებელი, BAGARI">
-<meta name="ka-description" content="ინსტრუმენტი კითხულობს ქართულ ტექსტს სურათიდან, 257 ქართულ შრიფტს შორის ამოიცნობს შრიფტს და განასხვავებს ოთხ დამწერლობას.">
 <meta name="theme-color" content="#131512">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Georgian Font Finder by BAGARI">
-<meta property="og:description" content="Reads Georgian text from images, names the typeface, tells the four scripts apart. Trained on 257 Georgian faces.">
+<meta property="og:title" content="ქართული შრიფტების მაძიებელი, BAGARI">
+<meta property="og:description" content="ინსტრუმენტი კითხულობს ქართულ ტექსტს სურათიდან, 257 ქართულ შრიფტს შორის ამოიცნობს შრიფტს და განასხვავებს ოთხ დამწერლობას.">
 <meta property="og:image" content="https://bagari.studio/brand/og/bagari-og.png">
-<meta property="og:url" content="https://bagari.studio/tools/font-finder.html">
+<meta property="og:url" content="https://bagari.studio/ka/tools/font-finder.html">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="/favicon.ico?v=2" sizes="48x48">
 <link rel="icon" href="/brand/logo/favicon-96.png?v=2" type="image/png" sizes="96x96">
 <link rel="icon" href="/brand/logo/favicon-192.png?v=2" type="image/png" sizes="192x192">
 <link rel="icon" href="/brand/logo/bagari-monogram-red.svg?v=2" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../brand/logo/bagari-monogram-red-180.png?v=2">
+<link rel="apple-touch-icon" href="/brand/logo/bagari-monogram-red-180.png?v=2">
 
-<link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="font-finder.css?v=202609281100">
+<link rel="preload" as="font" type="font/woff2" href="/brand/type/futura-display-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/brand/type/futura-text-400.woff2" crossorigin>
+<link rel="stylesheet" href="/tools/font-finder.css?v=202609281100">
 
 <script>
   /* before first paint: the site's stored language; the tool's own surface, black unless set to Stone */
@@ -49,7 +47,7 @@
   <header class="site-header">
     <div class="header-left">
       <a class="wordmark" href="../index.html">BAGARI</a>
-      <a class="back-btn" href="../index.html"><span aria-hidden="true">←</span> <span class="l en">Main site</span><span class="l ka">ᲛᲗᲐᲕᲐᲠᲘ</span></a>
+      <a class="back-btn" href="../index.html"><span aria-hidden="true">←</span> <span class="l ka">ᲛᲗᲐᲕᲐᲠᲘ</span></a>
     </div>
     <div class="header-tools">
       <button class="tool" id="themeToggle" type="button" aria-label="Switch surface">
@@ -57,7 +55,7 @@
         <svg class="theme-icon-dark" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 10.2A6 6 0 0 1 5.8 2.5a6 6 0 1 0 7.7 7.7z"/></svg>
       </button>
       <button class="tool" id="langToggle" type="button" aria-label="Switch language">
-        <span class="l en">KA</span><span class="l ka">ENG</span>
+        <span class="l ka">ENG</span>
       </button>
     </div>
   </header>
@@ -65,10 +63,10 @@
   <main class="app" id="top">
 
     <section class="intro">
-      <p class="label kicker"><span class="l en">Georgian type tools</span><span class="l ka">ᲥᲐᲠᲗᲣᲚᲘ ᲢᲘᲞᲝᲒᲠᲐᲤᲘᲘᲡ ᲘᲜᲡᲢᲠᲣᲛᲔᲜᲢᲘ</span></p>
-      <h1 class="display"><span class="l en">Which font is this?</span><span class="l ka">ᲠᲝᲛᲔᲚᲘ ᲨᲠᲘᲤᲢᲘᲐ?</span></h1>
+      <p class="label kicker"><span class="l ka">ᲥᲐᲠᲗᲣᲚᲘ ᲢᲘᲞᲝᲒᲠᲐᲤᲘᲘᲡ ᲘᲜᲡᲢᲠᲣᲛᲔᲜᲢᲘ</span></p>
+      <h1 class="display"><span class="l ka">ᲠᲝᲛᲔᲚᲘ ᲨᲠᲘᲤᲢᲘᲐ?</span></h1>
       <p class="lede">
-        <span class="l en">Drop in an image of Georgian text. The tool names the typeface, tells the script apart and reads the text.</span>
+        
         <span class="l ka">ჩააგდეთ ქართული ტექსტის სურათი. ინსტრუმენტი ამოიცნობს შრიფტს, განასხვავებს დამწერლობას და წაიკითხავს ტექსტს.</span>
       </p>
     </section>
@@ -79,8 +77,8 @@
           <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif" hidden>
           <div class="upload-content" id="uploadContent">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <p class="upload-title"><span class="l en">Drag &amp; drop an image here</span><span class="l ka">გადმოიტანეთ სურათი აქ</span></p>
-            <p class="upload-hint"><span class="l en">or click to browse, or paste with Ctrl+V</span><span class="l ka">ან აირჩიეთ ფაილი, ან ჩასვით Ctrl+V-ით</span></p>
+            <p class="upload-title"><span class="l ka">გადმოიტანეთ სურათი აქ</span></p>
+            <p class="upload-hint"><span class="l ka">ან აირჩიეთ ფაილი, ან ჩასვით Ctrl+V-ით</span></p>
           </div>
           <img id="preview" class="preview hidden" alt="">
         </div>
@@ -88,68 +86,68 @@
         <div id="turnstileBox" class="check-box hidden"></div>
 
         <div class="panel hidden" id="sendPanel">
-          <p class="label kicker"><span class="num">!</span><span class="l en">Where should the result go?</span><span class="l ka">ᲡᲐᲓ ᲒᲐᲛᲝᲒᲘᲒᲖᲐᲕᲜᲝᲗ ᲨᲔᲓᲔᲒᲘ?</span></p>
+          <p class="label kicker"><span class="num">!</span><span class="l ka">ᲡᲐᲓ ᲒᲐᲛᲝᲒᲘᲒᲖᲐᲕᲜᲝᲗ ᲨᲔᲓᲔᲒᲘ?</span></p>
           <p class="note muted">
-            <span class="l en">The tool is unavailable right now. Leave your email and we will run your image and send you the result, usually within one working day.</span>
+            
             <span class="l ka">ინსტრუმენტი ამჟამად მიუწვდომელია. დაგვიტოვეთ ელფოსტა, სურათს ჩვენ გავატარებთ და შედეგს გამოგიგზავნით, ჩვეულებრივ ერთ სამუშაო დღეში.</span>
           </p>
           <div class="send-grid">
             <div class="field">
-              <label for="ff-email"><span class="l en">Email for the result</span><span class="l ka">ელფოსტა შედეგისთვის</span> *</label>
+              <label for="ff-email"><span class="l ka">ელფოსტა შედეგისთვის</span> *</label>
               <input id="ff-email" name="email" type="email" autocomplete="email">
             </div>
             <div class="field">
-              <label for="ff-name"><span class="l en">Your name (optional)</span><span class="l ka">თქვენი სახელი (არასავალდებულო)</span></label>
+              <label for="ff-name"><span class="l ka">თქვენი სახელი (არასავალდებულო)</span></label>
               <input id="ff-name" name="name" type="text" autocomplete="name">
             </div>
             <div class="field field-wide">
-              <label for="ff-note"><span class="l en">What is it, and where did you see it? (optional)</span><span class="l ka">რა არის და სად ნახეთ? (არასავალდებულო)</span></label>
+              <label for="ff-note"><span class="l ka">რა არის და სად ნახეთ? (არასავალდებულო)</span></label>
               <textarea id="ff-note" name="note" rows="2"></textarea>
             </div>
           </div>
           <label class="consent">
             <input type="checkbox" id="ff-consent">
             <span>
-              <span class="l en">I agree that BAGARI stores this image and my details to reply with the result (<a href="../privacy.html" target="_blank">privacy policy</a>). *</span>
+              
               <span class="l ka">ვეთანხმები, რომ BAGARI შეინახავს ამ სურათსა და ჩემს მონაცემებს შედეგის გამოსაგზავნად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>). *</span>
             </span>
           </label>
         </div>
 
         <button class="btn btn-solid analyze-btn" id="analyzeBtn" type="submit" disabled>
-          <span class="mode-analyze"><span class="l en">Analyze</span><span class="l ka">ᲐᲜᲐᲚᲘᲖᲘ</span></span>
-          <span class="mode-send"><span class="l en">Send for analysis</span><span class="l ka">ᲐᲜᲐᲚᲘᲖᲖᲔ ᲒᲐᲒᲖᲐᲕᲜᲐ</span></span>
+          <span class="mode-analyze"><span class="l ka">ᲐᲜᲐᲚᲘᲖᲘ</span></span>
+          <span class="mode-send"><span class="l ka">ᲐᲜᲐᲚᲘᲖᲖᲔ ᲒᲐᲒᲖᲐᲕᲜᲐ</span></span>
         </button>
       </section>
 
       <div class="error-box hidden" id="errorBox" role="alert">
-        <span class="l en" data-err="type">That file type is not supported. Use JPG, PNG, WEBP, GIF or HEIC, up to 10 MB.</span>
+        
         <span class="l ka" data-err="type">ეს ფაილის ტიპი არ არის მხარდაჭერილი. გამოიყენეთ JPG, PNG, WEBP, GIF ან HEIC, 10 მბ-მდე.</span>
-        <span class="l en" data-err="check">The human check did not pass in this browser. Reload the page and try again, or open it in your usual browser.</span>
+        
         <span class="l ka" data-err="check">ადამიანის შემოწმება ამ ბრაუზერში ვერ გაიარა. გადატვირთეთ გვერდი და სცადეთ თავიდან, ან გახსენით ჩვეულ ბრაუზერში.</span>
-        <span class="l en" data-err="send">Something went wrong. Check the file is an image under 10 MB and try again, or write to hello@bagari.studio.</span>
+        
         <span class="l ka" data-err="send">რაღაც შეცდომა მოხდა. შეამოწმეთ, რომ ფაილი 10 მბ-ზე ნაკლები სურათია, და სცადეთ თავიდან, ან მოგვწერეთ: hello@bagari.studio.</span>
       </div>
       <div class="spinner hidden" id="spinner"><span class="spin"></span>
-        <p class="muted mode-analyze"><span class="l en">Analyzing</span><span class="l ka">ანალიზი მიმდინარეობს</span></p>
-        <p class="muted mode-send"><span class="l en">Sending</span><span class="l ka">იგზავნება</span></p>
+        <p class="muted mode-analyze"><span class="l ka">ანალიზი მიმდინარეობს</span></p>
+        <p class="muted mode-send"><span class="l ka">იგზავნება</span></p>
       </div>
 
       <section class="results hidden" id="results">
         <div class="result-grid">
           <div class="result-side">
           <article class="panel" id="panelScript">
-            <p class="label kicker"><span class="num">01</span><span class="l en">Script</span><span class="l ka">ᲓᲐᲛᲬᲔᲠᲚᲝᲑᲐ</span></p>
+            <p class="label kicker"><span class="num">01</span><span class="l ka">ᲓᲐᲛᲬᲔᲠᲚᲝᲑᲐ</span></p>
             <p class="display-sm" id="scriptLabel"></p>
             <div class="bar"><i id="scriptBar"></i></div>
             <p class="meta" id="scriptConf"></p>
             <p class="note muted" id="scriptNote"></p>
           </article>
           <article class="panel" id="panelFont">
-            <p class="label kicker"><span class="num">02</span><span class="l en">Typeface</span><span class="l ka">ᲨᲠᲘᲤᲢᲘ</span></p>
+            <p class="label kicker"><span class="num">02</span><span class="l ka">ᲨᲠᲘᲤᲢᲘ</span></p>
             <div class="value-row">
               <p class="display-sm" id="fontLabel"></p>
-              <span class="badge hidden" id="uncertainBadge"><span class="l en">Uncertain</span><span class="l ka">ᲡᲐᲔᲭᲕᲝ</span></span>
+              <span class="badge hidden" id="uncertainBadge"><span class="l ka">ᲡᲐᲔᲭᲕᲝ</span></span>
             </div>
             <p class="note muted" id="fontAlias"></p>
             <div class="bar"><i id="fontBar"></i></div>
@@ -157,67 +155,67 @@
             <p class="note muted" id="fontNote"></p>
             <div class="font-scores hidden" id="fontScores"></div>
             <div class="fix hidden" id="fixFont" data-kind="font">
-              <button class="btn btn-ghost btn-sm fix-open" type="button" aria-expanded="false" aria-controls="fixFontForm"><span class="l en">Wrong font?</span><span class="l ka">ᲡᲮᲕᲐ ᲨᲠᲘᲤᲢᲘᲐ?</span></button>
+              <button class="btn btn-ghost btn-sm fix-open" type="button" aria-expanded="false" aria-controls="fixFontForm"><span class="l ka">ᲡᲮᲕᲐ ᲨᲠᲘᲤᲢᲘᲐ?</span></button>
               <div class="fix-form hidden" id="fixFontForm">
                 <div class="field">
-                  <label for="fixFontInput"><span class="l en">Which font is it?</span><span class="l ka">რომელი შრიფტია?</span></label>
+                  <label for="fixFontInput"><span class="l ka">რომელი შრიფტია?</span></label>
                   <input id="fixFontInput" class="fix-value" type="text" list="ffFontList" autocomplete="off" maxlength="120" placeholder="BPG DejaVu Sans">
                   <datalist id="ffFontList"></datalist>
                 </div>
                 <p class="note muted fix-consent">
-                  <span class="l en">Sending keeps this image with your fix, so we can teach the tool (<a href="../privacy.html" target="_blank">privacy policy</a>).</span>
+                  
                   <span class="l ka">გაგზავნისას ეს სურათი თქვენს შესწორებასთან ერთად შეინახება ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span>
                 </p>
                 <div class="fix-actions">
-                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l en">Send</span><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
-                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l en">Cancel</span><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
+                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
+                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
                 </div>
               </div>
-              <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-done hidden"><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
               <p class="note fix-warn hidden" aria-live="polite"></p>
-              <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
+              <p class="note fix-error hidden"><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
             </div>
           </article>
           </div>
           <article class="panel panel-wide" id="panelText">
-            <p class="label kicker"><span class="num">03</span><span class="l en">Extracted text</span><span class="l ka">ᲐᲛᲝᲙᲘᲗᲮᲣᲚᲘ ᲢᲔᲥᲡᲢᲘ</span></p>
+            <p class="label kicker"><span class="num">03</span><span class="l ka">ᲐᲛᲝᲙᲘᲗᲮᲣᲚᲘ ᲢᲔᲥᲡᲢᲘ</span></p>
             <pre class="ocr-output" id="ocrText"></pre>
             <p class="note muted" id="ocrMeta"></p>
             <div class="fix" id="fixText" data-kind="text">
               <div class="fix-actions">
                 <button class="btn btn-ghost btn-sm swap" id="copyBtn" type="button">
-                  <span class="on"><span class="l en">Copy</span><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
-                  <span class="off"><span class="l en">Copied</span><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
+                  <span class="on"><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
+                  <span class="off"><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
                 </button>
-                <button class="btn btn-ghost btn-sm fix-open hidden" type="button" aria-expanded="false" aria-controls="fixTextForm"><span class="l en">Fix the text</span><span class="l ka">ᲢᲔᲥᲡᲢᲘᲡ ᲒᲐᲡᲬᲝᲠᲔᲑᲐ</span></button>
+                <button class="btn btn-ghost btn-sm fix-open hidden" type="button" aria-expanded="false" aria-controls="fixTextForm"><span class="l ka">ᲢᲔᲥᲡᲢᲘᲡ ᲒᲐᲡᲬᲝᲠᲔᲑᲐ</span></button>
               </div>
               <div class="fix-form hidden" id="fixTextForm">
                 <div class="field">
-                  <label for="fixTextInput"><span class="l en">Type the text exactly as the image shows it</span><span class="l ka">ჩაწერეთ ტექსტი ზუსტად ისე, როგორც სურათზეა</span></label>
+                  <label for="fixTextInput"><span class="l ka">ჩაწერეთ ტექსტი ზუსტად ისე, როგორც სურათზეა</span></label>
                   <textarea id="fixTextInput" class="fix-value" rows="2" maxlength="4000" spellcheck="false"></textarea>
                 </div>
                 <p class="note muted fix-consent">
-                  <span class="l en">Sending keeps this image with your fix, so we can teach the tool (<a href="../privacy.html" target="_blank">privacy policy</a>).</span>
+                  
                   <span class="l ka">გაგზავნისას ეს სურათი თქვენს შესწორებასთან ერთად შეინახება ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span>
                 </p>
                 <div class="fix-actions">
-                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l en">Send</span><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
-                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l en">Cancel</span><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
+                  <button class="btn btn-solid btn-sm fix-send" type="button"><span class="l ka">ᲒᲐᲒᲖᲐᲕᲜᲐ</span></button>
+                  <button class="btn btn-ghost btn-sm fix-cancel" type="button"><span class="l ka">ᲒᲐᲣᲥᲛᲔᲑᲐ</span></button>
                 </div>
               </div>
-              <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-done hidden"><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
               <p class="note fix-warn hidden" aria-live="polite"></p>
-              <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
+              <p class="note fix-error hidden"><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
             </div>
           </article>
         </div>
       </section>
 
       <section class="panel hidden" id="donePanel">
-        <p class="label kicker"><span class="num">!</span><span class="l en">Received</span><span class="l ka">ᲛᲘᲦᲔᲑᲣᲚᲘᲐ</span></p>
-        <p class="display-sm"><span class="l en">The result is on its way.</span><span class="l ka">შედეგი გზაშია.</span></p>
+        <p class="label kicker"><span class="num">!</span><span class="l ka">ᲛᲘᲦᲔᲑᲣᲚᲘᲐ</span></p>
+        <p class="display-sm"><span class="l ka">შედეგი გზაშია.</span></p>
         <p class="note muted">
-          <span class="l en">We will run it through the Font Finder and send the result to your email, usually within one working day.</span>
+          
           <span class="l ka">გავატარებთ Font Finder-ში და შედეგს თქვენს ელფოსტაზე გამოგიგზავნით, ჩვეულებრივ ერთ სამუშაო დღეში.</span>
         </p>
       </section>
@@ -227,13 +225,13 @@
 
   <footer class="site-footer">
     <p class="model-info">
-      <span class="l en">Model: 257 Georgian fonts · Mkhedruli, Mtavruli, Asomtavruli, Nuskhuri · reading 52% → 73% on display faces</span>
+      
       <span class="l ka">მოდელი: 257 ქართული შრიფტი · მხედრული, მთავრული, ასომთავრული, ნუსხური · წაკითხვა 52% → 73% სატიტულო შრიფტებზე</span>
     </p>
-    <p>© 2026 <a href="../index.html">BAGARI</a> · <a href="../privacy.html"><span class="l en">Privacy</span><span class="l ka">კონფიდენციალურობა</span></a> · <a href="mailto:hello@bagari.studio">hello@bagari.studio</a></p>
+    <p>© 2026 <a href="../index.html">BAGARI</a> · <a href="../privacy.html"><span class="l ka">კონფიდენციალურობა</span></a> · <a href="mailto:hello@bagari.studio">hello@bagari.studio</a></p>
   </footer>
 
-  <script src="font-finder.js?v=202609281100"></script>
+  <script src="/tools/font-finder.js?v=202609281100"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ffTurnstileReady" async defer></script>
 </body>
 </html>

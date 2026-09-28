@@ -82,7 +82,19 @@
     try { var s = localStorage.getItem("bagari-lang"); if (s === "ka" || s === "en") return s; } catch (e) {}
     return (navigator.language || "").toLowerCase().indexOf("ka") === 0 ? "ka" : "en";
   }
-  langToggle.addEventListener("click", function () { setLang(lang() === "ka" ? "en" : "ka"); });
+  /* one address per language (the Georgian twin lives under /ka/): the switch moves there */
+  var PAGE_LANG = root.getAttribute("data-page-lang");
+  langToggle.addEventListener("click", function () {
+    var next = lang() === "ka" ? "en" : "ka";
+    if (PAGE_LANG) {
+      try { localStorage.setItem("bagari-lang", next); } catch (e) {}
+      var p = location.pathname;
+      p = next === "ka" ? "/ka" + p : p.replace(/^\/ka/, "");
+      location.href = p + location.search + location.hash;
+      return;
+    }
+    setLang(next);
+  });
 
   /* ---------- surface: black (Ink) by default; the tool keeps its own choice, apart from the site's ---------- */
   function theme() { return root.getAttribute("data-theme") === "light" ? "light" : "dark"; }
@@ -275,7 +287,7 @@
   function loadFontList() {
     if (fontListLoaded) return;
     fontListLoaded = true;
-    fetch("ff-fonts.json").then(function (r) { return r.json(); }).then(function (d) {
+    fetch("/tools/ff-fonts.json").then(function (r) { return r.json(); }).then(function (d) {
       var seen = {}, html = "";
       (d.fonts || []).forEach(function (f) {
         [f.n].concat(f.a || []).forEach(function (n) {
@@ -443,5 +455,5 @@
   });
 
   setMode("analyze");
-  setLang(initialLang());
+  setLang(PAGE_LANG || initialLang());
 })();

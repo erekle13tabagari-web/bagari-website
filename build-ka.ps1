@@ -1,0 +1,81 @@
+# Build the Georgian twin of every page under /ka/.
+#
+# Pages are written once, bilingually: <span class="l en"> and <span class="l ka">.
+# Search engines need one language per address, so on every publish this writes
+# ka/<page> with only the Georgian text, lang="ka", the Georgian title and
+# description (taken from the page's ka-title / ka-description meta), the
+# Georgian canonical and og:url, and every asset path made absolute (/css/..).
+# Links between pages stay relative, so the Georgian pages link to each other.
+#
+# Called by "Update Website.bat" right after bump-cache-version.ps1.
+# Edit the source pages, never the files under ka/: they are overwritten.
+
+$pages = @('index.html', 'start.html', 'privacy.html', 'work/biomi.html', 'tools/font-finder.html')
+$utf8 = New-Object System.Text.UTF8Encoding($false)
+$opts = [System.Text.RegularExpressions.RegexOptions]::Singleline
+
+# an English span with everything nested inside it (balanced <span> ... </span>)
+$enSpan = New-Object System.Text.RegularExpressions.Regex(
+  '<span class="l en"[^>]*>(?>(?:<span\b[^>]*>(?<d>)|</span>(?<-d>)|(?!</?span\b).)*)(?(d)(?!))</span>', $opts)
+$enImg = New-Object System.Text.RegularExpressions.Regex('<img class="l en"[^>]*>')
+
+# relative asset references (not pages, anchors, mail or absolute URLs) become root paths
+$assetAttr = New-Object System.Text.RegularExpressions.Regex(
+  '\b(href|src|data-src|data-art-[a-z-]+)="(?!https?:|/|#|mailto:|tel:|data:|javascript:)([^"]+)"')
+$cssUrl = New-Object System.Text.RegularExpressions.Regex(
+  "url\((['""]?)(?!https?:|/|data:|#)([^'"")]+)\1\)")
+
+function Get-Meta($text, $name) {
+  $m = [regex]::Match($text, '<meta name="' + $name + '" content="([^"]*)">')
+  if ($m.Success) { return $m.Groups[1].Value } else { return $null }
+}
+
+$built = 0
+foreach ($rel in $pages) {
+  $src = Join-Path $PSScriptRoot $rel
+  if (-not (Test-Path -LiteralPath $src)) { continue }
+  $t = [System.IO.File]::ReadAllText($src, [System.Text.Encoding]::UTF8)
+
+  $title = Get-Meta $t 'ka-title'
+  $desc  = Get-Meta $t 'ka-description'
+
+  # only the Georgian text remains
+  $t = $enSpan.Replace($t, '')
+  $t = $enImg.Replace($t, '')
+
+  $t = $t.Replace('<html lang="en" data-lang="en" data-page-lang="en">', '<html lang="ka" data-lang="ka" data-page-lang="ka">')
+  if ($title) {
+    $t = [regex]::Replace($t, '<title>[^<]*</title>', { param($m) '<title>' + $title + '</title>' })
+    $t = [regex]::Replace($t, '<meta property="og:title" content="[^"]*">', { param($m) '<meta property="og:title" content="' + $title + '">' })
+  }
+  if ($desc) {
+    $t = [regex]::Replace($t, '<meta name="description" content="[^"]*">', { param($m) '<meta name="description" content="' + $desc + '">' })
+    $t = [regex]::Replace($t, '<meta property="og:description" content="[^"]*">', { param($m) '<meta property="og:description" content="' + $desc + '">' })
+  }
+  $t = [regex]::Replace($t, '\s*<meta name="ka-(title|description)" content="[^"]*">', '')
+  $t = [regex]::Replace($t, '(<link rel="canonical" href="https://bagari\.studio/)', '$1ka/')
+  $t = [regex]::Replace($t, '(<meta property="og:url" content="https://bagari\.studio/)', '$1ka/')
+
+  # resolve against the source page's own address, e.g. work/biomi.html + img/x.webp -> /work/img/x.webp
+  $base = New-Object System.Uri(('https://bagari.studio/' + $rel))
+  $t = $assetAttr.Replace($t, {
+    param($m)
+    $v = $m.Groups[2].Value
+    if ($v -match '\.html(\?|#|$)') { return $m.Value }   # a page: its Georgian twin sits beside it
+    $u = New-Object System.Uri($base, $v)
+    return $m.Groups[1].Value + '="' + $u.PathAndQuery + '"'
+  })
+  $t = $cssUrl.Replace($t, {
+    param($m)
+    $u = New-Object System.Uri($base, $m.Groups[2].Value)
+    return 'url(' + $m.Groups[1].Value + $u.PathAndQuery + $m.Groups[1].Value + ')'
+  })
+
+  $out = Join-Path (Join-Path $PSScriptRoot 'ka') $rel
+  $dir = Split-Path $out -Parent
+  if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+  [System.IO.File]::WriteAllText($out, $t, $utf8)
+  $built++
+}
+
+Write-Host "   Georgian pages: $built built under ka/"

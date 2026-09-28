@@ -260,6 +260,69 @@
 .ff .faq > div { display: grid; gap: var(--s-2); align-content: start; }
 .ff .faq dt { font-weight: 600; line-height: 1.3; }
 .ff .faq dd { margin: 0; color: var(--muted); font-size: 0.9375rem; line-height: 1.55; max-width: 60ch; }
+.ff .faq dd a, .ff .model-info a { color: var(--link); text-underline-offset: 0.2em; }
+
+/* ---------- specimens: ink-only images drawn in the text colour ----------
+   Each line carries its pixel width (--w); every line of every font shares one
+   scale (--k), so sizes stay comparable, and a line narrower than the column
+   shrinks with its proportions kept. */
+.ff .spec { width: min(100%, calc(var(--w) * var(--k, 0.5) * 1px)); max-width: 100%; }
+.ff [hidden] { display: none !important; }
+
+/* ---------- font pages and the catalogue ---------- */
+.ff.fontpage { max-width: 80rem; grid-template-columns: minmax(0, 1fr); }   /* long specimen lines must not widen the column */
+.ff .intro .kicker a { color: inherit; text-decoration: none; }
+.ff .intro .kicker a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.ff .intro h1.font-title { max-width: none; font-size: clamp(2rem, 5vw, 4rem); line-height: 0.95; letter-spacing: -0.03em; overflow-wrap: anywhere; }
+.ff .font-cta { justify-self: start; }
+.ff .specimen { display: grid; gap: var(--s-3); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
+.ff .specimen .spec-hero { margin-bottom: var(--s-2); }
+.ff .specimen .spec-label { margin: var(--s-2) 0 calc(var(--s-2) * -1); font-size: 0.6875rem; color: var(--muted); }
+.ff .font-facts, .ff .similar, .ff .font-group { display: grid; gap: var(--s-3); border-top: 1px solid var(--line-strong); padding-top: var(--s-4); }
+.ff .font-facts h2, .ff .similar h2, .ff .font-group h2 { margin: 0; font-size: 0.75rem; }
+.ff .font-group h2 .num { color: var(--muted); margin-left: var(--s-2); }
+.ff .facts { display: grid; margin: 0; }
+.ff .facts > div { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: var(--s-3); padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
+.ff .facts dt { margin: 0; font-size: 0.6875rem; color: var(--muted); padding-top: 0.2rem; }
+.ff .facts dd { margin: 0; overflow-wrap: anywhere; }
+.ff .facts a { color: var(--link); text-underline-offset: 0.2em; }
+.ff .font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--s-2); }
+.ff .font-card {
+  display: grid;
+  gap: var(--s-2);
+  align-content: space-between;
+  min-height: 6.5rem;
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color var(--fast) var(--ease);
+}
+.ff .font-card:hover, .ff .font-card:focus-visible { border-color: var(--kicker); }
+.ff .font-card-name { font-size: 0.8125rem; color: var(--muted); overflow-wrap: anywhere; }
+.ff .font-card:hover .font-card-name { color: var(--text); }
+.ff .font-tools { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: stretch; }
+.ff .font-search {
+  flex: 1 1 16rem;
+  min-height: 3rem;
+  padding: 0 var(--s-3);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  font: inherit;
+  font-size: 1rem;
+}
+.ff .font-search:focus { border-color: var(--focus); outline: none; }
+
+/* the tool's matches, each in its own letters */
+.ff .score-spec { grid-column: 1 / -1; display: block; line-height: 0; margin-bottom: calc(var(--s-3) * -1 + 0.3rem); }   /* close to its own name, apart from the row above */
+.ff .font-scores:has(.score-spec) { gap: var(--s-3); }
+.ff .score-spec .spec { --k: 0.42; }
+.ff .score-row a.name { color: var(--muted); text-decoration: none; }
+.ff .score-row a.name:hover { color: var(--text); text-decoration: underline; text-underline-offset: 0.2em; }
+.ff #fontLabel a { color: inherit; text-decoration: none; }
+.ff #fontLabel a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.15em; }
 
 /* ---------- phone ---------- */
 @media (max-width: 720px) {
@@ -267,6 +330,9 @@
   .ff .send-grid { grid-template-columns: 1fr; }
   .ff .result-grid { grid-template-columns: 1fr; }
   .ff .faq { grid-template-columns: 1fr; gap: var(--s-3); }
+  .ff .facts > div { grid-template-columns: 1fr; gap: var(--s-1); }
+  .ff .font-grid { grid-template-columns: 1fr 1fr; }
+  .ff .font-card { padding: var(--s-2); min-height: 5rem; }
   .ff .panel-wide { grid-column: 1; }
   .ff .btn { width: 100%; }
   .ff .btn-sm { width: auto; }
@@ -290,6 +356,7 @@
   #ffForm.has-results .result-side { grid-column: 2; grid-row: 1 / span 2; display: grid; gap: var(--s-2); align-content: start; align-self: stretch; grid-template-rows: auto 1fr; }
   #ffForm.has-results #panelText { grid-column: 1; grid-row: 2; align-self: stretch; }
   #ffForm.has-results .font-scores { gap: var(--s-1); }
+  #ffForm.has-results .font-scores:has(.score-spec) { gap: var(--s-2); }
   #ffForm.has-results .score-row:nth-child(n+4) { display: none; }
 }
 

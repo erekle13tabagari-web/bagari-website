@@ -262,6 +262,40 @@
     return widget !== null && window.turnstile ? (window.turnstile.getResponse(widget) || "") : "";
   }
 
+  /* ---------- the typeface: its name links to the font's page, and each match is
+     shown in its own letters (the specimens from tools/fonts/), so the eye can
+     compare them with the image; drawn again once the font list has arrived ---------- */
+  function fontPage(name) {
+    var f = fontIndex[String(name || "").toLowerCase()];
+    return f && f.s ? f : null;
+  }
+  function specimen(f) {
+    return '<span class="ink spec is-near" aria-hidden="true" style="--art:url(/tools/fonts/img/' + f.s +
+      '-card.webp);aspect-ratio:' + f.r + ';--w:' + Math.round(f.r * 62) + '"></span>';
+  }
+  function renderFont(fn) {
+    var main = fontPage(fn.label);
+    $("fontLabel").innerHTML = main
+      ? '<a href="fonts/' + main.s + '.html" target="_blank" rel="noopener">' + esc(fn.label) + "</a>"
+      : esc(fn.label || "");
+    var scores = $("fontScores");
+    if (fn.top && fn.top.length) {
+      scores.innerHTML = fn.top.map(function (r) {
+        var pct = Math.round(r.score * 100);
+        var f = fontPage(r.font);
+        var title = r.aliases && r.aliases.length ? ' title="' + esc(r.aliases.join(", ")) + '"' : "";
+        var name = f
+          ? '<a class="name" href="fonts/' + f.s + '.html" target="_blank" rel="noopener"' + title + ">" + esc(r.font) + "</a>"
+          : '<span class="name"' + title + ">" + esc(r.font) + "</span>";
+        var spec = f ? '<a class="score-spec" href="fonts/' + f.s + '.html" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">' + specimen(f) + "</a>" : "";
+        return '<div class="score-row">' + spec + name + '<span class="bar"><i style="width:' + pct + '%"></i></span><span class="pct">' + pct + "%</span></div>";
+      }).join("");
+      scores.classList.remove("hidden");
+    } else {
+      scores.classList.add("hidden");
+    }
+  }
+
   /* ---------- results, rendered as the app renders them ---------- */
   function showResults(data) {
     lastData = data;
@@ -273,7 +307,6 @@
     $("scriptNote").textContent = sc.note_key ? t("note_" + sc.note_key, sc.note_params || {}) : (sc.note || "");
 
     var fn = data.font || {};
-    $("fontLabel").textContent = fn.label || "";
     var fnPct = Math.round((fn.confidence || 0) * 100);
     $("fontBar").style.width = fnPct + "%";
     $("fontConf").textContent = fn.confidence > 0 ? t("confidence", { p: fnPct }) : "";
@@ -281,17 +314,7 @@
     $("fontAlias").textContent = fn.aliases && fn.aliases.length ? t("alsoKnown", { list: fn.aliases.join(", ") }) : "";
     $("fontNote").textContent = fn.note || (fn.words_used > 0 ? t("noteWords", { n: fn.words_used }) : t("noteWhole"));
 
-    var scores = $("fontScores");
-    if (fn.top && fn.top.length) {
-      scores.innerHTML = fn.top.map(function (r) {
-        var pct = Math.round(r.score * 100);
-        var title = r.aliases && r.aliases.length ? ' title="' + esc(r.aliases.join(", ")) + '"' : "";
-        return '<div class="score-row"><span class="name"' + title + ">" + esc(r.font) + '</span><span class="bar"><i style="width:' + pct + '%"></i></span><span class="pct">' + pct + "%</span></div>";
-      }).join("");
-      scores.classList.remove("hidden");
-    } else {
-      scores.classList.add("hidden");
-    }
+    renderFont(fn);
 
     /* OCR: dictionary-corrected words dotted, low-confidence words dashed */
     var o = data.ocr || {};
@@ -323,7 +346,7 @@
    * analysed there. The image and the fix are kept for review, never trained on unseen. */
   var ticket = "";
   var fixes = [$("fixFont"), $("fixText")];
-  var fontListLoaded = false, knownFonts = {};
+  var fontListLoaded = false, knownFonts = {}, fontIndex = {};
 
   /* ---------- sanity checks before a fix is sent ----------
    * A visitor can be wrong too: a Latin letter typed on the wrong keyboard layout,
@@ -373,9 +396,11 @@
       (d.fonts || []).forEach(function (f) {
         [f.n].concat(f.a || []).forEach(function (n) {
           if (!seen[n]) { seen[n] = 1; knownFonts[n.toLowerCase()] = n; html += '<option value="' + esc(n) + '"></option>'; }
+          fontIndex[n.toLowerCase()] = f;
         });
       });
       $("ffFontList").innerHTML = html;
+      if (lastData && lastData.font) renderFont(lastData.font);
     }).catch(function () { fontListLoaded = false; });
   }
 
@@ -579,4 +604,5 @@
   });
 
   setMode("analyze");
+  loadFontList();
 })();

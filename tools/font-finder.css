@@ -247,7 +247,9 @@
 .ff .fix-form .field textarea { min-height: 3.5rem; font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem); line-height: 1.5; }
 .ff .fix-consent { font-size: 0.8125rem; }
 .ff .fix-consent a { color: var(--link); text-underline-offset: 0.2em; }
-.ff .fix-done { color: var(--kicker); font-size: 0.875rem; }
+.ff .fix-done, .ff .fix-ok-done { color: var(--kicker); font-size: 0.875rem; }
+.ff .fix-hint { font-size: 0.75rem; line-height: 1.4; margin: 0; }
+.ff .fix-hint a { color: inherit; text-underline-offset: 0.2em; }
 .ff .fix-error { color: var(--mark); font-size: 0.875rem; }
 .ff .fix-warn { color: var(--text); font-size: 0.875rem; padding-left: var(--s-2); border-left: 2px solid var(--mark); }
 

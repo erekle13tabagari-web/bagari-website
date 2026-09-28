@@ -29,8 +29,8 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="../css/style.css?v=202609281134">
-<link rel="stylesheet" href="font-finder.css?v=202609281134">
+<link rel="stylesheet" href="../css/style.css?v=202609281158">
+<link rel="stylesheet" href="font-finder.css?v=202609281158">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -205,7 +205,11 @@
             <p class="note muted" id="fontNote"></p>
             <div class="font-scores hidden" id="fontScores"></div>
             <div class="fix hidden" id="fixFont" data-kind="font">
-              <button class="btn btn-ghost btn-sm fix-open" type="button" aria-expanded="false" aria-controls="fixFontForm"><span class="l en">Wrong font?</span><span class="l ka">ᲡᲮᲕᲐ ᲨᲠᲘᲤᲢᲘᲐ?</span></button>
+              <div class="fix-actions">
+                <button class="btn btn-ghost btn-sm fix-ok" type="button"><span class="l en">That's right</span><span class="l ka">ᲡᲬᲝᲠᲘᲐ</span></button>
+                <button class="btn btn-ghost btn-sm fix-open" type="button" aria-expanded="false" aria-controls="fixFontForm"><span class="l en">Wrong font?</span><span class="l ka">ᲡᲮᲕᲐ ᲨᲠᲘᲤᲢᲘᲐ?</span></button>
+              </div>
+              <p class="note muted fix-hint"><span class="l en">Either answer keeps this image so we can teach the tool (<a href="../privacy.html#font-finder" target="_blank">privacy policy</a>).</span><span class="l ka">ნებისმიერი პასუხი ამ სურათს ინახავს ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html#font-finder" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span></p>
               <div class="fix-form hidden" id="fixFontForm">
                 <div class="field">
                   <label for="fixFontInput"><span class="l en">Which font is it?</span><span class="l ka">რომელი შრიფტია?</span></label>
@@ -222,6 +226,7 @@
                 </div>
               </div>
               <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-ok-done hidden"><span class="l en">Thank you. Knowing it was right teaches the tool too.</span><span class="l ka">მადლობა. როცა ვიცით, რომ სწორია, ესეც ასწავლის ინსტრუმენტს.</span></p>
               <p class="note fix-warn hidden" aria-live="polite"></p>
               <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
             </div>
@@ -237,8 +242,10 @@
                   <span class="on"><span class="l en">Copy</span><span class="l ka">ᲙᲝᲞᲘᲠᲔᲑᲐ</span></span>
                   <span class="off"><span class="l en">Copied</span><span class="l ka">ᲓᲐᲙᲝᲞᲘᲠᲓᲐ</span></span>
                 </button>
+                <button class="btn btn-ghost btn-sm fix-ok hidden" type="button"><span class="l en">That's right</span><span class="l ka">ᲡᲬᲝᲠᲘᲐ</span></button>
                 <button class="btn btn-ghost btn-sm fix-open hidden" type="button" aria-expanded="false" aria-controls="fixTextForm"><span class="l en">Fix the text</span><span class="l ka">ᲢᲔᲥᲡᲢᲘᲡ ᲒᲐᲡᲬᲝᲠᲔᲑᲐ</span></button>
               </div>
+              <p class="note muted fix-hint hidden"><span class="l en">Either answer keeps this image so we can teach the tool (<a href="../privacy.html#font-finder" target="_blank">privacy policy</a>).</span><span class="l ka">ნებისმიერი პასუხი ამ სურათს ინახავს ინსტრუმენტის გასაწვრთნელად (<a href="../privacy.html#font-finder" target="_blank">კონფიდენციალურობის პოლიტიკა</a>).</span></p>
               <div class="fix-form hidden" id="fixTextForm">
                 <div class="field">
                   <label for="fixTextInput"><span class="l en">Type the text exactly as the image shows it</span><span class="l ka">ჩაწერეთ ტექსტი ზუსტად ისე, როგორც სურათზეა</span></label>
@@ -254,6 +261,7 @@
                 </div>
               </div>
               <p class="note fix-done hidden"><span class="l en">Thank you. We will check it and teach the tool.</span><span class="l ka">მადლობა. გადავამოწმებთ და ინსტრუმენტს ვასწავლით.</span></p>
+              <p class="note fix-ok-done hidden"><span class="l en">Thank you. Knowing it was right teaches the tool too.</span><span class="l ka">მადლობა. როცა ვიცით, რომ სწორია, ესეც ასწავლის ინსტრუმენტს.</span></p>
               <p class="note fix-warn hidden" aria-live="polite"></p>
               <p class="note fix-error hidden"><span class="l en">That did not go through. Analyze the image again and retry.</span><span class="l ka">ვერ გაიგზავნა. გააანალიზეთ სურათი ხელახლა და სცადეთ თავიდან.</span></p>
             </div>
@@ -288,7 +296,7 @@
         </div>
         <div>
           <dt><span class="l en">Is it free? What happens to my image?</span><span class="l ka">უფასოა? რა ემართება ჩემს სურათს?</span></dt>
-          <dd><span class="l en">It is free. The image is analysed and not kept. We keep it only when you send it to us: with a correction, to teach the tool, or by email while the tool is offline, to reply with the result.</span><span class="l ka">უფასოა. სურათი ანალიზდება და არ ინახება. ვინახავთ მხოლოდ მაშინ, როცა თავად გამოგვიგზავნით: შესწორებასთან ერთად, ინსტრუმენტის გასაწვრთნელად, ან ელფოსტით, როცა ინსტრუმენტი გათიშულია, შედეგის გამოსაგზავნად.</span></dd>
+          <dd><span class="l en">It is free. The image is analysed and not kept. We keep it only when you send it to us: when you tell us a result was right or wrong, to teach the tool, or by email while the tool is offline, to reply with the result.</span><span class="l ka">უფასოა. სურათი ანალიზდება და არ ინახება. ვინახავთ მხოლოდ მაშინ, როცა თავად გამოგვიგზავნით: როცა გვეუბნებით, რომ შედეგი სწორი ან არასწორი იყო, ინსტრუმენტის გასაწვრთნელად, ან ელფოსტით, როცა ინსტრუმენტი გათიშულია, შედეგის გამოსაგზავნად.</span></dd>
         </div>
       </dl>
     </section>
@@ -312,8 +320,8 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="../js/main.js?v=202609281134"></script>
-<script src="font-finder.js?v=202609281134"></script>
+<script src="../js/main.js?v=202609281158"></script>
+<script src="font-finder.js?v=202609281158"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ffTurnstileReady" async defer></script>
 </body>
 </html>

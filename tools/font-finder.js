@@ -382,6 +382,12 @@
   function resetFix(box, offered) {
     var open = box.querySelector(".fix-open");
     open.classList.toggle("hidden", !offered);
+    /* "that's right" needs an answer to agree with: a named font, or text that was read */
+    var okOffered = offered && !!lastData && (box.id === "fixFont" ? !!(lastData.font && lastData.font.label) : !!String(lastData.ocr_text || "").trim());
+    box.querySelector(".fix-ok").classList.toggle("hidden", !okOffered);
+    box.querySelector(".fix-ok").disabled = false;
+    box.querySelector(".fix-hint").classList.toggle("hidden", !offered);
+    box.querySelector(".fix-ok-done").classList.add("hidden");
     open.setAttribute("aria-expanded", "false");
     box.querySelector(".fix-form").classList.add("hidden");
     box.querySelector(".fix-done").classList.add("hidden");
@@ -391,6 +397,21 @@
     box.querySelector(".fix-send").disabled = false;
     if (box.id === "fixFont") box.classList.toggle("hidden", !offered);
   }
+  /* a fix or a "that's right" for the image that was analysed; the ticket is bound to it */
+  function postFix(kind, value) {
+    var data = new FormData();
+    data.append("image", sent || file);
+    data.append("ticket", ticket);
+    data.append("kind", kind);
+    data.append("value", value);
+    data.append("predicted", (lastData.font && lastData.font.label) || "");
+    data.append("ocr", $("ocrText").textContent);
+    data.append("lang", lang());
+    return fetch("/api/font-finder/correct", { method: "POST", body: data })
+      .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+      .then(function (r) { if (!r || !r.ok) throw new Error("fix failed"); return r; });
+  }
+
   function resetFixes(offered) { fixes.forEach(function (b) { resetFix(b, offered); }); }
 
   fixes.forEach(function (box) {
@@ -398,9 +419,33 @@
     var open = box.querySelector(".fix-open"), formEl = box.querySelector(".fix-form");
     var input = box.querySelector(".fix-value"), sendBtn = box.querySelector(".fix-send");
 
+    var okBtn = box.querySelector(".fix-ok"), hint = box.querySelector(".fix-hint");
+
+    /* the visitor agrees with the tool: kept like a fix, with the tool's own answer as the value */
+    okBtn.addEventListener("click", function () {
+      if (!file || !ticket || !lastData) return;
+      var value = kind === "font" ? (lastData.font && lastData.font.label) || "" : $("ocrText").textContent;
+      if (!value.trim()) return;
+      okBtn.disabled = true;
+      box.querySelector(".fix-error").classList.add("hidden");
+      postFix(kind + "-ok", value)
+        .then(function () {
+          okBtn.classList.add("hidden");
+          open.classList.add("hidden");
+          hint.classList.add("hidden");
+          formEl.classList.add("hidden");
+          box.querySelector(".fix-ok-done").classList.remove("hidden");
+        })
+        .catch(function () {
+          okBtn.disabled = false;
+          box.querySelector(".fix-error").classList.remove("hidden");
+        });
+    });
+
     open.addEventListener("click", function () {
       var show = formEl.classList.contains("hidden");
       formEl.classList.toggle("hidden", !show);
+      hint.classList.toggle("hidden", show);      /* the form carries its own consent line */
       open.setAttribute("aria-expanded", show ? "true" : "false");
       box.querySelector(".fix-error").classList.add("hidden");
       if (!show) return;
@@ -410,6 +455,7 @@
     });
     box.querySelector(".fix-cancel").addEventListener("click", function () {
       formEl.classList.add("hidden");
+      hint.classList.remove("hidden");
       open.setAttribute("aria-expanded", "false");
       open.focus();
     });
@@ -434,20 +480,12 @@
       box.removeAttribute("data-confirmed");
       sendBtn.disabled = true;
       box.querySelector(".fix-error").classList.add("hidden");
-      var data = new FormData();
-      data.append("image", sent || file);
-      data.append("ticket", ticket);
-      data.append("kind", kind);
-      data.append("value", value);
-      data.append("predicted", (lastData.font && lastData.font.label) || "");
-      data.append("ocr", $("ocrText").textContent);
-      data.append("lang", lang());
-      fetch("/api/font-finder/correct", { method: "POST", body: data })
-        .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
-        .then(function (r) {
-          if (!r || !r.ok) throw new Error("fix failed");
+      postFix(kind, value)
+        .then(function () {
           formEl.classList.add("hidden");
           open.classList.add("hidden");
+          okBtn.classList.add("hidden");
+          hint.classList.add("hidden");
           box.querySelector(".fix-done").classList.remove("hidden");
         })
         .catch(function () {

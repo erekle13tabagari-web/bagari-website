@@ -1572,3 +1572,6 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 .plate-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
 html[data-lang="en"] .plate-shot .l.en,
 html[data-lang="ka"] .plate-shot .l.ka { display: block; }
+
+/* the drawings attach their (heavy) masks only near the screen: see main.js */
+.js .ink:not(.is-near) { -webkit-mask-image: none; mask-image: none; visibility: hidden; }

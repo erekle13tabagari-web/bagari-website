@@ -33,6 +33,7 @@
     if (toTop) paintToTop();
     if (menuToggle) paintMenuLabel();
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    if (window.__bagariLoadNear) window.__bagariLoadNear();   /* the other language's pictures */
   }
 
   function initialLang() {
@@ -375,4 +376,42 @@
   window.addEventListener("resize", liftToTop);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* ---------- heavy pictures load only near the screen ----------
+     The ink drawings are masks of 50-320 KB each and the site captures are
+     images in two languages. A drawing's mask is attached (.is-near) once it
+     comes within ~800px of the viewport; a capture (img[data-src]) gets its
+     src only then, and only in the language being shown. */
+  (function () {
+    var near = [];
+    function show(box) {
+      /* a carousel hides its off-strip cards from the observer: load them all at once */
+      if (box.hasAttribute("data-carousel")) {
+        Array.prototype.forEach.call(box.querySelectorAll(".ink, .site-preview, .plate-shot"), show);
+        return;
+      }
+      if (box.classList.contains("ink")) box.classList.add("is-near");
+      Array.prototype.forEach.call(box.querySelectorAll("img[data-src]"), function (img) {
+        if (img.getClientRects().length) { img.src = img.getAttribute("data-src"); img.removeAttribute("data-src"); }
+      });
+    }
+    var boxes = Array.prototype.filter.call(
+      document.querySelectorAll("[data-carousel], .ink, .site-preview, .plate-shot"),
+      function (el) { return el.hasAttribute("data-carousel") || !el.closest("[data-carousel]"); }
+    );
+    if (!("IntersectionObserver" in window)) {
+      Array.prototype.forEach.call(boxes, show);
+      window.__bagariLoadNear = function () { Array.prototype.forEach.call(boxes, show); };
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        if (near.indexOf(e.target) < 0) near.push(e.target);
+        show(e.target);
+      });
+    }, { rootMargin: "800px 0px 800px 0px" });
+    Array.prototype.forEach.call(boxes, function (b) { io.observe(b); });
+    window.__bagariLoadNear = function () { near.forEach(show); };
+  })();
 })();

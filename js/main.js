@@ -48,13 +48,13 @@
     setLang(root.getAttribute("data-lang") === "ka" ? "en" : "ka");
   });
 
-  /* ---------- surface: Ink by default, Stone as the alternate ---------- */
+  /* ---------- surface: Stone by default, Slate as the alternate ---------- */
   var THEME_KEY = "bagari-theme";
   var themeToggle = document.getElementById("themeToggle");
-  /* Ink unless the reader has asked for Stone. The stylesheet commits the
+  /* Stone unless the reader has asked for Slate. The stylesheet commits the
      same way, so the OS preference is deliberately not consulted here. */
   function effectiveTheme() {
-    return root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
   }
 
   function paintTheme() {

@@ -75,33 +75,34 @@
   --line-strong-on-ink: #38392F;
   --muted-on-ink: #8C8B82;
 
-  /* ---- surface roles. REDPRINT is the ground, the way the reference floods
-     its blue. Their blue is far darker than this red (white clears 7.97:1 on
-     it, against 5.12:1 here), so two rules follow and are not negotiable:
-     text on red is pure white, never stone, which only reaches 4.30:1; and
-     nothing on red is dimmed, because no tint of white on this ground clears
-     AA at small sizes. Hierarchy comes from size and weight instead. ---- */
-  color-scheme: dark;
-  --surface: var(--redprint);
-  --text: #FFFFFF;
-  --muted: rgba(255, 255, 255, 0.95);
-  --line: rgba(255, 255, 255, 0.28);
-  --line-strong: rgba(255, 255, 255, 0.55);
-  --kicker: #FFFFFF;
-  --mark: #FFFFFF;
-  --focus: #FFFFFF;
-  --link: #FFFFFF;
-  --primary-bg: #FFFFFF;
-  --primary-fg: var(--redprint);
+  /* ---- surface roles: STONE is the ground everyone meets first; Slate is the
+     dark edition behind the switch. Red is the mark, not the ground. ---- */
+  --slate: #1C2227;
+  --line-on-slate: #2C343B;
+  --line-strong-on-slate: #3E4750;
+  --muted-on-slate: #9BA3A9;
+
+  color-scheme: light;
+  --surface: var(--stone);
+  --text: var(--ink);
+  --muted: var(--muted-on-stone);
+  --line: var(--line-on-stone);
+  --line-strong: var(--line-strong-on-stone);
+  --kicker: var(--redprint);
+  --mark: var(--redprint);
+  --focus: var(--blue);
+  --link: var(--redprint);
+  --primary-bg: var(--redprint);
+  --primary-fg: #FFFFFF;
   --primary-hover-bg: var(--ink);
   --primary-hover-fg: #FFFFFF;
-  --secondary: #FFFFFF;
-  /* the relief section, and the contact band, drop to stone */
-  --band-bg: var(--stone);
-  --band-fg: var(--ink);
-  --band-muted: var(--muted-on-stone);
-  --band-line: var(--line-strong-on-stone);
-  --band-kicker: var(--redprint);
+  --secondary: var(--ink);
+  /* the relief section, and the contact band, drop to ink */
+  --band-bg: var(--ink);
+  --band-fg: var(--stone);
+  --band-muted: var(--muted-on-ink);
+  --band-line: var(--line-strong-on-ink);
+  --band-kicker: var(--blue-lift);
 
   /* the three levels keep their identity from the brandbook */
   --blueprint: #1F4E79;
@@ -137,30 +138,30 @@
   --vel: 0;
 }
 
-/* ---- Stone edition, reached by the switch only. The site commits to the
-   red ground the way the reference commits to its blue; the switch is there
-   for anyone who wants the quiet version, and it persists. ---- */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --surface: var(--stone);
-  --text: var(--ink);
-  --muted: var(--muted-on-stone);
-  --line: var(--line-on-stone);
-  --line-strong: var(--line-strong-on-stone);
-  --kicker: var(--redprint);
+/* ---- Slate edition, reached by the switch (remembered). Stone text on a
+   dark blue-grey; the one brand red for marks, labels, links and buttons;
+   the relief bands turn to stone, as the ink bands do on the stone edition. ---- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: var(--slate);
+  --text: var(--stone);
+  --muted: var(--muted-on-slate);
+  --line: var(--line-on-slate);
+  --line-strong: var(--line-strong-on-slate);
+  --kicker: var(--redprint);        /* one red everywhere, as on stone */
   --mark: var(--redprint);
-  --focus: var(--blue);
+  --focus: var(--blue-lift);
   --link: var(--redprint);
   --primary-bg: var(--redprint);
   --primary-fg: #FFFFFF;
-  --primary-hover-bg: var(--ink);
-  --primary-hover-fg: #FFFFFF;
-  --secondary: var(--ink);
-  --band-bg: var(--ink);
-  --band-fg: var(--stone);
-  --band-muted: var(--muted-on-ink);
-  --band-line: var(--line-strong-on-ink);
-  --band-kicker: var(--blue-lift);
+  --primary-hover-bg: var(--stone);
+  --primary-hover-fg: var(--ink);
+  --secondary: var(--stone);
+  --band-bg: var(--stone);
+  --band-fg: var(--ink);
+  --band-muted: var(--muted-on-stone);
+  --band-line: var(--line-strong-on-stone);
+  --band-kicker: var(--redprint);
 }
 
 /* a section that drops to the opposite ground, so the page alternates the way
@@ -736,7 +737,7 @@ html.scrolled .site-header::before { opacity: 1; }
 .level[data-level="blueprint"] .level-name { color: var(--blue-lift); }
 .level[data-level="redprint"] .level-name { color: var(--wine); }
 .level[data-level="blackprint"] .level-name { color: var(--text); }
-:root[data-theme="light"] .level[data-level="blueprint"] .level-name { color: var(--blue); }
+:root:not([data-theme="dark"]) .level[data-level="blueprint"] .level-name { color: var(--blue); }
 .level-for { color: var(--muted); }
 .level ul { display: grid; gap: var(--s-2); }
 .level li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--s-2); }
@@ -986,19 +987,19 @@ html[data-lang="ka"] .client-logo .l.ka { display: block; }
   border: 0;
 }
 
-/* a case study titled with the client's logo: its own colours on Stone; on the
-   red edition the logo takes the text colour, where blue on red would fight */
+/* a case study titled with the client's logo: its own colours on Stone; on
+   Slate the logo takes the text colour, where its dark lettering would vanish */
 .case-logo { line-height: 0; }
 .case-logo .l { width: min(100%, 44rem); }
 html[data-lang="en"] .case-logo .l.en,
 html[data-lang="ka"] .case-logo .l.ka { display: block; }
 .case-logo img { display: block; width: 100%; height: auto; }
-:root:not([data-theme="light"]) .case-logo .l {
+:root[data-theme="dark"] .case-logo .l {
   background: var(--text);
   -webkit-mask: var(--logo) left center / contain no-repeat;
   mask: var(--logo) left center / contain no-repeat;
 }
-:root:not([data-theme="light"]) .case-logo img { visibility: hidden; }
+:root[data-theme="dark"] .case-logo img { visibility: hidden; }
 
 /* the facts a procurement reader scans for, before any prose */
 .case-meta {
@@ -1093,7 +1094,7 @@ html[data-lang="ka"] .case-logo .l.ka { display: block; }
   padding-bottom: clamp(var(--s-5), 7vh, var(--s-7));
 }
 .footer-brand { display: grid; gap: var(--s-3); align-content: start; }
-.footer-brand .brand { grid-area: auto; justify-self: start; width: 7.1rem; height: 3.6rem; background: var(--mark); } /* red on Stone, white on the red edition, like the heart */
+.footer-brand .brand { grid-area: auto; justify-self: start; width: 7.1rem; height: 3.6rem; background: var(--mark); } /* the brand red, like the heart */
 .footer-brand p { max-width: 26ch; }
 .footer-brand a[href^="mailto:"] { overflow-wrap: anywhere; }
 .footer-col { display: grid; gap: var(--s-2); align-content: start; }
@@ -1115,7 +1116,7 @@ html[data-lang="ka"] .case-logo .l.ka { display: block; }
   height: 1em;
   display: inline-block;
   vertical-align: -0.12em;
-  fill: var(--mark); /* Redprint; white on the red edition, where red would vanish */
+  fill: var(--mark); /* Redprint */
 }
 
 /* ---------- back to top ---------- */

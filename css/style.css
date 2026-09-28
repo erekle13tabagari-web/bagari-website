@@ -1535,7 +1535,9 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
   gap: clamp(0.5rem, 1.6vw, 1.1rem);
   padding: clamp(var(--s-3), 2.4vw, var(--s-5));
 }
-.plate .plate-specimens .ink { position: static; inset: auto; width: min(100%, 15rem); }
+.plate .plate-specimens .ink { position: static; inset: auto; width: min(100%, 15rem); --ink-colour: var(--redprint); }
+/* behind the letters, "three eyed": full-bleed, cropped to the figure, stepped back */
+.plate .ink.plate-art { inset: 0; -webkit-mask-size: cover; mask-size: cover; opacity: 0.26; }
 .site-preview.preview-stone { background: var(--stone); }   /* the tool's own ground */
 @media (max-width: 720px) {
   .case-plate-split .plate-specimens { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-3); }

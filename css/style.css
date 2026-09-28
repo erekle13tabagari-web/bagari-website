@@ -1567,3 +1567,8 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 /* the caption crosses the heart's point: full ink so it reads on the red */
 .studio-art figcaption { position: relative; z-index: 2; color: var(--text); }
 @media (min-width: 901px) { .studio-art figcaption { position: absolute; } }
+
+/* a work card plated with a capture of the page itself */
+.plate-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+html[data-lang="en"] .plate-shot .l.en,
+html[data-lang="ka"] .plate-shot .l.ka { display: block; }

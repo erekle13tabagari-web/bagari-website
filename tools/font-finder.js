@@ -55,7 +55,7 @@
   var sendPanel = $("sendPanel"), btn = $("analyzeBtn"), errorBox = $("errorBox");
   var spinner = $("spinner"), results = $("results"), done = $("donePanel");
 
-  var file = null, widget = null, turnstileLoaded = false, lastData = null;
+  var file = null, sent = null, widget = null, turnstileLoaded = false, lastData = null;
 
   function lang() { return root.getAttribute("data-lang") === "ka" ? "ka" : "en"; }
   function t(key, p) {
@@ -74,11 +74,14 @@
   function theme() { return root.getAttribute("data-theme") === "dark" ? "dark" : "light"; }
 
   /* ---------- choosing the image: click, keyboard, drag & drop, paste ---------- */
-  zone.addEventListener("click", function () { fileInput.click(); });
+  zone.addEventListener("click", function () { if (!file) fileInput.click(); });
   zone.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+    if (!file && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); fileInput.click(); }
   });
-  fileInput.addEventListener("change", function () { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+  fileInput.addEventListener("change", function () {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+    fileInput.value = "";          /* the same file can be chosen again */
+  });
   zone.addEventListener("dragover", function (e) { e.preventDefault(); zone.classList.add("drag-over"); });
   zone.addEventListener("dragleave", function () { zone.classList.remove("drag-over"); });
   zone.addEventListener("drop", function (e) {
@@ -105,11 +108,20 @@
     hideError();
     if (TYPES.indexOf(f.type) < 0 || f.size > MAX) { showError("type"); return; }
     file = f;
+    sent = null;
     lastData = null;
     ticket = "";
     resetFixes(false);
+    if (preview.src) URL.revokeObjectURL(preview.src);
+    canCrop = false;
+    setSel(0, 0, 1, 1);
     preview.src = URL.createObjectURL(f);
-    preview.classList.remove("hidden");
+    crop.classList.remove("hidden");
+    cropBar.classList.remove("hidden");
+    cropBar.querySelector(".note").classList.remove("hidden");
+    zone.classList.add("has-image");
+    zone.removeAttribute("role");
+    zone.removeAttribute("tabindex");
     content.classList.add("hidden");
     results.classList.add("hidden");
     done.classList.add("hidden");
@@ -120,6 +132,117 @@
     btn.classList.remove("hidden");
     btn.disabled = false;
     renderTurnstile(widget !== null);
+  }
+
+  /* ---------- framing the text: a selection over the image, kept as fractions
+     (left, top, right, bottom) so it survives any resize of the page ---------- */
+  var crop = $("crop"), cropBox = $("cropBox"), cropBar = $("cropBar");
+  var sel = { l: 0, t: 0, r: 1, b: 1 }, canCrop = false, drag = null;
+  var clamp = function (v, lo, hi) { return Math.max(lo, Math.min(hi, v)); };
+
+  cropBox.setAttribute("aria-label", lang() === "ka"
+    ? "ანალიზის არე. ისრები გადაადგილებს, Shift და ისრები ზომას უცვლის."
+    : "Area to analyse. Arrow keys move it, Shift and arrows resize it.");
+
+  function isWhole() { return sel.l <= 0.005 && sel.t <= 0.005 && sel.r >= 0.995 && sel.b >= 0.995; }
+  function setSel(l, t, r, b) {
+    sel = { l: l, t: t, r: r, b: b };
+    cropBox.style.left = l * 100 + "%";
+    cropBox.style.top = t * 100 + "%";
+    cropBox.style.width = (r - l) * 100 + "%";
+    cropBox.style.height = (b - t) * 100 + "%";
+    crop.classList.toggle("is-whole", isWhole());
+  }
+
+  preview.addEventListener("load", function () { canCrop = true; cropBox.classList.remove("hidden"); });
+  preview.addEventListener("error", function () {
+    /* a format this browser cannot draw (HEIC outside Safari): it is still analysed, whole */
+    canCrop = false;
+    crop.classList.add("hidden");
+    cropBar.querySelector(".note").classList.add("hidden");
+    content.classList.remove("hidden");
+  });
+
+  function point(e) {
+    var r = crop.getBoundingClientRect();
+    return { x: clamp((e.clientX - r.left) / r.width, 0, 1), y: clamp((e.clientY - r.top) / r.height, 0, 1), w: r.width, h: r.height };
+  }
+  crop.addEventListener("pointerdown", function (e) {
+    if (!canCrop || e.button > 0) return;
+    e.preventDefault();
+    var p = point(e), h = e.target.getAttribute && e.target.getAttribute("data-h");
+    var kind = h ? "resize" : (e.target === cropBox && !isWhole() ? "move" : "draw");
+    drag = { kind: kind, h: h || "", start: p, from: { l: sel.l, t: sel.t, r: sel.r, b: sel.b } };
+    if (kind === "draw") setSel(p.x, p.y, p.x, p.y);
+    crop.setPointerCapture(e.pointerId);
+  });
+  crop.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    var p = point(e), f = drag.from, s = drag.start;
+    var mw = 12 / p.w, mh = 12 / p.h;          /* at least 12 px on screen */
+    if (drag.kind === "draw") {
+      setSel(Math.min(s.x, p.x), Math.min(s.y, p.y), Math.max(s.x, p.x), Math.max(s.y, p.y));
+    } else if (drag.kind === "move") {
+      var dx = clamp(p.x - s.x, -f.l, 1 - f.r), dy = clamp(p.y - s.y, -f.t, 1 - f.b);
+      setSel(f.l + dx, f.t + dy, f.r + dx, f.b + dy);
+    } else {
+      var h = drag.h, l = f.l, t = f.t, r = f.r, b = f.b;
+      if (h.indexOf("w") >= 0) l = Math.min(p.x, r - mw);
+      if (h.indexOf("e") >= 0) r = Math.max(p.x, l + mw);
+      if (h.indexOf("n") >= 0) t = Math.min(p.y, b - mh);
+      if (h.indexOf("s") >= 0) b = Math.max(p.y, t + mh);
+      setSel(clamp(l, 0, 1), clamp(t, 0, 1), clamp(r, 0, 1), clamp(b, 0, 1));
+    }
+  });
+  function endDrag(e) {
+    if (!drag) return;
+    var p = point(e);
+    /* a click without a drag keeps the frame it had */
+    if (drag.kind === "draw" && ((sel.r - sel.l) * p.w < 12 || (sel.b - sel.t) * p.h < 12)) {
+      var f = drag.from;
+      setSel(f.l, f.t, f.r, f.b);
+    }
+    drag = null;
+  }
+  crop.addEventListener("pointerup", endDrag);
+  crop.addEventListener("pointercancel", endDrag);
+
+  cropBox.addEventListener("keydown", function (e) {
+    var k = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!k || !canCrop) return;
+    e.preventDefault();
+    var st = 0.01, dx = k[0] * st, dy = k[1] * st;
+    if (e.shiftKey) {
+      setSel(sel.l, sel.t, clamp(sel.r + dx, sel.l + 0.02, 1), clamp(sel.b + dy, sel.t + 0.02, 1));
+    } else {
+      dx = clamp(dx, -sel.l, 1 - sel.r); dy = clamp(dy, -sel.t, 1 - sel.b);
+      setSel(sel.l + dx, sel.t + dy, sel.r + dx, sel.b + dy);
+    }
+  });
+
+  $("cropAll").addEventListener("click", function () { setSel(0, 0, 1, 1); });
+  $("newImage").addEventListener("click", function () { fileInput.click(); });
+
+  /* the image that is analysed: the framed part, at the photo's full resolution */
+  function framed() {
+    if (!canCrop || isWhole()) return Promise.resolve(file);
+    var W = preview.naturalWidth, H = preview.naturalHeight;
+    var sx = Math.round(sel.l * W), sy = Math.round(sel.t * H);
+    var sw = Math.max(1, Math.round((sel.r - sel.l) * W)), sh = Math.max(1, Math.round((sel.b - sel.t) * H));
+    var c = document.createElement("canvas");
+    c.width = sw; c.height = sh;
+    var g = c.getContext("2d");
+    g.fillStyle = "#fff";                         /* transparent PNGs read as black text on white */
+    g.fillRect(0, 0, sw, sh);
+    g.drawImage(preview, sx, sy, sw, sh, 0, 0, sw, sh);
+    var type = file.type === "image/jpeg" ? "image/jpeg" : "image/png";
+    var blob = function (t, q) { return new Promise(function (ok) { c.toBlob(ok, t, q); }); };
+    return blob(type, 0.95)
+      .then(function (b) { return b && b.size <= MAX ? b : blob("image/jpeg", 0.9); })
+      .then(function (b) {
+        if (!b) return file;
+        return new File([b], "framed." + (b.type === "image/png" ? "png" : "jpg"), { type: b.type });
+      });
   }
 
   /* ---------- Turnstile: explicit render, in the page's surface; one token per request ---------- */
@@ -312,7 +435,7 @@
       sendBtn.disabled = true;
       box.querySelector(".fix-error").classList.add("hidden");
       var data = new FormData();
-      data.append("image", file);
+      data.append("image", sent || file);
       data.append("ticket", ticket);
       data.append("kind", kind);
       data.append("value", value);
@@ -354,8 +477,10 @@
   }
 
   function analyze() {
+    return framed().then(function (f) {
+    sent = f;                              /* corrections send exactly this image: the ticket is bound to it */
     var data = new FormData();
-    data.append("image", file);
+    data.append("image", f);
     data.append("cf-turnstile-response", token());
     return fetch("/api/font-finder/analyze", { method: "POST", body: data })
       .then(function (r) { return r.json().catch(function () { return { ok: false, offline: true }; }); })
@@ -373,11 +498,13 @@
           throw new Error(r && r.error || "failed");
         }
       });
+    });
   }
 
   function send() {
+    return framed().then(function (f) {
     var data = new FormData();
-    data.append("image", file);
+    data.append("image", f);
     data.append("email", $("ff-email").value.trim());
     data.append("name", $("ff-name").value.trim());
     data.append("note", $("ff-note").value.trim());
@@ -393,6 +520,7 @@
         done.classList.remove("hidden");
         done.scrollIntoView({ block: "center", behavior: "smooth" });
       });
+    });
   }
 
   form.addEventListener("submit", function (e) {

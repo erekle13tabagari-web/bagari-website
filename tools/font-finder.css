@@ -65,7 +65,51 @@
 .ff .upload-content svg { color: var(--kicker); margin-bottom: var(--s-1); width: 1.5rem; height: 1.5rem; }
 .ff .upload-title { color: var(--text); font-weight: 600; }
 .ff .upload-hint { font-size: 0.875rem; }
-.ff .preview { display: block; max-width: 100%; min-width: 0; max-height: 14rem; object-fit: contain; }
+.ff .preview { display: block; max-width: 100%; min-width: 0; max-height: min(26rem, 55vh); }
+
+/* ---------- framing the text: the image with a selection over it ---------- */
+.ff .upload-zone.has-image { cursor: default; padding: var(--s-2); border-style: solid; border-color: var(--line); }
+.ff .upload-zone.has-image:hover { background: none; }
+.ff .crop {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;              /* keeps the dimming shadow inside the image */
+  cursor: crosshair;
+  touch-action: none;            /* a finger drags the frame, not the page */
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ff .crop-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed #fff;
+  outline: 1px dashed #000;      /* two dashes, so the frame shows on light and dark images */
+  outline-offset: -2px;
+  box-shadow: 0 0 0 100vmax rgba(20, 22, 24, 0.55);
+  cursor: move;
+}
+.ff .crop-box:focus-visible { border-color: var(--mark); border-style: solid; outline-color: var(--mark); }
+.ff .crop-box i {
+  position: absolute;
+  width: 0.75rem; height: 0.75rem;
+  margin: -0.375rem 0 0 -0.375rem;
+  background: #fff;
+  border: 1px solid #000;
+}
+/* a wider, invisible grip for fingers */
+.ff .crop-box i::after { content: ""; position: absolute; inset: -0.75rem; }
+.ff .crop-box [data-h="nw"] { left: 0;    top: 0;    cursor: nwse-resize; }
+.ff .crop-box [data-h="n"]  { left: 50%;  top: 0;    cursor: ns-resize; }
+.ff .crop-box [data-h="ne"] { left: 100%; top: 0;    cursor: nesw-resize; }
+.ff .crop-box [data-h="e"]  { left: 100%; top: 50%;  cursor: ew-resize; }
+.ff .crop-box [data-h="se"] { left: 100%; top: 100%; cursor: nwse-resize; }
+.ff .crop-box [data-h="s"]  { left: 50%;  top: 100%; cursor: ns-resize; }
+.ff .crop-box [data-h="sw"] { left: 0;    top: 100%; cursor: nesw-resize; }
+.ff .crop-box [data-h="w"]  { left: 0;    top: 50%;  cursor: ew-resize; }
+.ff .crop.is-whole .crop-box { box-shadow: none; }
+.ff .crop-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-3); }
+.ff .crop-bar .note { margin: 0; }
+.ff .crop-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 
 /* ---------- buttons: the site's, plus a small size ---------- */
 .ff .btn { cursor: pointer; border-radius: 0; font-family: var(--font); }

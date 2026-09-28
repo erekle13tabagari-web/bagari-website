@@ -29,8 +29,8 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="../css/style.css?v=202609281119">
-<link rel="stylesheet" href="font-finder.css?v=202609281119">
+<link rel="stylesheet" href="../css/style.css?v=202609281134">
+<link rel="stylesheet" href="font-finder.css?v=202609281134">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -117,7 +117,20 @@
             <p class="upload-title"><span class="l en">Drag &amp; drop an image here</span><span class="l ka">გადმოიტანეთ სურათი აქ</span></p>
             <p class="upload-hint"><span class="l en">or click to browse, or paste with Ctrl+V</span><span class="l ka">ან აირჩიეთ ფაილი, ან ჩასვით Ctrl+V-ით</span></p>
           </div>
-          <img id="preview" class="preview hidden" alt="">
+          <div class="crop hidden" id="crop">
+            <img id="preview" class="preview" alt="" draggable="false">
+            <div class="crop-box" id="cropBox" tabindex="0" role="group" aria-label="Area to analyse. Arrow keys move it, Shift and arrows resize it.">
+              <i data-h="nw"></i><i data-h="n"></i><i data-h="ne"></i><i data-h="e"></i><i data-h="se"></i><i data-h="s"></i><i data-h="sw"></i><i data-h="w"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="crop-bar hidden" id="cropBar">
+          <p class="note muted"><span class="l en">Drag on the image to frame only the text you want identified.</span><span class="l ka">სურათზე მონიშნეთ მხოლოდ ის ტექსტი, რომლის შრიფტიც გაინტერესებთ.</span></p>
+          <div class="crop-actions">
+            <button class="btn btn-ghost btn-sm" id="cropAll" type="button"><span class="l en">Whole image</span><span class="l ka">ᲛᲗᲚᲘᲐᲜᲘ ᲡᲣᲠᲐᲗᲘ</span></button>
+            <button class="btn btn-ghost btn-sm" id="newImage" type="button"><span class="l en">Another image</span><span class="l ka">ᲡᲮᲕᲐ ᲡᲣᲠᲐᲗᲘ</span></button>
+          </div>
         </div>
 
         <div id="turnstileBox" class="check-box hidden"></div>
@@ -299,8 +312,8 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="../js/main.js?v=202609281119"></script>
-<script src="font-finder.js?v=202609281119"></script>
+<script src="../js/main.js?v=202609281134"></script>
+<script src="font-finder.js?v=202609281134"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ffTurnstileReady" async defer></script>
 </body>
 </html>

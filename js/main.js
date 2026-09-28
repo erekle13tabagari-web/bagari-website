@@ -377,7 +377,7 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* ---------- heavy pictures load only near the screen ----------
+  /* ---------- heavy pictures load only near the screen (v2) ----------
      The ink drawings are masks of 50-320 KB each and the site captures are
      images in two languages. A drawing's mask is attached (.is-near) once it
      comes within ~800px of the viewport; a capture (img[data-src]) gets its

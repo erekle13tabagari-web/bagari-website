@@ -29,6 +29,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bagari.studio/work/biomi.html"/>
   </url>
   <url>
+    <loc>https://bagari.studio/work/font-finder.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bagari.studio/work/font-finder.html"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://bagari.studio/ka/work/font-finder.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bagari.studio/work/font-finder.html"/>
+  </url>
+  <url>
+    <loc>https://bagari.studio/ka/work/font-finder.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bagari.studio/work/font-finder.html"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://bagari.studio/ka/work/font-finder.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bagari.studio/work/font-finder.html"/>
+  </url>
+  <url>
     <loc>https://bagari.studio/start</loc>
     <lastmod>2026-09-28</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://bagari.studio/start"/>

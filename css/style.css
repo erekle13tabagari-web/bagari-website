@@ -1042,6 +1042,10 @@ html[data-lang="ka"] .case-logo .l.ka { display: block; }
   margin-bottom: clamp(var(--s-6), 9vh, var(--s-7));
 }
 .case-steps li { display: grid; gap: var(--s-3); align-content: start; }
+/* five steps on a four-column row leave one alone: three and two instead */
+@media (min-width: 1000px) {
+  .case-steps:has(> li:nth-child(5):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 .case-steps h3 {
   font-family: var(--font-display);
   font-weight: 700;
@@ -1519,6 +1523,24 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 }
 .plate-split .client-logo .l { width: min(72%, 14rem); }
 .plate-split .site-preview { height: 100%; }
+
+/* the Font Finder's plate: no drawing, the product's own material instead, one
+   line of Georgian in several of the fonts it knows, in the plate's ink */
+.plate-specimens {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: clamp(0.5rem, 1.6vw, 1.1rem);
+  padding: clamp(var(--s-3), 2.4vw, var(--s-5));
+}
+.plate .plate-specimens .ink { position: static; inset: auto; width: min(100%, 15rem); }
+.site-preview.preview-stone { background: var(--stone); }   /* the tool's own ground */
+@media (max-width: 720px) {
+  .case-plate-split .plate-specimens { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-3); }
+  .case-plate-split .plate-specimens .ink:nth-child(n+5) { display: none; }
+}
 
 /* phones: the header is fixed and 76px tall (2.75rem button + 1rem above and below);
    the phone section rhythm must not pull a page's first block up under it */

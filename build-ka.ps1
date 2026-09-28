@@ -52,7 +52,13 @@ foreach ($rel in $pages) {
     $t = [regex]::Replace($t, '<meta name="description" content="[^"]*">', { param($m) '<meta name="description" content="' + $desc + '">' })
     $t = [regex]::Replace($t, '<meta property="og:description" content="[^"]*">', { param($m) '<meta property="og:description" content="' + $desc + '">' })
   }
-  $t = [regex]::Replace($t, '\s*<meta name="ka-(title|description)" content="[^"]*">', '')
+  $img = Get-Meta $t 'ka-image'
+  if ($img) {
+    $t = [regex]::Replace($t, '<meta property="og:image" content="[^"]*">', { param($m) '<meta property="og:image" content="' + $img + '">' })
+  }
+  $t = [regex]::Replace($t, '\s*<meta name="ka-(title|description|image)" content="[^"]*">', '')
+  # the page's own address inside structured data
+  $t = $t.Replace('"url": "https://bagari.studio/' + $rel + '"', '"url": "https://bagari.studio/ka/' + $rel + '"')
   $t = [regex]::Replace($t, '(<link rel="canonical" href="https://bagari\.studio/)', '$1ka/')
   $t = [regex]::Replace($t, '(<meta property="og:url" content="https://bagari\.studio/)', '$1ka/')
 

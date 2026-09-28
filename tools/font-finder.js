@@ -54,7 +54,6 @@
   var content = $("uploadContent"), preview = $("preview"), checkBox = $("turnstileBox");
   var sendPanel = $("sendPanel"), btn = $("analyzeBtn"), errorBox = $("errorBox");
   var spinner = $("spinner"), results = $("results"), done = $("donePanel");
-  var langToggle = $("langToggle"), themeToggle = $("themeToggle");
 
   var file = null, widget = null, turnstileLoaded = false, lastData = null;
 
@@ -69,51 +68,10 @@
     return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
   }
 
-  /* ---------- language: the site's stored choice, else the browser's ---------- */
-  function setLang(l) {
-    root.setAttribute("data-lang", l);
-    root.setAttribute("lang", l);
-    langToggle.setAttribute("aria-label", l === "ka" ? "Switch to English" : "ქართულზე გადართვა");
-    try { localStorage.setItem("bagari-lang", l); } catch (e) {}
-    paintTheme();
-    if (lastData) showResults(lastData);
-  }
-  function initialLang() {
-    try { var s = localStorage.getItem("bagari-lang"); if (s === "ka" || s === "en") return s; } catch (e) {}
-    return (navigator.language || "").toLowerCase().indexOf("ka") === 0 ? "ka" : "en";
-  }
-  /* one address per language (the Georgian twin lives under /ka/): the switch moves there */
-  var PAGE_LANG = root.getAttribute("data-page-lang");
-  langToggle.addEventListener("click", function () {
-    var next = lang() === "ka" ? "en" : "ka";
-    if (PAGE_LANG) {
-      try { localStorage.setItem("bagari-lang", next); } catch (e) {}
-      var p = location.pathname;
-      p = next === "ka" ? "/ka" + p : p.replace(/^\/ka/, "");
-      location.href = p + location.search + location.hash;
-      return;
-    }
-    setLang(next);
-  });
-
-  /* ---------- surface: black (Ink) by default; the tool keeps its own choice, apart from the site's ---------- */
-  function theme() { return root.getAttribute("data-theme") === "light" ? "light" : "dark"; }
-  function paintTheme() {
-    var th = theme();
-    /* the icon shows the surface you would move to, as on the main site */
-    themeToggle.querySelector(".theme-icon-light").style.display = th === "dark" ? "block" : "none";
-    themeToggle.querySelector(".theme-icon-dark").style.display = th === "dark" ? "none" : "block";
-    themeToggle.setAttribute("aria-label", th === "dark"
-      ? (lang() === "ka" ? "ქვის ფონზე გადართვა" : "Switch to stone")
-      : (lang() === "ka" ? "მელნის ფონზე გადართვა" : "Switch to ink"));
-  }
-  themeToggle.addEventListener("click", function () {
-    var next = theme() === "dark" ? "light" : "dark";
-    if (next === "light") root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
-    try { localStorage.setItem("bagari-ff-theme", next); } catch (e) {}
-    paintTheme();
-    if (widget !== null) renderTurnstile(true);
-  });
+  /* ---------- language and surface belong to the site (js/main.js runs the header
+     switches); the tool only reads them: results are worded in the page's language,
+     the bot check follows the surface ---------- */
+  function theme() { return root.getAttribute("data-theme") === "dark" ? "dark" : "light"; }
 
   /* ---------- choosing the image: click, keyboard, drag & drop, paste ---------- */
   zone.addEventListener("click", function () { fileInput.click(); });
@@ -455,5 +413,4 @@
   });
 
   setMode("analyze");
-  setLang(PAGE_LANG || initialLang());
 })();

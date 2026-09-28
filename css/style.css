@@ -452,7 +452,7 @@ html.scrolled .site-header::before { opacity: 1; }
   min-height: 100svh;
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: 0 var(--gutter) var(--s-5);
+  padding: 0 var(--gutter);           /* the drawing sits on the marquee's top line */
   overflow: clip;
 }
 .hero-inner {

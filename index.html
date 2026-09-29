@@ -9,8 +9,8 @@
 <link rel="alternate" hreflang="en" href="https://bagari.studio/">
 <link rel="alternate" hreflang="ka" href="https://bagari.studio/ka/">
 <link rel="alternate" hreflang="x-default" href="https://bagari.studio/">
-<meta name="ka-title" content="BAGARI · დიზაინისა და დეველოპმენტის სტუდია, თბილისი">
-<meta name="ka-description" content="ორენოვანი საიტები, რომლებიც ყურადღებას პირდაპირ ჯავშნებად აქცევს. თბილისის სტუდია: ქართული და ინგლისური თანასწორად, დიზაინი, ტექსტი და კოდი ერთ სისტემად.">
+<meta name="ka-title" content="ბაგარი სტუდიო · BAGARI, დიზაინისა და დეველოპმენტის სტუდია, თბილისი">
+<meta name="ka-description" content="ბაგარი სტუდიო (BAGARI): ორენოვანი საიტები, რომლებიც ყურადღებას პირდაპირ ჯავშნებად აქცევს. თბილისის სტუდია: ქართული და ინგლისური თანასწორად, დიზაინი, ტექსტი და კოდი ერთ სისტემად.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="BAGARI design and development studio, Tbilisi">
@@ -27,7 +27,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609281502">
+<link rel="stylesheet" href="css/style.css?v=202609291731">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -41,6 +41,36 @@
       if (d.getAttribute("data-page-lang") === "en" && (l === "ka" || (!l && (navigator.language || "").toLowerCase().indexOf("ka") === 0))) location.replace("/ka" + (location.pathname === "/" ? "/" : location.pathname) + location.search + location.hash);
     } catch (e) {}
   })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://bagari.studio/#studio",
+      "name": "BAGARI",
+      "alternateName": ["ბაგარი", "ბაგარი სტუდიო", "ბაგარი სტუდია", "BAGARI Studio", "Bagari Studio"],
+      "description": "Design and development studio in Tbilisi: bilingual Georgian and English websites, designed, written and built as one system.",
+      "url": "https://bagari.studio/",
+      "logo": "https://bagari.studio/brand/logo/bagari-monogram-red-180.png",
+      "email": "hello@bagari.studio",
+      "founder": { "@type": "Person", "name": "Erekle Tabagari", "alternateName": "ერეკლე თაბაგარი" },
+      "address": { "@type": "PostalAddress", "addressLocality": "Tbilisi", "addressCountry": "GE" },
+      "areaServed": "GE",
+      "knowsLanguage": ["ka", "en"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://bagari.studio/#site",
+      "name": "BAGARI",
+      "alternateName": ["ბაგარი სტუდიო", "Bagari Studio"],
+      "url": "https://bagari.studio/",
+      "inLanguage": ["en", "ka"],
+      "publisher": { "@id": "https://bagari.studio/#studio" }
+    }
+  ]
+}
 </script>
 </head>
 <body>
@@ -322,7 +352,7 @@
         </p>
         <p>
           <span class="l en">BAGARI is the studio of Erekle Tabagari, designer, developer and illustrator, Tbilisi. The drawings on this page are his. The same hand that draws in ink designs and writes the sites, which is why the detail survives the handoff that usually breaks it.</span>
-          <span class="l ka">BAGARI ერეკლე თაბაგარის სტუდიაა. დიზაინერი, დეველოპერი და ილუსტრატორი, თბილისი. ამ გვერდის ნახატები მისია. ის ხელი, რომელიც ტუშით ხატავს, საიტებსაც აწყობს და წერს, ამიტომაც დეტალი იმ გადაცემას უძლებს, რომელიც ჩვეულებრივ ყველაფერს აფუჭებს.</span>
+          <span class="l ka">BAGARI, ბაგარი სტუდიო, ერეკლე თაბაგარის სტუდიაა. დიზაინერი, დეველოპერი და ილუსტრატორი, თბილისი. ამ გვერდის ნახატები მისია. ის ხელი, რომელიც ტუშით ხატავს, საიტებსაც აწყობს და წერს, ამიტომაც დეტალი იმ გადაცემას უძლებს, რომელიც ჩვეულებრივ ყველაფერს აფუჭებს.</span>
         </p>
         <p>
           <span class="l en">Georgian and English are treated as equals: typography, script and layouts that hold when the Georgian runs long. Templates get this visibly wrong, and most clients here have learned to live with it. They should not have to.</span>
@@ -394,7 +424,7 @@
   </div>
 
   <div class="footer-base">
-    <span>© 2026 BAGARI</span>
+    <span>© 2026 BAGARI<span class="l ka"> · ბაგარი სტუდიო</span></span>
     <span>
       <span class="l en">MADE WITH <svg class="heart" viewBox="2 3 20 18.4" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
       <span class="l ka">ᲨᲔᲥᲛᲜᲘᲚᲘ <svg class="heart" viewBox="2 3 20 18.4" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> ᲘᲗ</span>
@@ -406,7 +436,7 @@
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5V2.5M3 7.5L8 2.5l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
 </a>
 
-<script src="js/main.js?v=202609281502"></script>
-<script src="js/look.js?v=202609281502" defer></script>
+<script src="js/main.js?v=202609291731"></script>
+<script src="js/look.js?v=202609291731" defer></script>
 </body>
 </html>

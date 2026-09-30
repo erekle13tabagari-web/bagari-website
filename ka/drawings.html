@@ -24,7 +24,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="/brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="/css/style.css?v=202609301350">
+<link rel="stylesheet" href="/css/style.css?v=202609301354">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -182,15 +182,24 @@
     }
     /* the picture fills the stage above the bar, whole, at its own proportions */
     var stage = view.querySelector(".dr-view-stage");
+    /* centred on the screen when it clears the text column on both sides; a picture too
+       wide for that moves right of the text instead, so it can stay large */
+    var textCol = view.querySelector(".dr-view-text");
     function fit() {
       var w = +art.getAttribute("data-w"), h = +art.getAttribute("data-h");
       if (!w || !h) return;
       var cs = getComputedStyle(stage);
-      var aw = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      var ah = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-      var k = Math.min(aw / w, ah / h);
-      art.style.width = Math.floor(w * k) + "px";
+      var pad = parseFloat(cs.paddingLeft);
+      var W = stage.clientWidth, ah = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      var side = window.innerWidth > 720 ? textCol.offsetWidth : 0;
+      var kc = Math.min(ah / h, (W - 2 * Math.max(side, pad)) / w);
+      var kr = Math.min(ah / h, (W - side - pad) / w);
+      var centred = kc >= kr * 0.85;
+      var k = centred ? kc : kr;
+      var iw = Math.floor(w * k);
+      art.style.width = iw + "px";
       art.style.height = Math.floor(h * k) + "px";
+      art.style.transform = centred ? "" : "translateX(" + Math.round(side - (W - iw) / 2) + "px)";
     }
     window.addEventListener("resize", function () { if (view.open) fit(); });
     items.forEach(function (b, i) {
@@ -215,6 +224,6 @@
     });
   })();
 </script>
-<script src="/js/main.js?v=202609301350"></script>
+<script src="/js/main.js?v=202609301354"></script>
 </body>
 </html>

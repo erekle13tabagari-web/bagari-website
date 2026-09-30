@@ -1658,6 +1658,7 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 .dr-view[open] { display: block; }
 /* title, series and description sit top left, beside the picture */
 .dr-view-text {
+  z-index: 1;
   position: absolute; top: 0; left: 0; width: var(--side);
   padding: clamp(var(--s-4), 5vh, var(--s-6)) var(--s-3) 0 var(--gutter);
   display: grid; gap: var(--s-2); align-content: start;
@@ -1672,10 +1673,9 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 .dr-view-desc { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--muted); }
 /* the picture gets everything right of the text and above the bar; the script sizes it to fit */
 .dr-view-stage {
-  position: absolute; inset: 0 0 var(--bar) var(--side);
+  position: absolute; inset: 0 0 var(--bar) 0;   /* the whole width: the script keeps the picture clear of the text */
   display: flex; align-items: center; justify-content: center;
   padding: clamp(var(--s-3), 4vw, var(--s-6));
-  padding-left: var(--s-3);
 }
 .dr-view-art { flex: none; }
 .dr-view-art img, .dr-view-mask { display: block; width: 100%; height: 100%; }

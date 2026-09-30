@@ -1633,32 +1633,41 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 .dr-bw .dr-item, .dr-colour .dr-item { break-inside: avoid; margin-bottom: var(--s-5); }
 .dr-bw .ink.dr-art { background: var(--ink-colour, var(--text)); }
 .dr-cta { padding-bottom: var(--s-7); }
+.dr-cta .case-cta { margin-top: var(--s-4); }   /* Georgian descenders need the room */
 @media (max-width: 720px) {
   .dr-seasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dr-abc { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
 }
 
 .dr-view {
-  width: 100vw; height: 100dvh; max-width: none; max-height: none;
-  margin: 0; padding: 0; border: 0;
+  position: fixed; inset: 0;
+  width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; overflow: hidden;
   background: var(--surface); color: var(--text);
+  --bar: 4.5rem;
 }
 .dr-view::backdrop { background: var(--surface); }
-.dr-view[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
-.dr-view-stage { display: grid; place-items: center; min-height: 0; padding: clamp(var(--s-3), 4vw, var(--s-6)); }
-.dr-view-art { max-width: 100%; max-height: 100%; height: min(100%, 82dvh); display: grid; }
-.dr-view-art img { width: 100%; height: 100%; object-fit: contain; }
+.dr-view[open] { display: block; }
+/* the picture gets everything above the bar; the script sizes it to fit exactly */
+.dr-view-stage {
+  position: absolute; inset: 0 0 var(--bar) 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(var(--s-3), 4vw, var(--s-6));
+}
+.dr-view-art { flex: none; }
+.dr-view-art img, .dr-view-mask { display: block; width: 100%; height: 100%; }
+.dr-view-art img { object-fit: contain; }
 .dr-view-mask {
-  display: block; width: 100%; height: 100%;
   background: var(--text);
   -webkit-mask: var(--art) center / contain no-repeat;
   mask: var(--art) center / contain no-repeat;
 }
 .dr-view-bar {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4);
-  padding: var(--s-3) var(--gutter); border-top: 1px solid var(--line);
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--bar);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4);
+  padding: 0 var(--gutter); border-top: 1px solid var(--line); background: var(--surface);
 }
-.dr-view-cap { margin: 0; font-weight: 600; }
+.dr-view-cap { margin: 0; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dr-view-series { color: var(--muted); font-weight: 400; margin-left: var(--s-2); }
-.dr-view-nav { display: flex; align-items: center; gap: var(--s-2); }
+.dr-view-nav { display: flex; align-items: center; gap: var(--s-2); flex: none; }
 .dr-view-count { font-size: 0.8125rem; color: var(--muted); min-width: 4.5em; text-align: center; font-variant-numeric: tabular-nums; }

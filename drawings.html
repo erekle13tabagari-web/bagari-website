@@ -26,7 +26,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609301253">
+<link rel="stylesheet" href="css/style.css?v=202609301258">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -158,7 +158,7 @@
       at = (i + items.length) % items.length;
       var b = items[at], w = +b.getAttribute("data-w"), h = +b.getAttribute("data-h");
       art.innerHTML = "";
-      art.style.aspectRatio = w + " / " + h;
+      art.setAttribute("data-w", w); art.setAttribute("data-h", h);
       if (b.hasAttribute("data-mask")) {
         var m = document.createElement("span");
         m.className = "dr-view-mask";
@@ -172,9 +172,23 @@
       document.getElementById("drName").textContent = b.getAttribute("data-name");
       document.getElementById("drSeries").textContent = b.getAttribute(ka ? "data-ka" : "data-en");
       document.getElementById("drCount").textContent = (at + 1) + " / " + items.length;
+      fit();
     }
+    /* the picture fills the stage above the bar, whole, at its own proportions */
+    var stage = view.querySelector(".dr-view-stage");
+    function fit() {
+      var w = +art.getAttribute("data-w"), h = +art.getAttribute("data-h");
+      if (!w || !h) return;
+      var cs = getComputedStyle(stage);
+      var aw = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var ah = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      var k = Math.min(aw / w, ah / h);
+      art.style.width = Math.floor(w * k) + "px";
+      art.style.height = Math.floor(h * k) + "px";
+    }
+    window.addEventListener("resize", function () { if (view.open) fit(); });
     items.forEach(function (b, i) {
-      b.addEventListener("click", function () { opener = b; show(i); view.showModal(); });
+      b.addEventListener("click", function () { opener = b; view.showModal(); show(i); });   /* open first, so the stage can be measured */
     });
     document.getElementById("drPrev").addEventListener("click", function () { show(at - 1); });
     document.getElementById("drNext").addEventListener("click", function () { show(at + 1); });
@@ -195,6 +209,6 @@
     });
   })();
 </script>
-<script src="js/main.js?v=202609301253"></script>
+<script src="js/main.js?v=202609301258"></script>
 </body>
 </html>

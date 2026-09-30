@@ -1607,6 +1607,7 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 .drawings-page .num { color: var(--muted); margin-left: 0.35em; font-size: 0.75em; }
 .dr-series { padding-top: clamp(var(--s-4), 5vw, var(--s-6)); padding-bottom: 0; }
 .drawings-page .case-head { padding-bottom: 0; }   /* the series follow the introduction closely */
+.drawings-page .case-title { margin-bottom: calc(var(--s-4) + 0.2em); }   /* the g of Drawings hangs below the tight line */
 .drawings-page .case-head + .dr-series { padding-top: var(--s-5); }
 .dr-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2) var(--s-4); margin-bottom: var(--s-4); }
 .dr-head .case-h { margin: 0; }

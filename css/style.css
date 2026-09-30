@@ -1588,6 +1588,9 @@ html[data-lang="ka"] .site-preview-view .l.ka { display: block; }
 @media (max-width: 900px) {
   .studio-art .ink.ink-fill { position: absolute; top: 0; left: 0; }  /* the drawing is in flow here; the fill lies on it */
 }
+/* dark mode: the drawing stays as drawn, black ink on its white paper, not a negative */
+:root[data-theme="dark"] .studio-art .ink.ink-fill { --ink-colour: #fff; }
+:root[data-theme="dark"] .studio-art .ink:not(.ink-fill) { --ink-colour: #131512; }
 /* the caption crosses the heart's point: full ink so it reads on the red */
 .studio-art figcaption { position: relative; z-index: 2; color: var(--text); }
 @media (min-width: 901px) { .studio-art figcaption { position: absolute; } }

@@ -1633,17 +1633,22 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 /* the alphabet and the seasons are square tiles; the drawings keep their own shapes */
 .dr-abc { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: var(--s-3); }
 .dr-seasons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); }
-.dr-bw, .dr-colour { columns: 3 16rem; column-gap: var(--s-5); }
-.dr-bw .dr-item, .dr-colour .dr-item { break-inside: avoid; margin-bottom: var(--s-5); }
-.dr-bw .ink.dr-art { background: var(--ink-colour, var(--text)); }
+/* an even grid, up to three across: every picture in the same upright frame, so the rows line up;
+   a wide drawing sits whole in the middle of its frame */
+.dr-bw, .dr-colour {
+  display: grid; align-items: start;
+  grid-template-columns: repeat(auto-fill, minmax(max(16rem, (100% - 2 * var(--s-5)) / 3), 1fr));
+  gap: var(--s-6) var(--s-5);
+}
+.dr-bw .ink.dr-art { background: var(--ink-colour, var(--text)); aspect-ratio: 1422 / 2001; }
+.dr-colour .dr-art { aspect-ratio: 1422 / 2001; object-fit: cover; }
 /* dark mode: the black-and-white drawings stay as drawn, black ink on white paper */
 .dr-paper { display: block; }
 :root[data-theme="dark"] .dr-bw .dr-paper { background: #fff; padding: var(--s-3); }
 :root[data-theme="dark"] .dr-bw .ink.dr-art { background: #131512; }
 :root[data-theme="dark"] .dr-view-art.is-mask { background: #fff; }
 :root[data-theme="dark"] .dr-view-mask { background: #131512; }
-.dr-cta { padding-bottom: var(--s-7); }
-.dr-cta .case-cta { margin-top: var(--s-4); }   /* Georgian descenders need the room */
+.drawings-page .dr-series:last-child { padding-bottom: var(--s-7); }   /* the last series closes the page */
 @media (max-width: 720px) {
   .dr-seasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dr-abc { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }

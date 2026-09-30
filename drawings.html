@@ -26,7 +26,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-display-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="brand/type/futura-text-400.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=202609301347">
+<link rel="stylesheet" href="css/style.css?v=202609301350">
 
 <script>
   /* before first paint, so the page never flashes the wrong edition */
@@ -110,7 +110,7 @@
       <h2 class="case-h" id="seasons-h"><span class="l en">Seasons</span><span class="l ka">ᲡᲔᲖᲝᲜᲔᲑᲘ</span> <span class="num">4</span></h2>
       <p class="dr-note"><span class="l en">Four faces for four seasons.</span><span class="l ka">ოთხი სახე ოთხი სეზონისთვის.</span></p>
     </div>
-    <div class="dr-grid dr-seasons"><button class="dr-item" type="button" data-full="/drawings/img/fall-f.webp" data-w="1999" data-h="1999" data-name="Fall" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/fall-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Fall</span></button><button class="dr-item" type="button" data-full="/drawings/img/spring-f.webp" data-w="1999" data-h="1999" data-name="Spring" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/spring-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Spring</span></button><button class="dr-item" type="button" data-full="/drawings/img/summer-f.webp" data-w="1999" data-h="1999" data-name="Summer" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/summer-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Summer</span></button><button class="dr-item" type="button" data-full="/drawings/img/winter-f.webp" data-w="1999" data-h="1999" data-name="Winter" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/winter-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Winter</span></button></div>
+    <div class="dr-grid dr-seasons"><button class="dr-item" type="button" data-full="/drawings/img/spring-f.webp" data-w="1999" data-h="1999" data-name="Spring" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/spring-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Spring</span></button><button class="dr-item" type="button" data-full="/drawings/img/summer-f.webp" data-w="1999" data-h="1999" data-name="Summer" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/summer-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Summer</span></button><button class="dr-item" type="button" data-full="/drawings/img/fall-f.webp" data-w="1999" data-h="1999" data-name="Fall" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/fall-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Fall</span></button><button class="dr-item" type="button" data-full="/drawings/img/winter-f.webp" data-w="1999" data-h="1999" data-name="Winter" data-en="Seasons" data-ka="სეზონები" data-desc-en="" data-desc-ka=""><img class="dr-art" src="/drawings/img/winter-t.webp" alt="" width="1999" height="1999" loading="lazy" decoding="async"><span class="dr-name">Winter</span></button></div>
   </section>
 
   <section class="section dr-cta">
@@ -122,13 +122,14 @@
 
 </main>
 
-<dialog class="dr-view" id="drView" aria-label="Drawing">
+<dialog class="dr-view" id="drView" aria-labelledby="drName">
+  <div class="dr-view-text">
+    <p class="dr-view-series label" id="drSeries"></p>
+    <h2 class="dr-view-title" id="drName"></h2>
+    <p class="dr-view-desc" id="drDesc"></p>
+  </div>
   <div class="dr-view-stage"><div class="dr-view-art" id="drArt"></div></div>
   <div class="dr-view-bar">
-    <div class="dr-view-text">
-      <p class="dr-view-cap"><span id="drName"></span> <span class="dr-view-series" id="drSeries"></span></p>
-      <p class="dr-view-desc" id="drDesc"></p>
-    </div>
     <div class="dr-view-nav">
       <button class="tool" type="button" id="drPrev" aria-label="Previous">←</button>
       <span class="dr-view-count" id="drCount"></span>
@@ -216,6 +217,6 @@
     });
   })();
 </script>
-<script src="js/main.js?v=202609301347"></script>
+<script src="js/main.js?v=202609301350"></script>
 </body>
 </html>

@@ -1651,15 +1651,31 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
   width: 100%; height: 100%; max-width: none; max-height: none;
   margin: 0; padding: 0; border: 0; overflow: hidden;
   background: var(--surface); color: var(--text);
-  --bar: 5.75rem;
+  --bar: 4.5rem;
+  --side: clamp(15rem, 24vw, 24rem);   /* the text column, left of the picture */
 }
 .dr-view::backdrop { background: var(--surface); }
 .dr-view[open] { display: block; }
-/* the picture gets everything above the bar; the script sizes it to fit exactly */
+/* title, series and description sit top left, beside the picture */
+.dr-view-text {
+  position: absolute; top: 0; left: 0; width: var(--side);
+  padding: clamp(var(--s-4), 5vh, var(--s-6)) var(--s-3) 0 var(--gutter);
+  display: grid; gap: var(--s-2); align-content: start;
+}
+.dr-view-series { margin: 0; color: var(--kicker); font-size: 0.6875rem; }
+.dr-view-title {
+  margin: 0;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.5rem, 2.2vw, 2.25rem); line-height: 1.05; letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.dr-view-desc { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--muted); }
+/* the picture gets everything right of the text and above the bar; the script sizes it to fit */
 .dr-view-stage {
-  position: absolute; inset: 0 0 var(--bar) 0;
+  position: absolute; inset: 0 0 var(--bar) var(--side);
   display: flex; align-items: center; justify-content: center;
   padding: clamp(var(--s-3), 4vw, var(--s-6));
+  padding-left: var(--s-3);
 }
 .dr-view-art { flex: none; }
 .dr-view-art img, .dr-view-mask { display: block; width: 100%; height: 100%; }
@@ -1671,14 +1687,18 @@ html[data-lang="ka"] .plate-shot .l.ka { display: block; }
 }
 .dr-view-bar {
   position: absolute; left: 0; right: 0; bottom: 0; height: var(--bar);
-  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4);
+  display: flex; align-items: center; justify-content: flex-end;
   padding: 0 var(--gutter); border-top: 1px solid var(--line); background: var(--surface);
 }
-.dr-view-text { min-width: 0; display: grid; gap: 0.2rem; }
-.dr-view-cap { margin: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dr-view-desc { margin: 0; font-size: 0.875rem; line-height: 1.4; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.dr-view-series { color: var(--muted); font-weight: 400; margin-left: var(--s-2); }
 .dr-view-nav { display: flex; align-items: center; gap: var(--s-2); flex: none; }
 .dr-view-count { font-size: 0.8125rem; color: var(--muted); min-width: 4.5em; text-align: center; font-variant-numeric: tabular-nums; }
+/* phones: the text above the picture */
+@media (max-width: 720px) {
+  .dr-view { --side: 0px; --top: 8.5rem; }
+  .dr-view-text { width: auto; right: 0; height: var(--top); padding: var(--s-4) var(--gutter) 0; overflow: hidden; }
+  .dr-view-title { font-size: 1.375rem; }
+  .dr-view-desc { font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .dr-view-stage { inset: var(--top) 0 var(--bar) 0; padding: var(--s-3) var(--gutter); }
+}
 
 .dr-view-desc[hidden] { display: none; }

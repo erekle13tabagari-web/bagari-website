@@ -56,7 +56,8 @@ body {
   width: auto;
   max-width: none;
   aspect-ratio: 16 / 9;
-  transform: translate(-50%, -50%);
+  /* the mark's own centre sits at 0.5075 of the frame: shift so it lines up with the words */
+  transform: translate(-50.75%, -50%);
   display: block;
   object-fit: cover;
   background: var(--slate);
@@ -72,15 +73,18 @@ body {
   padding: var(--s-3) var(--margin) 0;
   text-align: center;
 }
+/* The words are Helvetica Neue Bold, outlined like the logo's letters:
+ * Mtavruli for Georgian, capitals for Latin, one cap height for both.
+ * Each SVG is cropped to its own ink, so the words centre on the letters. */
 .display {
+  --cap: clamp(3rem, 6vw, 6.5rem);
   margin: 0;
-  font-size: clamp(2.5rem, 5vw, 5.5rem);
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  line-height: 0;
 }
-.display .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.display .line { display: block; overflow: hidden; }
+.display .line + .line { margin-top: calc(var(--cap) * 0.24); }
 .display .line > span { display: block; }
+.display .word { display: block; height: var(--cap); width: auto; margin-inline: auto; }
 
 /* ---------- footer ---------- */
 .foot {

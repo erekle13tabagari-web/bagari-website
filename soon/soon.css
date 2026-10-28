@@ -1,0 +1,140 @@
+/* BAGARI Studio: the holding page while the site is rebuilt.
+ * Brandbook v3: four colours only, Helvetica, Georgian first and English after
+ * it at the same size and weight. The 3D chrome mark is the page's one showcase
+ * moment, centred, with the line under it. */
+
+:root {
+  --slate: #1D2124;
+  --off: #F1EEE7;
+  --green-40: #9FB1AD;          /* the focus ring: green 100 vanishes on slate */
+
+  --font: Helvetica, "Helvetica Neue", Arial, "Noto Sans Georgian", "Segoe UI", sans-serif;
+
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 40px; --s-5: 64px; --s-6: 104px;
+  --margin: 16px;
+
+  --fast: 180ms; --medium: 560ms; --slow: 900ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 768px) { :root { --margin: 40px; } }
+@media (min-width: 1100px) { :root { --margin: 80px; } }
+
+* { box-sizing: border-box; }
+html { background: var(--slate); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--slate);
+  color: var(--off);
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ---------- the chrome mark, centred ---------- */
+.stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 46vh;
+  min-height: 46svh;
+  margin-top: var(--s-4);
+  overflow-x: clip;             /* the video is wider than the screen; never let it scroll sideways */
+  pointer-events: none;
+}
+/* The mark fills about 0.69 of the video's height and 0.37 of its width, with
+ * empty slate around it, so the video may run past the stage: only slate
+ * overflows. Capped by the screen width so the mark never meets the edges. */
+.stage-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: min(130%, 120vw);
+  width: auto;
+  max-width: none;
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  display: block;
+  object-fit: cover;
+  background: var(--slate);
+  /* the video's ground is slate too; the feather hides its edges on any screen */
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 86%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 86%, transparent 100%);
+}
+
+/* ---------- the line ---------- */
+.hold {
+  position: relative;
+  z-index: 1;
+  padding: var(--s-3) var(--margin) 0;
+  text-align: center;
+}
+.display {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.display .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.display .line > span { display: block; }
+
+/* ---------- footer ---------- */
+.foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-3);
+  padding: var(--s-5) max(var(--margin), calc((100vw - 1280px) / 2)) var(--s-4);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.foot a { color: var(--off); text-underline-offset: 0.2em; }
+.foot a:hover { text-decoration-thickness: 2px; }
+.foot-end { display: flex; align-items: center; gap: var(--s-3); }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--green-40);
+  outline-offset: 4px;
+}
+
+.motion-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--off);
+  border-radius: 0;
+  background: transparent;
+  color: var(--off);
+  cursor: pointer;
+}
+.motion-toggle[hidden] { display: none; }
+.motion-toggle svg { width: 20px; height: 20px; }
+.motion-toggle .i-play { display: none; }
+.motion-toggle.is-paused .i-play { display: block; }
+.motion-toggle.is-paused .i-pause { display: none; }
+
+.vh {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- motion: plays once, complete without JS ---------- */
+@keyframes rise-line { from { transform: translateY(105%); } }
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .display .line > span { animation: rise-line var(--slow) var(--ease) 200ms both; }
+  .display .line + .line > span { animation-delay: 280ms; }
+  .foot { animation: rise var(--medium) var(--ease) 600ms both; }
+}
